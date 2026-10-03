@@ -1,0 +1,116 @@
+name: Decks
+
+# Buduje docs/presentations (docs/presentations/_site/build.mjs) i wdraża jako
+# Worker Cloudflare ze statycznymi plikami, tak jak frontend:
+#   main          -> worker tuttitrip-decks        -> https://tuttitrip-decks.gburek.app
+#   inna gałąź    -> worker tuttitrip-decks-<slug> -> https://tuttitrip-decks-<slug>.gburek.app
+# Każde wdrożenie usuwa też Workery gałęzi, których już nie ma (cleanup.mjs).
+# Działa na runnerze GitHuba (ubuntu-latest, repozytorium jest publiczne) i tylko
+# na push, więc sekrety nie trafiają do PR z forków.
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - docs/presentations/**
+      - .github/workflows/decks.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: decks-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WRANGLER: npx --yes wrangler@4.146.0
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+  CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: docs/presentations/_site
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      # uv runs pdf2pptx.py (PDF -> PPTX) with its own dependencies; Chrome for the
+      # PDFs comes with the runner.
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+      - name: Build decks, explorer, PDF and PPTX files
+        run: node build.mjs
+
+      - name: Pick Worker and domain for this branch
+        id: target
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: ./target.sh "$BRANCH" | tee -a "$GITHUB_OUTPUT"
+
+      - name: Check Cloudflare credentials
+        id: creds
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::warning::CLOUDFLARE_API_TOKEN secret or CLOUDFLARE_ACCOUNT_ID variable missing, skipping deploy."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # The domain check needs an existing Worker, so a new branch first gets
+      # one without a domain.
+      - name: Create the Worker on its first deploy
+        if: steps.creds.outputs.ok == 'true'
+        run: |
+          worker="${{ steps.target.outputs.worker }}"
+          status=$(curl -sS -o /dev/null -w '%{http_code}' -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/$worker/settings")
+          case "$status" in
+            200) echo "$worker exists" ;;
+            404) $WRANGLER deploy --name "$worker" --message "${{ github.sha }}" ;;
+            *) echo "::error::Cloudflare answered $status for $worker"; exit 1 ;;
+          esac
+
+      - name: Make sure the custom domain is ours to deploy
+        if: steps.creds.outputs.ok == 'true'
+        run: node check-custom-domain.mjs "${{ steps.target.outputs.worker }}" "${{ steps.target.outputs.host }}"
+
+      - name: Deploy to Cloudflare Workers
+        if: steps.creds.outputs.ok == 'true'
+        run: >-
+          $WRANGLER deploy --name "${{ steps.target.outputs.worker }}"
+          --domain "${{ steps.target.outputs.host }}" --message "${{ github.sha }}"
+
+      - name: Smoke test (explorer + every deck + PDF/PPTX)
+        if: steps.creds.outputs.ok == 'true'
+        run: |
+          url="${{ steps.target.outputs.url }}"
+          paths=$(grep -o 'class="\(deck\|pdf\|pptx\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//')
+          for _ in $(seq 20); do
+            ok=true
+            curl -fsS "$url/" | grep -q 'class="decks"' || ok=false
+            for p in $paths; do curl -fsSL -o /dev/null "$url$p" || ok=false; done
+            if $ok; then echo "OK: $url"; exit 0; fi
+            sleep 6
+          done
+          echo "::error::$url did not serve the decks"; exit 1
+
+      - name: Summary
+        if: steps.creds.outputs.ok == 'true'
+        run: |
+          {
+            echo "### Prezentacje: ${{ steps.target.outputs.url }}"
+            echo
+            grep -o 'class="\(deck\|pdf\|pptx\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//' |
+              while read -r p; do echo "- ${{ steps.target.outputs.url }}$p"; done
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Delete Workers of deleted branches
+        if: steps.creds.outputs.ok == 'true'
+        run: node cleanup.mjs

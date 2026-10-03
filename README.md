@@ -30,6 +30,8 @@ Wszystkie endpointy backendu są pod `/api/v1/`. Ten sam adres działa też prze
 
 Aplikacja to PWA, więc na telefonie można ją dodać do ekranu głównego.
 
+Prezentacje z [`docs/presentations`](docs/presentations) są na https://tuttitrip-decks.gburek.app (lista pod `/`, np. https://tuttitrip-decks.gburek.app/TuttiTrip_pitch_deck). Każda inna gałąź tego repozytorium dostaje własny adres `https://tuttitrip-decks-<gałąź>.gburek.app`.
+
 ## Repozytoria
 
 | Katalog | Repozytorium | Co zawiera |

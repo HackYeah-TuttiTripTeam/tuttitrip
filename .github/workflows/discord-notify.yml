@@ -11,6 +11,8 @@ name: Discord notify
 on:
   workflow_run:
     workflows:
+      - Decks
+      - Decks cleanup
       - Delete merged branch
       - Issue format
       - PR format
@@ -25,6 +27,6 @@ jobs:
   notify:
     uses: HackYeah-TuttiTripTeam/.github/.github/workflows/discord-notify.yml@main
     with:
-      quiet-on-success: '["Delete merged branch", "Issue format", "PR format"]'
+      quiet-on-success: '["Decks cleanup", "Delete merged branch", "Issue format", "PR format"]'
     secrets:
       DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

@@ -1,0 +1,44 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: arial
+    lineColor: "#59636E"
+    usecaseActorBkg: "#FFFFFF"
+    usecaseActorBorder: "#3C4650"
+    usecaseBoundaryBkg: "#FAFAF7"
+    usecaseBoundaryBorder: "#8C8C84"
+  usecase:
+    useMaxWidth: false
+    usecaseFontSize: 20
+    usecaseFontFamily: arial
+    actorFontSize: 20
+    actorFontFamily: arial
+    wrappingWidth: 230
+---
+%% Domena: Wydatki. Jasne, przerywane elipsy (klasa nowa) to nowe user stories ze słownika.
+usecase-beta
+direction LR
+actor cz("Członek podróży")
+actor host("Host")
+systemBoundary sys_wyd["Wydatki"]
+  dod("Dodaj paragon lub kwotę"):::ist
+  glo("Dodaj wydatek tekstem lub głosem"):::nowa
+  odc("Potwierdź odczyt paragonu"):::nowa
+  kwo("Zobacz kwotę do przelania"):::ist
+  podz("Podziel koszty między członków"):::ist
+  roz("Rozlicz wydatki na koniec"):::ist
+  bdn("Sprawdź budżet dnia"):::nowa
+  tan("Wybierz tańszą propozycję"):::nowa
+end
+cz -- dod
+cz -- kwo
+cz -- bdn
+host -- roz
+glo ..>:extend dod
+odc ..>:extend dod
+kwo ..>:include podz
+roz ..>:include podz
+tan ..>:extend bdn
+classDef ist fill:#CFE0F5,stroke:#4F74A8,color:#1F2933
+classDef nowa fill:#F3F7FC,stroke:#A9BEDB,color:#3A4654,stroke-dasharray:5 4

@@ -1,0 +1,10 @@
+.system-boundary-title, .system-boundary-title p, .system-boundary-title span { font-weight: 700 !important; font-size: 21px !important; white-space: nowrap !important; }
+.system-boundary-title foreignObject { overflow: visible !important; }
+.edgeLabel, .edgeLabel p, .relationship-label { font-size: 16px !important; color: #3C4650 !important; }
+.edgeLabel .label rect, .labelBkg { fill: #FFFFFF !important; background-color: #FFFFFF !important; }
+.edgeLabel, .edgeLabel p { background-color: #FFFFFF !important; }
+.edgeLabel p:not(:empty)::before { content: "«"; }
+.edgeLabel p:not(:empty)::after { content: "»"; }
+.usecase-actor-shape, .usecase-actor-hollow { fill: #FFFFFF !important; stroke: #3C4650 !important; }
+.node.usecase-actor .usecase-actor-glyph path, .node.usecase-actor .usecase-actor-glyph circle, .usecase-actor-stick, .usecase-actor-outline { stroke: #3C4650 !important; }
+.system-boundary-rect rect, .boundary-body { stroke: #8C8C84 !important; }

@@ -1,0 +1,43 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: arial
+    lineColor: "#59636E"
+    usecaseActorBkg: "#FFFFFF"
+    usecaseActorBorder: "#3C4650"
+    usecaseBoundaryBkg: "#FAFAF7"
+    usecaseBoundaryBorder: "#8C8C84"
+  usecase:
+    useMaxWidth: false
+    usecaseFontSize: 20
+    usecaseFontFamily: arial
+    actorFontSize: 20
+    actorFontFamily: arial
+    wrappingWidth: 230
+---
+%% Domena: Konto i dostęp. Jasne, przerywane elipsy (klasa nowa) to nowe user stories ze słownika.
+usecase-beta
+direction LR
+actor u("Użytkownik")
+actor jur("Juror (konto demo)")
+systemBoundary sys_konto["Konto i dostęp"]
+  rej("Zarejestruj się"):::ist
+  log("Zaloguj się"):::ist
+  wyl("Wyloguj się"):::ist
+  has("Odzyskaj hasło"):::ist
+  kon("Edytuj dane konta"):::ist
+  info("Przeglądaj stronę główną, O nas i Kontakt"):::ist
+  demo("Zaloguj się na konto demo"):::nowa
+  soc("Zaloguj się przez Google lub Discord"):::nowa
+end
+u -- rej
+u -- log
+u -- wyl
+u -- has
+u -- kon
+u -- info
+jur -- demo
+soc ..>:extend log
+classDef ist fill:#CFE0F5,stroke:#4F74A8,color:#1F2933
+classDef nowa fill:#F3F7FC,stroke:#A9BEDB,color:#3A4654,stroke-dasharray:5 4

@@ -286,7 +286,7 @@ button{font-family:inherit}
 @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .fade{animation:fade .22s cubic-bezier(.4,0,.2,1) both}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.row-plan{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center}
+.row-plan{display:grid;grid-template-columns:64px 40px 1fr auto;gap:16px;align-items:center}
 .row-plan time{font:650 17px/24px var(--font-display);font-variant-numeric:tabular-nums}
 .metric-row{display:flex;align-items:baseline;gap:16px;margin:12px 0 4px}
 .total{display:flex;justify-content:space-between;align-items:center;padding-top:16px;margin-top:4px;border-top:1px solid var(--border)}
@@ -331,7 +331,7 @@ button{font-family:inherit}
 .node + .node::before{content:"";position:absolute;left:-48px;top:50%;width:48px;height:4px;margin-top:-2px;background:radial-gradient(circle,var(--route) 1.6px,transparent 2.2px) 0 50%/8px 4px repeat-x}
 .packet{position:absolute;width:16px;height:16px;border-radius:9999px;background:var(--primary);z-index:3;top:0;left:0;transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .2s;opacity:0}
 .tag{display:inline-flex}
-.stop{text-align:left;border:1.5px solid var(--border);background:var(--card);border-radius:var(--radius-lg);padding:16px 18px;color:var(--foreground);font:inherit;position:relative;min-height:96px}
+.stop{text-align:left;border:1.5px solid var(--border);background:var(--card);border-radius:var(--radius-lg);padding:16px 18px;color:var(--foreground);font:inherit;position:relative;min-height:150px}
 .stop[aria-pressed="true"]{border-color:var(--foreground)}
 .stops{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:36px}
 .stops .stop{margin-right:48px}.stops .stop:last-child{margin-right:0}
@@ -341,6 +341,19 @@ button{font-family:inherit}
 .who2 ul{margin:12px 0 0;padding:0;list-style:none}
 .who2 li{display:flex;gap:10px;align-items:flex-start;font:400 19px/28px var(--font-sans);padding:6px 0}
 .who2 li .tt-dot{margin-top:9px;width:8px;height:8px}
+
+.hico{display:inline-flex;align-items:center;gap:10px}
+.tt-caption.hico{gap:6px}.tt-caption.hico .tt-icon{width:16px;height:16px}
+.chip-ic{width:48px;height:48px;border-radius:9999px;display:grid;place-items:center;background:var(--secondary);color:var(--foreground);flex:none;transition:background .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1)}
+.chip-ic .tt-icon{width:24px;height:24px}
+.chip-ic.sm{width:40px;height:40px}.chip-ic.sm .tt-icon{width:20px;height:20px}
+.tt-seg button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.tt-seg button .tt-icon{width:16px;height:16px}
+.tt-h3 .tt-icon,.tt-label .tt-icon{vertical-align:-3px;margin-right:2px}
+.who2 li .tt-icon{flex:none;margin-top:6px;color:var(--primary)}
+.who2 li.spark .tt-icon{color:var(--muted-foreground)}
+.node[aria-pressed="true"] .chip-ic{background:var(--foreground);color:var(--background)}
+.node.lit .chip-ic{background:var(--primary);color:var(--primary-foreground)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -356,10 +369,10 @@ button{font-family:inherit}
    <h1 class="s-h1" style="margin-top:40px">Plan, po którym nikt nie czuje, że przegrał.</h1>
    <p class="s-lede">Planer wyjazdów rodzinnych i grupowych. Liczby liczy solver, a model językowy pisze tylko pytania i uzasadnienia.</p>
    <div class="tt-field" style="margin-top:32px;max-width:640px"><input id="s1-in" aria-label="Pierwsze zdanie o wyjeździe" style="flex:1;min-width:0;border:0;background:transparent;font:400 17px/24px var(--font-sans);color:var(--foreground);outline:none" placeholder=""><button class="tt-btn tt-btn--ghost tt-btn--icon" id="s1-mic" aria-label="Powiedz zdanie"><i data-ic="mic" style="display:contents"></i></button><button class="tt-btn tt-btn--primary" id="s1-go">Zacznij</button></div>
-   <p class="tt-caption" style="margin-top:20px">HackYeah 2026 · Kraków · kategoria Sztuczna inteligencja</p>
+   <p class="tt-caption hico" style="margin-top:20px"><i data-ic="pin" style="display:contents"></i>HackYeah 2026 · Kraków · kategoria Sztuczna inteligencja</p>
   </div>
   <div class="tt-sheet pad" id="s1-card">
-   <div class="tt-between"><h2 class="tt-h">Sprawiedliwość planu</h2>
+   <div class="tt-between"><h2 class="tt-h hico"><i data-ic="scale" style="display:contents"></i>Sprawiedliwość planu</h2>
     <div class="tt-seg" id="s1-seg"><button data-m="bot" aria-pressed="true">Czatbot</button><button data-m="tt" aria-pressed="false">TuttiTrip</button></div></div>
    <div class="metric-row"><span class="tt-metric" id="s1-m" style="font-size:64px;line-height:64px">0</span><span class="tt-body" id="s1-sent" style="font:400 17px/24px var(--font-sans);color:var(--muted-foreground)"></span></div>
    <div id="s1-plot" style="margin-top:12px"></div>
@@ -374,9 +387,9 @@ button{font-family:inherit}
   <div class="head-row"><h2 class="s-h2" style="max-width:820px">Plan z czatbota wygląda dobrze, dopóki ktoś go nie sprawdzi.</h2>
    <div class="tt-seg" id="s2-seg" style="width:360px;flex:none;margin-top:8px"><button data-m="bot" aria-pressed="true">Plan z czatbota</button><button data-m="tt" aria-pressed="false">Plan TuttiTrip</button></div></div>
   <div class="two">
-   <div class="tt-sheet pad"><div class="tt-between" style="margin-bottom:16px"><h3 class="tt-h">Poniedziałek w Gdańsku</h3><span class="tt-badge tt-badge--dashed" id="s2-state">Nie sprawdzony</span></div>
+   <div class="tt-sheet pad"><div class="tt-between" style="margin-bottom:16px"><h3 class="tt-h hico"><i data-ic="cal" style="display:contents"></i>Poniedziałek w Gdańsku</h3><span class="tt-badge tt-badge--dashed" id="s2-state">Nie sprawdzony</span></div>
     <ul class="tt-list" id="s2-plan"></ul><div class="total" id="s2-total"></div></div>
-   <div class="tt-sheet pad"><div class="tt-between"><h3 class="tt-h">Sprawdzenie planu</h3><button class="tt-btn tt-btn--primary" id="s2-check">Sprawdź plan</button></div>
+   <div class="tt-sheet pad"><div class="tt-between"><h3 class="tt-h hico"><i data-ic="shield" style="display:contents"></i>Sprawdzenie planu</h3><button class="tt-btn tt-btn--primary" id="s2-check">Sprawdź plan</button></div>
     <div class="metric-row"><span class="tt-metric" id="s2-n" style="font-size:64px;line-height:64px">0</span><span id="s2-nl" style="font:400 19px/26px var(--font-sans);color:var(--muted-foreground)">problemów</span></div>
     <ul class="tt-list" id="s2-issues" style="margin-top:12px"></ul>
     <p class="tt-meta" id="s2-empty">Naciśnij „Sprawdź plan”, żeby zobaczyć, co kod znajdzie.</p></div>
@@ -410,10 +423,10 @@ button{font-family:inherit}
    <p class="s-lede">Plan dnia z godzinami, cenami i werdyktem. Dotknij miejsca, żeby zobaczyć, kto jest na tak, a kto na nie.</p>
    <p class="hint"><span class="tt-dot"></span>Przełączaj dni i dotykaj miejsc.</p></div>
   <div id="s5-phone"></div>
-  <div class="tt-sheet pad"><h3 class="tt-h">Sprawiedliwość dnia</h3>
+  <div class="tt-sheet pad"><h3 class="tt-h hico"><i data-ic="scale" style="display:contents"></i>Sprawiedliwość dnia</h3>
    <div class="metric-row"><span class="tt-metric" id="s5-m" style="font-size:64px;line-height:64px">0</span><span id="s5-sent" style="font:400 17px/24px var(--font-sans);color:var(--muted-foreground)"></span></div>
    <div id="s5-plot" style="margin-top:12px"></div>
-   <div class="total"><span class="tt-meta">Koszt dnia</span><span class="tt-fig" style="font-size:20px"><span id="s5-cost">0</span> z 700 zł</span></div></div>
+   <div class="total"><span class="tt-meta hico" style="gap:8px"><i data-ic="wallet" style="display:contents"></i>Koszt dnia</span><span class="tt-fig" style="font-size:20px"><span id="s5-cost">0</span> z 700 zł</span></div></div>
  </div>
 </section>
 
@@ -424,7 +437,7 @@ button{font-family:inherit}
    <p class="s-lede">Zanim host wymusi zmianę, widzi, ile to kosztuje innych. Przycisk z ceną jest ciemny. Zieleń znaczy tylko „chcę”.</p>
    <p class="hint"><span class="tt-dot"></span>Wymuś decyzję i patrz, co się dzieje z Kubą.</p></div>
   <div id="s6-phone"></div>
-  <div class="tt-sheet pad"><h3 class="tt-h">Sprawiedliwość po decyzji</h3>
+  <div class="tt-sheet pad"><h3 class="tt-h hico"><i data-ic="scale" style="display:contents"></i>Sprawiedliwość po decyzji</h3>
    <div class="metric-row"><span class="tt-metric" id="s6-m" style="font-size:64px;line-height:64px">0</span><span id="s6-sent" style="font:400 17px/24px var(--font-sans);color:var(--muted-foreground)"></span></div>
    <div id="s6-plot" style="margin-top:12px"></div>
    <p class="tt-caption" style="margin-top:12px">Poniżej podłogi plan dostaje problem. Host może go świadomie zostawić.</p></div>
@@ -436,10 +449,10 @@ button{font-family:inherit}
  <div class="cols tri">
   <div class="col-text"><h2 class="s-h2">Pada? Plan przelicza się w kilka sekund.</h2>
    <p class="s-lede">W podróży plan nie jest zamrożony. Kod sprawdza godziny, dojazdy i budżet od nowa, a Ty widzisz, co się zmieniło.</p>
-   <div style="margin-top:28px"><div class="tt-seg" id="s7-seg" style="max-width:380px"><button data-w="sun" aria-pressed="true">Słonecznie</button><button data-w="rain" aria-pressed="false">Deszcz od 11:00</button></div></div>
+   <div style="margin-top:28px"><div class="tt-seg" id="s7-seg" style="max-width:380px"><button data-w="sun" aria-pressed="true"><i data-ic="sun" style="display:contents"></i>Słonecznie</button><button data-w="rain" aria-pressed="false"><i data-ic="rain" style="display:contents"></i>Deszcz od 11:00</button></div></div>
    <p class="hint"><span class="tt-dot"></span>Wybierz pogodę, potem przelicz plan w telefonie.</p></div>
   <div id="s7-phone"></div>
-  <div class="tt-sheet pad"><h3 class="tt-h">Co sprawdził kod</h3>
+  <div class="tt-sheet pad"><h3 class="tt-h hico"><i data-ic="cpu" style="display:contents"></i>Co sprawdził kod</h3>
    <ul class="tt-list" id="s7-list" style="margin-top:16px"></ul>
    <div class="total" style="margin-top:12px"><span class="tt-meta">Problemy w planie</span><span class="tt-fig" style="font-size:20px" id="s7-prob">0</span></div></div>
  </div>
@@ -452,7 +465,7 @@ button{font-family:inherit}
    <p class="s-lede">Kod liczy, kto komu ile oddaje, i robi to najmniejszą liczbą przelewów. Czego nie jest pewien, tego nie udaje.</p>
    <p class="hint"><span class="tt-dot"></span>Potwierdź niepewny odczyt paragonu.</p></div>
   <div id="s8-phone"></div>
-  <div class="tt-sheet pad"><h3 class="tt-h">Pełne to fakt, przerywane to niepewne</h3>
+  <div class="tt-sheet pad"><h3 class="tt-h hico" style="gap:8px"><i data-ic="shield" style="display:contents"></i>Pełne to fakt, przerywane to niepewne</h3>
    <div class="stack" style="margin-top:16px">
     <div class="tt-row"><span class="tt-badge tt-badge--neutral"><i data-ic="shield" style="display:contents"></i>Zweryfikowane</span><span class="tt-meta">Pełny obrys i tło: kod to sprawdził.</span></div>
     <div class="tt-row"><span class="tt-badge tt-badge--dashed"><i data-ic="q" style="display:contents"></i>Niepewny odczyt</span><span class="tt-meta">Przerywany obrys: nie jesteśmy pewni.</span></div></div>
@@ -478,9 +491,10 @@ button{font-family:inherit}
    <div class="tt-logo"><svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#00774d"/><g fill="#f4fbf8"><circle cx="150" cy="372" r="44"/><circle cx="214" cy="312" r="13"/><circle cx="260" cy="270" r="13"/><circle cx="306" cy="228" r="13"/></g><circle cx="364" cy="152" r="46" fill="none" stroke="#f4fbf8" stroke-width="24"/></svg><span class="wordmark" style="font-size:30px">TuttiTrip</span></div>
    <h2 class="s-h1" style="margin-top:36px">Zbuduj plan, który uda się wszystkim.</h2>
    <p class="s-lede">Policzony, a nie zgadnięty. Każda osoba widoczna. Każda decyzja z ceną.</p>
+   <div class="tt-row" style="margin-top:24px;gap:8px"><span class="tt-badge tt-badge--neutral"><i data-ic="shield" style="display:contents"></i>Policzony</span><span class="tt-badge tt-badge--neutral"><i data-ic="users" style="display:contents"></i>Każda osoba widoczna</span><span class="tt-badge tt-badge--neutral"><i data-ic="wallet" style="display:contents"></i>Decyzja z ceną</span></div>
    <div class="tt-row" style="margin-top:32px;gap:12px"><a class="tt-btn tt-btn--primary" href="https://tuttitrip.gburek.app" target="_blank" rel="noopener" style="text-decoration:none">Wejdź na konto demo</a><button class="tt-btn tt-btn--outline" id="s10-again">Wróć do początku</button></div>
    <p class="tt-caption" style="margin-top:20px">Zespół HackYeah-TuttiTripTeam · 5 osób</p></div>
-  <div class="tt-sheet pad"><h3 class="tt-h" style="margin-bottom:20px">Co dalej</h3>
+  <div class="tt-sheet pad"><h3 class="tt-h hico" style="margin-bottom:20px"><i data-ic="route" style="display:contents"></i>Co dalej</h3>
    <ol class="tt-day" id="s10-road"></ol></div>
  </div>
 </section>
@@ -521,7 +535,23 @@ spark:'<path d="M11 3l1.800 4.700L17.500 9.500l-4.700 1.800L11 16l-1.800-4.700L4
 cup:'<path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5V9zM16 10h2a2 2 0 0 1 0 4h-2M8 3v3M12 3v3"/>',
 q:'<circle cx="12" cy="12" r="9"/><path d="M9.500 9.500a2.500 2.500 0 1 1 3.500 2.300c-.7.300-1 .900-1 1.700M12 17h.01"/>',
 share:'<path d="M12.500 5.500v3a.5.500 0 0 1-.5.500C7.300 9.400 3.600 13 3 17.700c0 .3.200.6.500.6.100 0 .2 0 .3-.1C6 16.200 8.900 15 12 15v3.500l8.600-6.500L12.500 5.500z"/>',
-store:'<path d="M4 20V10l8-6 8 6v10M9 20v-6h6v6"/>'};
+store:'<path d="M4 20V10l8-6 8 6v10M9 20v-6h6v6"/>',
+phone:'<rect x="6.500" y="2.500" width="11" height="19" rx="3"/><path d="M10.500 18.500h3"/>',
+server:'<rect x="3" y="4" width="18" height="7" rx="2.500"/><rect x="3" y="13" width="18" height="7" rx="2.500"/><path d="M7 7.500h.01M7 16.500h.01"/>',
+cpu:'<rect x="6" y="6" width="12" height="12" rx="2.500"/><rect x="9.500" y="9.500" width="5" height="5" rx="1"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>',
+chat:'<path d="M5 6.500A2.500 2.500 0 0 1 7.500 4h9A2.500 2.500 0 0 1 19 6.500v7a2.500 2.500 0 0 1-2.500 2.500H11l-4 3.500V16h-.5A2.500 2.500 0 0 1 5 13.500v-7z"/><path d="M9 9h6M9 12h3.500"/>',
+scale:'<path d="M12 4v16M7.500 20h9M5 7h14"/><path d="M5 7l-2.500 6a3 3 0 0 0 5 0L5 7zM19 7l-2.500 6a3 3 0 0 0 5 0L19 7z"/>',
+lock:'<rect x="5" y="11" width="14" height="9.500" rx="2.500"/><path d="M8 11V8a4 4 0 0 1 8 0v3M12 15v2"/>',
+globe:'<path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM2 12H22M12 2C14.6667 5 16 8.5 16 12C16 15.5 14.6667 19 12 22C9.33333 19 8 15.5 8 12C8 8.5 9.33333 5 12 2Z"/>',
+list:'<path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/>',
+ticket:'<path d="M3 9.500a2.500 2.500 0 0 0 0 5V17a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2.500a2.500 2.500 0 0 1 0-5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v2.500z"/><path d="M14 6v2.500M14 11v2M14 15.500V18"/>',
+fork:'<path d="M7 3v7a2 2 0 0 0 2 2M5 3v7a2 2 0 0 0 2 2h0M9 3v7M7 12v9M17 21V3c-2.500 1.500-3.500 4.500-3.500 8H17"/>',
+bed:'<path d="M3 19V6M3 15h18v4M21 15v-2.500A3 3 0 0 0 18 9.500h-7V15"/><circle cx="7" cy="11.500" r="1.800"/>',
+boat:'<path d="M3 15.500l1.800 3.500h14.400L21 15.500H3zM12 3.500v9M12 3.500l5 6.500h-5"/>',
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.500v2M12 19.500v2M2.500 12h2M19.500 12h2M5.300 5.300l1.400 1.400M17.300 17.300l1.400 1.400M5.300 18.700l1.400-1.400M17.300 6.700l1.400-1.400"/>',
+train:'<rect x="5" y="3" width="14" height="14" rx="3.500"/><path d="M5 11h14M8 21l2-4M16 21l-2-4M9 14h.01M15 14h.01"/>',
+flag:'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'};
+function plIc(n){return /Przerwa|Kawiarnia/.test(n)?'cup':/Przyjazd|zamelduj/.test(n)?'bed':/Droga powrotna|Pociąg/.test(n)?'train':/Rejs|tramwaj/.test(n)?'boat':/Muzeum|Hevelianum|Bilety/.test(n)?'ticket':/Plac zabaw/.test(n)?'sun':/Śniadanie|Obiad|Kolacja/.test(n)?'fork':/Spacer|Westerplatte/.test(n)?'route':'pin'}
 const icon=(n,c='')=>`<svg class="tt-icon ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 const PEOPLE=[['Ania','A',1,'Ani'],['Tomek','T',2,'Tomkowi'],['Kuba','K',3,'Kubie'],['Zosia','Z',4,'Zosi'],['Hela','H',5,'Heli']];
 const av=(k,sm)=>`<span class="tt-avatar ${sm?'tt-avatar--sm':''} tt-m${PEOPLE[k][2]}">${PEOPLE[k][1]}</span>`;
@@ -566,7 +596,7 @@ const S2={mode:'bot',checked:false,
   issues:[['error','Muzeum Bursztynu jest w poniedziałek zamknięte.','Godziny otwarcia: wtorek–niedziela.'],['warning','Babcia przejdzie 9 km.','Jej limit to 3 km dziennie.'],['error','Budżet: 1 240 zł przy limicie 1 000 zł.','Przekroczenie o 240 zł.'],['warning','Kuba ma 22 punkty ze 100.','Reszta grupy ma ponad 60.']]},
  tt:{rows:[['09:30','Śniadanie w Oliwie','5 osób, 160 zł'],['11:00','Plac zabaw w Parku Oliwskim','800 m od śniadania, 0 zł'],['13:30','Przerwa: babcia odpoczywa','W apartamencie, 0 zł'],['15:00','Rejs tramwajem wodnym','5 × 40 zł = 200 zł'],['18:30','Kolacja w Śródmieściu','5 osób, 320 zł']],total:680,
   issues:[['ok','Muzeum Bursztynu przeniesione na wtorek.','Wtedy jest otwarte.'],['ok','Najdłuższy spacer to 2,1 km.','W limicie babci.'],['ok','Budżet: 680 zł z 1 000 zł.','Zostaje 320 zł zapasu.'],['ok','Najmniej zadowolony: Kuba, 58.','Nikt nie jest poniżej podłogi.']]}};
-function s2plan(){const d=S2[S2.mode];$('#s2-plan').innerHTML=d.rows.map(r=>`<li><div class="row-plan"><time>${r[0]}</time><div><p class="tt-label" style="font-size:17px;line-height:24px">${r[1]}</p><p class="tt-meta">${r[2]}</p></div>${S2.checked?(r[3]?`<span class="tt-badge tt-badge--${r[3]==='danger'?'danger':'warning'} pop">${icon('alert')}${r[4]}</span>`:`<span class="tt-badge tt-badge--want pop">${icon('check')}Sprawdzone</span>`):''}</div></li>`).join('');
+function s2plan(){const d=S2[S2.mode];$('#s2-plan').innerHTML=d.rows.map(r=>`<li><div class="row-plan"><time>${r[0]}</time><span class="chip-ic sm">${icon(plIc(r[1]))}</span><div><p class="tt-label" style="font-size:17px;line-height:24px">${r[1]}</p><p class="tt-meta">${r[2]}</p></div>${S2.checked?(r[3]?`<span class="tt-badge tt-badge--${r[3]==='danger'?'danger':'warning'} pop">${icon('alert')}${r[4]}</span>`:`<span class="tt-badge tt-badge--want pop">${icon('check')}Sprawdzone</span>`):''}</div></li>`).join('');
  $('#s2-total').innerHTML=`<span class="tt-meta">Razem, limit 1 000 zł</span><span class="tt-fig" style="font-size:22px;color:${S2.checked&&d.total>1000?'var(--danger-ink)':'inherit'}">${fmt(d.total)} zł</span>`}
 function s2reset(){S2.checked=false;S2.token=(S2.token||0)+1;$('#s2-issues').innerHTML='';$('#s2-empty').style.display='';$('#s2-state').className='tt-badge tt-badge--dashed';$('#s2-state').textContent='Nie sprawdzony';countTo($('#s2-n'),0);$('#s2-nl').textContent='problemów';s2plan()}
 $('#s2-check').onclick=()=>{if(S2.checked)return;S2.checked=true;const tk=++S2.token;const d=S2[S2.mode];$('#s2-empty').style.display='none';s2plan();const st=$('#s2-state');st.className='tt-badge '+(S2.mode==='bot'?'tt-badge--danger':'tt-badge--want');st.textContent=S2.mode==='bot'?'Ma problemy':'Gotowy';
@@ -575,14 +605,14 @@ seg('#s2-seg','data-m',m=>{S2.mode=m;s2reset()});
 enter[1]=()=>{S2.mode='bot';$$('#s2-seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m==='bot'));s2reset()};
 
 /* ===== 3 ===== */
-const STOPS=[{n:'Wywiad',c:'głos lub tekst',code:['Zapisuje oceny: Chcę, Obojętnie, Nie chcę','Liczy wagi: co jest dla kogo ważne'],model:['Zadaje jedno pytanie naraz','Rozumie, co powiedział człowiek']},
-{n:'Plan',c:'solver',code:['Układa dzień z godzin otwarcia, dojazdów i budżetu','Pilnuje, żeby nikt nie był poniżej podłogi'],model:['Nic tu nie liczy i nic nie zgaduje']},
-{n:'Sprawdzenie',c:'przed pokazaniem',code:['Szuka problemów: zamknięte miejsca, za długie trasy, budżet','Liczy sprawiedliwość dla każdej osoby'],model:['Zamienia wynik na zdanie po polsku']},
-{n:'Decyzja',c:'host i grupa',code:['Liczy koszt każdej decyzji w punktach i złotówkach','Zapisuje, kto jest na tak, a kto na nie'],model:['Pisze uzasadnienie: „Babcia odpoczywa po obiedzie”']}];
+const STOPS=[{ic:'chat',n:'Wywiad',c:'głos lub tekst',code:['Zapisuje oceny: Chcę, Obojętnie, Nie chcę','Liczy wagi: co jest dla kogo ważne'],model:['Zadaje jedno pytanie naraz','Rozumie, co powiedział człowiek']},
+{ic:'route',n:'Plan',c:'solver',code:['Układa dzień z godzin otwarcia, dojazdów i budżetu','Pilnuje, żeby nikt nie był poniżej podłogi'],model:['Nic tu nie liczy i nic nie zgaduje']},
+{ic:'shield',n:'Sprawdzenie',c:'przed pokazaniem',code:['Szuka problemów: zamknięte miejsca, za długie trasy, budżet','Liczy sprawiedliwość dla każdej osoby'],model:['Zamienia wynik na zdanie po polsku']},
+{ic:'scale',n:'Decyzja',c:'host i grupa',code:['Liczy koszt każdej decyzji w punktach i złotówkach','Zapisuje, kto jest na tak, a kto na nie'],model:['Pisze uzasadnienie: „Babcia odpoczywa po obiedzie”']}];
 let s3=0;
-function s3r(){$('#s3-stops').innerHTML=STOPS.map((s,i)=>`<button class="stop" data-i="${i}" aria-pressed="${i===s3}">${i===STOPS.length-1?'<span class="tt-goal"></span>':`<span class="tt-dot" style="${i<s3?'background:var(--primary)':''}"></span>`}<p class="tt-h3">${s.n}</p><p class="tt-caption">${s.c}</p></button>`).join('');
- const s=STOPS[s3];const col=(t,l,b)=>`<div class="tt-sheet pad fade"><span class="tt-btn ${b} " style="pointer-events:none;min-height:36px;padding:0 16px">${t}</span><ul>${l.map(x=>`<li><span class="tt-dot"></span>${x}</li>`).join('')}</ul></div>`;
- $('#s3-panel').innerHTML=col('Kod liczy',s.code,'tt-btn--ink')+col('Model pisze',s.model,'tt-btn--outline')}
+function s3r(){$('#s3-stops').innerHTML=STOPS.map((s,i)=>`<button class="stop" data-i="${i}" aria-pressed="${i===s3}"><span class="chip-ic" style="${i<s3?'background:var(--want-soft);color:var(--want-ink)':i===s3?'background:var(--foreground);color:var(--background)':''}">${icon(s.ic)}</span><p class="tt-h3" style="margin-top:14px">${s.n}</p><p class="tt-caption">${s.c}</p></button>`).join('');
+ const s=STOPS[s3];const col=(t,l,b,ic)=>`<div class="tt-sheet pad fade"><span class="tt-btn ${b} " style="pointer-events:none;min-height:36px;padding:0 16px">${icon(ic,'tt-icon--sm')}${t}</span><ul>${l.map(x=>`<li class="${ic}">${icon(ic==='cpu'?'check':'spark','tt-icon--sm')}${x}</li>`).join('')}</ul></div>`;
+ $('#s3-panel').innerHTML=col('Kod liczy',s.code,'tt-btn--ink','cpu')+col('Model pisze',s.model,'tt-btn--outline','spark')}
 $('#s3-stops').onclick=e=>{const b=e.target.closest('.stop');if(b){s3=+b.dataset.i;s3r()}};
 enter[2]=()=>{s3=0;s3r()};
 
@@ -613,7 +643,7 @@ function s4r(){const done=IV.i>=PL.length;let body;const c=k=>IV.ans.filter(a=>a
  const keep=$('#s4-in')?.value||'';$('#s4-phone').innerHTML=phone(body,null,bottom);if(keep)$('#s4-in').value=keep;
  if(done)$$('[data-c]',$('#s4-phone')).forEach(el=>countTo(el,c(el.dataset.c),0,500));
  /* panel */
- $('#s4-panel').innerHTML=`<h3 class="tt-h">Co już wiem</h3><p class="tt-meta" style="margin-bottom:12px">Zapisuje kod, nie model.</p>${IV.ans.length?`<ul class="tt-list">${IV.ans.map(a=>`<li class="tt-between pop"><span class="tt-label" style="font-size:17px">${a.n}</span><span class="tt-badge ${a.v==='want'?'tt-badge--want':a.v==='decline'?'tt-badge--decline':'tt-badge--neutral'}">${icon(VN[a.v][1])}${a.v==='decline'&&a.r?a.r:VN[a.v][0]}</span></li>`).join('')}</ul>`:`<p class="tt-meta">Jeszcze nic. Oceń pierwsze miejsce w telefonie.</p>`}${IV.said.length?`<p class="tt-label" style="margin-top:20px">Powiedziane</p><div class="tt-row" style="margin-top:8px">${IV.said.map(s=>`<span class="tt-said">${s}</span>`).join('')}</div>`:''}`}
+ $('#s4-panel').innerHTML=`<h3 class="tt-h hico">${icon('list')}Co już wiem</h3><p class="tt-meta" style="margin-bottom:12px">Zapisuje kod, nie model.</p>${IV.ans.length?`<ul class="tt-list">${IV.ans.map(a=>`<li class="tt-between pop"><span class="tt-label" style="font-size:17px">${a.n}</span><span class="tt-badge ${a.v==='want'?'tt-badge--want':a.v==='decline'?'tt-badge--decline':'tt-badge--neutral'}">${icon(VN[a.v][1])}${a.v==='decline'&&a.r?a.r:VN[a.v][0]}</span></li>`).join('')}</ul>`:`<p class="tt-meta">Jeszcze nic. Oceń pierwsze miejsce w telefonie.</p>`}${IV.said.length?`<p class="tt-label" style="margin-top:20px">Powiedziane</p><div class="tt-row" style="margin-top:8px">${IV.said.map(s=>`<span class="tt-said">${s}</span>`).join('')}</div>`:''}`}
 document.addEventListener('click',e=>{const p=$('#s4-phone');if(!p||!p.contains(e.target))return;
  const v=e.target.closest('[data-v]');if(v){IV.cur=v.dataset.v;IV.reason=null;return s4r()}
  const r=e.target.closest('[data-r]');if(r){IV.reason=r.dataset.r;return s4r()}
@@ -642,7 +672,7 @@ const DAYS=[{tab:'Pt, dzień 1',f:0.93,sc:[78,80,66,75,72],cost:240,items:[
 let d5=1,o5=null;mkPlot($('#s5-plot'));
 function s5r(){const D=DAYS[d5];
  const li=D.items.map((it,i)=>{const open=o5===i;const rail=it[3]==='goal'?'<span class="tt-goal"></span>':`<span class="tt-dot" ${it[3]==='pause'?'style="background:var(--muted-foreground)"':''}></span>`;
-  return `<li><time>${it[0]}</time><span class="tt-rail">${rail}</span><div class="tt-body" style="padding-bottom:14px"><button class="rowbtn" data-i="${i}" aria-expanded="${open}"><p class="tt-h3" style="font-size:17px;line-height:22px">${it[3]==='pause'?icon('cup','tt-icon--sm')+' ':''}${it[1]}</p><p class="tt-meta" style="font-size:14px;line-height:20px">${it[2]}</p>${vBadge[it[3]]?`<span style="display:inline-block;margin-top:6px">${vBadge[it[3]]}</span>`:''}</button>
+  return `<li><time>${it[0]}</time><span class="tt-rail">${rail}</span><div class="tt-body" style="padding-bottom:14px"><button class="rowbtn" data-i="${i}" aria-expanded="${open}"><p class="tt-h3" style="font-size:17px;line-height:22px">${icon(plIc(it[1]),'tt-icon--sm')} ${it[1]}</p><p class="tt-meta" style="font-size:14px;line-height:20px">${it[2]}</p>${vBadge[it[3]]?`<span style="display:inline-block;margin-top:6px">${vBadge[it[3]]}</span>`:''}</button>
   ${open?`<div class="pop" style="margin-top:8px;padding:12px;border-radius:var(--radius-md);background:var(--muted)"><p class="tt-body" style="margin:0 0 8px;font:400 15px/22px var(--font-sans)">${it[5]}</p>${it[4]?`<div class="tt-row" style="gap:10px">${it[4].map((v,k)=>`<span class="vote ${v}">${av(k,true)}${icon(v==='w'?'up':v==='d'?'down':'minus')}</span>`).join('')}</div>`:''}</div>`:''}</div></li>`}).join('');
  const body=`${appbar('Gdańsk, 3 dni',icon('share'))}<div class="tt-between"><span class="tt-avatars">${[0,1,2,3,4].map(k=>av(k,true)).join('')}</span><span class="tt-meta">10–12 paź · wersja 3</span></div>
  <div class="tt-sheet tt-between" style="margin-top:12px;padding:12px 16px"><span><p class="tt-caption">Sprawiedliwość</p><p class="tt-fig" style="margin:0;font-size:24px;line-height:28px" id="s5-pm">0</p></span><span><p class="tt-caption">Najmniej</p><p class="tt-label">${PEOPLE[minOf(D.sc)][0]} <span class="tt-fig">${D.sc[minOf(D.sc)]}</span></p></span><span><p class="tt-caption">Dzień ${d5+1}</p><p class="tt-label"><span class="tt-fig" id="s5-pc">0</span> z 700 zł</p></span></div>
@@ -675,15 +705,15 @@ const RAIN=[['09:30','Śniadanie w Oliwie','Otwarte od 8:00',''],['11:00','Muzeu
 const CALC=['Sprawdzam godziny otwarcia','Liczę dojazdy','Pilnuję budżetu','Układam sprawiedliwie'];
 let w7='sun',ph7='idle',k7=0,t7=[];
 function s7r(){const rows=ph7==='done'?RAIN:SUN;
- const li=rows.map(r=>`<li><time>${r[0]}</time><span class="tt-rail">${r[3]==='pause'?'<span class="tt-dot" style="background:var(--muted-foreground)"></span>':'<span class="tt-dot"></span>'}</span><div class="tt-body" style="padding-bottom:30px"><div class="${r[3]==='chg'?'hl pop':''}"><p class="tt-h3" style="font-size:17px;line-height:22px">${r[3]==='pause'?icon('cup','tt-icon--sm')+' ':''}${r[1]}</p><p class="tt-meta" style="font-size:14px;line-height:20px">${r[2]}${r[3]==='out'&&w7==='rain'&&ph7==='idle'?` · <b style="color:var(--decline-ink)">pada</b>`:''}${r[3]==='chg'?` · <b style="color:var(--want-ink)">zmienione</b>`:''}</p></div></div></li>`).join('');
+ const li=rows.map(r=>`<li><time>${r[0]}</time><span class="tt-rail">${r[3]==='pause'?'<span class="tt-dot" style="background:var(--muted-foreground)"></span>':'<span class="tt-dot"></span>'}</span><div class="tt-body" style="padding-bottom:30px"><div class="${r[3]==='chg'?'hl pop':''}"><p class="tt-h3" style="font-size:17px;line-height:22px">${icon(plIc(r[1]),'tt-icon--sm')} ${r[1]}</p><p class="tt-meta" style="font-size:14px;line-height:20px">${r[2]}${r[3]==='out'&&w7==='rain'&&ph7==='idle'?` · <b style="color:var(--decline-ink)">pada</b>`:''}${r[3]==='chg'?` · <b style="color:var(--want-ink)">zmienione</b>`:''}</p></div></div></li>`).join('');
  const banner=(w7==='rain'&&ph7==='idle')?`<div class="tt-ticket pop" style="margin:8px 0 14px;background:var(--decline-soft)"><div class="tt-ticket__main" style="padding:16px"><div class="tt-row" style="gap:8px;flex-wrap:nowrap">${icon('rain')}<h3 class="tt-h3">Od 11:00 zapowiadają deszcz</h3></div><p class="tt-meta" style="margin:4px 0 12px">Dwa miejsca w planie są na dworze.</p><div class="tt-row" style="gap:8px"><button class="tt-btn tt-btn--primary" id="s7-go">Przelicz plan</button><button class="tt-btn tt-btn--ghost" id="s7-no">Zostaw</button></div></div></div>`:'';
  const moved=ph7==='done'?`<div class="tt-sheet pop" style="margin-top:4px;border-style:dashed"><p class="tt-label">Przeniesione na niedzielę</p><p class="tt-meta">Plac zabaw w Parku Oliwskim, Molo w Sopocie</p><span class="tt-badge tt-badge--dashed" style="margin-top:8px">${icon('q')}Pogoda w niedzielę niepewna</span></div>`:'';
  const done=ph7==='done'?`<div class="tt-done pop" style="margin:12px 0 0">${icon('check')}<span><b>0 problemów.</b> Sprawiedliwość 0,87 → 0,88</span></div>`:'';
  const sheet=ph7==='calc'?`<div class="sheetpop"><h3 class="tt-h" style="margin-bottom:8px">Liczę plan od nowa</h3>${CALC.map((c,i)=>`<div class="calc ${i<k7?'ok':i===k7?'cur':''}"><span class="slot">${i<k7?`<b>${icon('check')}</b>`:i===k7?'<span class="tt-goal"></span>':'<span class="tt-dot" style="background:var(--route)"></span>'}</span>${c}</div>`).join('')}</div>`:'';
  $('#s7-phone').innerHTML=phone(`${appbar('Sobota, dzień 2')}${banner}<ol class="tt-day" style="margin-top:8px">${li}</ol>${moved}${done}`,'Plan',sheet);
- const list=[['Godziny otwarcia','Wszystkie miejsca otwarte w nowych godzinach.'],['Dojazdy','Najdłuższe przejście: 600 m.'],['Budżet','Dzień kosztuje 590 zł z 700 zł.'],['Sprawiedliwość','Najmniej: Kuba, 58. Bez zmian.']];
+ const list=[['Godziny otwarcia','Wszystkie miejsca otwarte w nowych godzinach.','clock'],['Dojazdy','Najdłuższe przejście: 600 m.','route'],['Budżet','Dzień kosztuje 590 zł z 700 zł.','wallet'],['Sprawiedliwość','Najmniej: Kuba, 58. Bez zmian.','scale']];
  const n=ph7==='done'?4:ph7==='calc'?k7:0;
- $('#s7-list').innerHTML=list.map((x,i)=>`<li>${i<n?`<div class="tt-issue tt-issue--ok">${icon('check')}<div><p class="tt-label">${x[0]}</p><p class="tt-meta">${x[1]}</p></div></div>`:`<div class="tt-issue tt-issue--hint">${icon('clock')}<div><p class="tt-label" style="color:var(--muted-foreground)">${x[0]}</p><p class="tt-meta">Czeka na przeliczenie.</p></div></div>`}</li>`).join('');
+ $('#s7-list').innerHTML=list.map((x,i)=>`<li>${i<n?`<div class="tt-issue tt-issue--ok">${icon(x[2])}<div><p class="tt-label">${x[0]} <span class="tt-badge tt-badge--want" style="margin-left:6px">${icon('check')}Sprawdzone</span></p><p class="tt-meta">${x[1]}</p></div></div>`:`<div class="tt-issue tt-issue--hint">${icon(x[2])}<div><p class="tt-label" style="color:var(--muted-foreground)">${x[0]}</p><p class="tt-meta">Czeka na przeliczenie.</p></div></div>`}</li>`).join('');
  countTo($('#s7-prob'),0,0,10)}
 function s7run(){ph7='calc';k7=0;t7.forEach(clearTimeout);t7=[];s7r();for(let i=1;i<=CALC.length;i++)t7.push(setTimeout(()=>{k7=i;if(i===CALC.length){ph7='done'}s7r()},RM?50*i:i*650))}
 $('#s7-phone').addEventListener('click',e=>{if(e.target.closest('#s7-go'))s7run();else if(e.target.closest('#s7-no')){w7='sun';$$('#s7-seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.w==='sun'));s7r()}});
@@ -697,9 +727,9 @@ function settle(list){const tot=list.reduce((s,e)=>s+e[1],0),share=tot/5;const b
  const cr=b.map((v,i)=>[i,v]).filter(x=>x[1]>0).sort((a,c)=>c[1]-a[1]),db=b.map((v,i)=>[i,-v]).filter(x=>x[1]>0).sort((a,c)=>c[1]-a[1]);const tr=[];let i=0,j=0;
  while(i<db.length&&j<cr.length){const a=Math.min(db[i][1],cr[j][1]);if(a>0.004)tr.push([db[i][0],cr[j][0],Math.round(a*100)/100]);db[i][1]-=a;cr[j][1]-=a;if(db[i][1]<0.005)i++;if(cr[j][1]<0.005)j++}return{tot,tr}}
 function s8r(){const list=EXP.concat(ok8?[UNS]:[]);const S=settle(list);
- const rows=EXP.map(e=>`<li class="tt-between"><span><p class="tt-label" style="font-size:17px">${e[0]}</p><p class="tt-caption">Płacił: ${PEOPLE[e[2]][0]}</p></span><span class="tt-fig">${fmt(e[1],2)} zł</span></li>`).join('');
- const unsure=ok8?`<li class="tt-between pop"><span><p class="tt-label" style="font-size:17px">${UNS[0]}</p><p class="tt-caption">Płaciła: Hela · potwierdzone</p></span><span class="tt-fig">${fmt(UNS[1],2)} zł</span></li>`:
- `<li><div class="tt-between" style="border:1.5px dashed var(--muted-foreground);border-radius:var(--radius-md);padding:10px 12px;margin:0 -4px"><span><p class="tt-label" style="font-size:17px">${UNS[0]}</p><p class="tt-caption">Niepewny odczyt paragonu</p></span><span class="tt-fig">${fmt(UNS[1],2)} zł?</span></div><button class="tt-btn tt-btn--outline tt-btn--block" id="s8-ok" style="margin-top:10px">Potwierdź ${fmt(UNS[1],2)} zł</button></li>`;
+ const rows=EXP.map(e=>`<li class="tt-between"><span><p class="tt-label" style="font-size:17px">${icon(plIc(e[0]),'tt-icon--sm')} ${e[0]}</p><p class="tt-caption">Płacił: ${PEOPLE[e[2]][0]}</p></span><span class="tt-fig">${fmt(e[1],2)} zł</span></li>`).join('');
+ const unsure=ok8?`<li class="tt-between pop"><span><p class="tt-label" style="font-size:17px">${icon(plIc(UNS[0]),'tt-icon--sm')} ${UNS[0]}</p><p class="tt-caption">Płaciła: Hela · potwierdzone</p></span><span class="tt-fig">${fmt(UNS[1],2)} zł</span></li>`:
+ `<li><div class="tt-between" style="border:1.5px dashed var(--muted-foreground);border-radius:var(--radius-md);padding:10px 12px;margin:0 -4px"><span><p class="tt-label" style="font-size:17px">${icon(plIc(UNS[0]),'tt-icon--sm')} ${UNS[0]}</p><p class="tt-caption">Niepewny odczyt paragonu</p></span><span class="tt-fig">${fmt(UNS[1],2)} zł?</span></div><button class="tt-btn tt-btn--outline tt-btn--block" id="s8-ok" style="margin-top:10px">Potwierdź ${fmt(UNS[1],2)} zł</button></li>`;
  const body=`${appbar('Wydatki')}<div class="tt-sheet"><ul class="tt-list">${rows}${unsure}</ul></div>
  <h3 class="tt-h" style="margin:18px 0 8px">Rozliczenie</h3><div class="tt-sheet" style="${ok8?'':'border-style:dashed'}"><ul class="tt-list">${S.tr.map(t=>`<li class="tt-between"><span class="tt-row" style="gap:8px;flex-wrap:nowrap">${av(t[0],true)}${icon('arrow','tt-icon--sm')}${av(t[1],true)}</span><span class="tt-fig">${fmt(t[2],2)} zł</span></li>`).join('')}</ul>
  ${ok8?'':`<p class="tt-caption" style="margin-top:8px">Wstępne, bez niepewnego paragonu.</p>`}</div>`;
@@ -710,13 +740,13 @@ $('#s8-phone').addEventListener('click',e=>{if(e.target.closest('#s8-ok')){ok8=t
 enter[7]=()=>{ok8=false;s8r()};
 
 /* ===== 9 ===== */
-const ND=[{n:'Telefon',t:'PWA w pionie',f:['React i React Native','Działa offline w podróży','Kroje i ikony hostowane lokalnie'],tag:'',cap:'Zdanie: „Jedziemy do Gdańska z babcią”'},
- {n:'Serwer',t:'API w Pythonie',f:['FastAPI i Pydantic','Pydantic AI łączy model z narzędziami','Wszystkie dane typowane'],tag:'',cap:'Zdanie trafia do serwera'},
- {n:'Silnik',t:'Solver i sprawdzenie planu',f:['Liczy godziny, dojazdy, budżet i sprawiedliwość','Testy architektury pilnują granic modułów','Nie zgaduje: ma wynik albo problem'],tag:'Kod liczy',cap:'Kod układa plan i szuka problemów'},
- {n:'Model',t:'Lokalny model językowy',f:['Działa na Dell Pro Max z GB10, 128 GB','Pisze pytania i uzasadnienia','Nie decyduje o żadnej liczbie'],tag:'Model pisze',cap:'Model pisze: „Babcia odpoczywa po obiedzie”'}];
+const ND=[{ic:'phone',n:'Telefon',t:'PWA w pionie',f:[['phone','React i React Native'],['route','Działa offline w podróży'],['lock','Kroje i ikony hostowane lokalnie']],tag:'',cap:'Zdanie: „Jedziemy do Gdańska z babcią”'},
+ {ic:'server',n:'Serwer',t:'API w Pythonie',f:[['server','FastAPI i Pydantic'],['spark','Pydantic AI łączy model z narzędziami'],['shield','Wszystkie dane typowane']],tag:'',cap:'Zdanie trafia do serwera'},
+ {ic:'scale',n:'Silnik',t:'Solver i sprawdzenie planu',f:[['cpu','Liczy godziny, dojazdy, budżet i sprawiedliwość'],['list','Testy architektury pilnują granic modułów'],['shield','Nie zgaduje: ma wynik albo problem']],tag:'Kod liczy',cap:'Kod układa plan i szuka problemów'},
+ {ic:'spark',n:'Model',t:'Lokalny model językowy',f:[['cpu','Działa na Dell Pro Max z GB10, 128 GB'],['chat','Pisze pytania i uzasadnienia'],['lock','Nie decyduje o żadnej liczbie']],tag:'Model pisze',cap:'Model pisze: „Babcia odpoczywa po obiedzie”'}];
 let s9=2,t9=[];
-function s9r(lit){const f=$('#s9-flow');$$('.node',f).forEach(n=>n.remove());ND.forEach((n,i)=>{const b=document.createElement('button');b.className='node'+(lit===i?' lit':'');b.dataset.i=i;b.setAttribute('aria-pressed',i===s9);b.innerHTML=`<p class="tt-fig" style="font-size:40px;line-height:40px;color:var(--muted-foreground);margin-bottom:28px">${String(i+1).padStart(2,'0')}</p>${n.tag?`<span class="tt-badge ${n.tag==='Kod liczy'?'tt-badge--solid':'tt-badge--dashed'}" style="position:absolute;top:24px;right:24px">${n.tag}</span>`:''}<p class="tt-h" style="font-size:28px;line-height:32px">${n.n}</p><p class="tt-meta" style="font-size:17px">${n.t}</p>`;f.appendChild(b)});
- const n=ND[s9];$('#s9-detail').innerHTML=`<div class="fade"><p class="tt-h">${lit!=null?ND[lit].cap:n.t}</p>${lit!=null?'':`<ul class="tt-row" style="gap:8px 20px;list-style:none;padding:0;margin:10px 0 0">${n.f.map(x=>`<li class="tt-row" style="gap:8px;font:400 17px/24px var(--font-sans)"><span class="tt-dot" style="width:8px;height:8px"></span>${x}</li>`).join('')}</ul>`}</div>`}
+function s9r(lit){const f=$('#s9-flow');$$('.node',f).forEach(n=>n.remove());ND.forEach((n,i)=>{const b=document.createElement('button');b.className='node'+(lit===i?' lit':'');b.dataset.i=i;b.setAttribute('aria-pressed',i===s9);b.innerHTML=`<span class="chip-ic">${icon(n.ic)}</span>${n.tag?`<span class="tt-badge ${n.tag==='Kod liczy'?'tt-badge--solid':'tt-badge--dashed'}" style="position:absolute;top:24px;right:24px">${n.tag}</span>`:''}<p class="tt-h" style="font-size:28px;line-height:32px;margin-top:36px">${n.n}</p><p class="tt-meta" style="font-size:17px">${n.t}</p>`;f.appendChild(b)});
+ const n=ND[s9];$('#s9-detail').innerHTML=`<div class="fade"><p class="tt-h hico">${icon(lit!=null?'spark':n.ic)}${lit!=null?ND[lit].cap:n.t}</p>${lit!=null?'':`<ul class="tt-row" style="gap:8px 24px;list-style:none;padding:0;margin:12px 0 0">${n.f.map(x=>`<li class="tt-row" style="gap:8px;flex-wrap:nowrap;font:400 17px/24px var(--font-sans)">${icon(x[0],'tt-icon--sm')}${x[1]}</li>`).join('')}</ul>`}</div>`}
 $('#s9-flow').addEventListener('click',e=>{const b=e.target.closest('.node');if(b){t9.forEach(clearTimeout);s9=+b.dataset.i;$('#s9-packet').style.opacity=0;s9r()}});
 $('#s9-run').onclick=()=>{t9.forEach(clearTimeout);t9=[];const f=$('#s9-flow'),pk=$('#s9-packet');$('#s9-run').disabled=true;
  const step=i=>{const nd=$$('.node',f)[i];if(!nd){pk.style.opacity=0;$('#s9-run').disabled=false;s9=2;s9r();return}pk.style.opacity=1;pk.style.transform=`translate(${nd.offsetLeft+nd.offsetWidth/2-8}px,${nd.offsetTop-8}px)`;t9.push(setTimeout(()=>{s9r(i);$$('.node',f)[i];t9.push(setTimeout(()=>step(i+1),RM?100:900))},RM?0:i?560:250))};
@@ -725,8 +755,8 @@ enter[8]=()=>{s9=2;$('#s9-packet').style.opacity=0;$('#s9-run').disabled=false;s
 leave[8]=()=>{t9.forEach(clearTimeout)};
 
 /* ===== 10 ===== */
-const ROAD=[['Dziś','Wywiad głosem i tekstem','Oceny miejsc i wagi dla każdej osoby','done'],['Dziś','Plan i sprawdzenie','Solver, sprawiedliwość, problemy przed pokazaniem','done'],['Dziś','Decyzje, przeplanowanie, rozliczenie','Z ceną widoczną przed kliknięciem','done'],['Dalej','Tryb offline w podróży','Plan i rozliczenie bez zasięgu','next'],['Dalej','Dowolne miasto na żądanie','Bez pobierania całego miasta','next'],['Cel','Wyjazdy, po których nikt nie czuje, że przegrał','','goal']];
-$('#s10-road').innerHTML=ROAD.map(r=>`<li><time>${r[0]}</time><span class="tt-rail">${r[3]==='goal'?'<span class="tt-goal"></span>':`<span class="tt-dot" style="background:${r[3]==='done'?'var(--primary)':'var(--route)'}"></span>`}</span><div class="tt-body" style="padding-bottom:18px"><p class="tt-h3" style="${r[3]==='next'?'color:var(--muted-foreground)':''}">${r[1]}</p>${r[2]?`<p class="tt-meta">${r[2]}</p>`:''}</div></li>`).join('');
+const ROAD=[['Dziś','Wywiad głosem i tekstem','Oceny miejsc i wagi dla każdej osoby','done','chat'],['Dziś','Plan i sprawdzenie','Solver, sprawiedliwość, problemy przed pokazaniem','done','shield'],['Dziś','Decyzje, przeplanowanie, rozliczenie','Z ceną widoczną przed kliknięciem','done','scale'],['Dalej','Tryb offline w podróży','Plan i rozliczenie bez zasięgu','next','phone'],['Dalej','Dowolne miasto na żądanie','Bez pobierania całego miasta','next','globe'],['Cel','Wyjazdy, po których nikt nie czuje, że przegrał','','goal','flag']];
+$('#s10-road').innerHTML=ROAD.map(r=>`<li><time>${r[0]}</time><span class="tt-rail">${r[3]==='goal'?'<span class="tt-goal"></span>':`<span class="tt-dot" style="background:${r[3]==='done'?'var(--primary)':'var(--route)'}"></span>`}</span><div class="tt-body" style="padding-bottom:18px"><p class="tt-h3" style="${r[3]==='next'?'color:var(--muted-foreground)':''}">${icon(r[4],'tt-icon--sm')} ${r[1]}</p>${r[2]?`<p class="tt-meta">${r[2]}</p>`:''}</div></li>`).join('');
 $('#s10-again').onclick=()=>go(0);
 
 $$('[data-ic]').forEach(el=>{el.outerHTML=icon(el.dataset.ic)});

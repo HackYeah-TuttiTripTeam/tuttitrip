@@ -60,3 +60,17 @@ Pull requesty:
   `main`. Gałąź po merge'u usuwa workflow `Delete merged branch` (nigdy
   `main` ani `develop`). Gotowy szablon opisu ma skill `open-pr`.
 - Bez dopisków o AI w commitach, PR i zgłoszeniach.
+
+## Powiadomienia (Discord)
+
+- `.github/workflows/discord-notify.yml` wysyła na Discord zespołu wyniki
+  workflow `Delete merged branch`, `Issue format` i `PR format` tego
+  repozytorium, ale tylko gdy się nie udały (sukcesy tych sprawdzeń są
+  pomijane, `skipped` też). Logika jest wspólna, w repozytorium `.github`
+  (`discord-notify.yml`). `workflow_run` działa tylko z kopii na `main`.
+- Nowy workflow trzeba dopisać po nazwie (`name:`) do listy `workflows:`.
+- Workflow działa na `ubuntu-latest` (repozytorium jest publiczne), nie
+  pobiera kodu, a tytuły i nazwy gałęzi czyta tylko w github-script.
+- Webhook to sekret repozytorium `DISCORD_WEBHOOK_URL`. Rotacja i pozostałe
+  zasady: [CONTRIBUTING.md](https://github.com/HackYeah-TuttiTripTeam/.github/blob/main/CONTRIBUTING.md#powiadomienia-discord).
+  URL-a webhooka nie wklejamy nigdzie.

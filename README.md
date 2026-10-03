@@ -156,6 +156,17 @@ Zadania prowadzimy w projekcie GitHub organizacji. Pracę nad zadaniem zaczynamy
 
 Zgłoszenia i PR mają stały format. Tytuł zgłoszenia zaczyna się od `feat:`, `docs:`, `chore:` albo `bug:` (np. `feat(frontend): Filtrowanie wyjazdów po dacie`), a treść ma sekcje Opis, Dlaczego, Kryteria akceptacji, Definition of Done i Obszar. Zgłoszenie błędu opisuje dodatkowo kroki do odtworzenia, oczekiwane i faktyczne zachowanie oraz środowisko. Formularz New issue prowadzi przez te pola, a zgłoszenia w innym formacie bot zamyka z komentarzem, co poprawić. Tytuł PR ma te same prefiksy, tylko poprawka to `bugfix:`, a wydanie `release:`. Opis PR piszemy po polsku według szablonu. Notatki wydań powstają same w GitHub Releases. Szczegóły są w [CONTRIBUTING.md](https://github.com/HackYeah-TuttiTripTeam/.github/blob/main/CONTRIBUTING.md).
 
+## Powiadomienia (Discord)
+
+Na kanał zespołu na Discordzie trafiają:
+
+- wyniki workflow z czterech repozytoriów: CI, wdrożenia (z adresem: produkcja, `develop`, podgląd PR, API gałęzi), sprzątanie i sprawdzenia formatu. Wysyła je `.github/workflows/discord-notify.yml` w każdym repozytorium przez wspólny workflow z repozytorium [`.github`](https://github.com/HackYeah-TuttiTripTeam/.github),
+- zmiany w projekcie GitHub (nowy element, zmiana Status, Area, Priority, archiwizacja, usunięcie) oraz nowe, zamknięte i scalone issue i PR. Wysyła je Worker Cloudflare `tuttitrip-discord-relay` (`https://tuttitrip-hooks.gburek.app`) z webhooka organizacji.
+
+Żeby kanał nie zarastał: uruchomienia `skipped` nie są wysyłane, sprawdzenia formatu, usuwanie gałęzi, notatki wydań i sprzątanie piszą tylko przy błędzie, a sukces na gałęzi roboczej i anulowanie to jedna linia. Pełną wiadomość dostają sukcesy na `main` i `develop` oraz każdy błąd.
+
+Webhook Discorda jest sekretem `DISCORD_WEBHOOK_URL` w każdym repozytorium i w Workerze. Konfiguracja, rotacja webhooka i szczegóły zasad: [CONTRIBUTING.md, "Powiadomienia (Discord)"](https://github.com/HackYeah-TuttiTripTeam/.github/blob/main/CONTRIBUTING.md#powiadomienia-discord).
+
 ## Zespół
 
 | Osoba | Rola |

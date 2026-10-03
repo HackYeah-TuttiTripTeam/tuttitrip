@@ -61,6 +61,20 @@ Pull requesty:
   `main` ani `develop`). Gotowy szablon opisu ma skill `open-pr`.
 - Bez dopisków o AI w commitach, PR i zgłoszeniach.
 
+## Prezentacje
+
+- `docs/presentations` wdraża workflow `Decks` (`.github/workflows/decks.yml`)
+  na Worker Cloudflare: `main` na https://tuttitrip-decks.gburek.app, inne
+  gałęzie na `https://tuttitrip-decks-<slug>.gburek.app`. Pod `/` jest lista
+  prezentacji, generowana przez `docs/presentations/_site/build.mjs`.
+- Prezentacja to plik `nazwa.html`, statyczny katalog `nazwa/index.html` albo
+  projekt `nazwa/package.json`, którego `build` zapisuje stronę do `$DECK_OUT`
+  z zasobami pod `$DECK_BASE`. Szczegóły:
+  [docs/presentations/README.md](docs/presentations/README.md).
+- Workflow działa na `ubuntu-latest` i tylko na push. Domeny nie przejmuje
+  siłą (`check-custom-domain.mjs`), a Workery usuniętych gałęzi sprząta
+  `cleanup.mjs`.
+
 ## Powiadomienia (Discord)
 
 - `.github/workflows/discord-notify.yml` wysyła na Discord zespołu wyniki

@@ -1,0 +1,18 @@
+// Static-assets Worker with the decks built by build.mjs (no Worker script).
+// CI (.github/workflows/decks.yml) picks the name and the domain per branch:
+//   main         -> worker tuttitrip-decks        -> https://tuttitrip-decks.gburek.app
+//   other branch -> worker tuttitrip-decks-<slug> -> https://tuttitrip-decks-<slug>.gburek.app
+//                   (deleted when the branch is gone, see cleanup.mjs)
+// via `wrangler deploy --name <worker> --domain <host>`, so routes stay empty here.
+{
+  "name": "tuttitrip-decks",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // /TuttiTrip_pitch_deck.html -> /TuttiTrip_pitch_deck, /slidev-deck -> /slidev-deck/
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "workers_dev": false,
+  "preview_urls": false
+}

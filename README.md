@@ -23,8 +23,10 @@ Nowe jest to, że model językowy prowadzi rozmowę i pisze uzasadnienia, ale o 
 
 | Środowisko | Aplikacja | API (Swagger) |
 | --- | --- | --- |
-| produkcja (`main`) | https://tuttitrip.gburek.app | https://tuttitrip-api.gburek.app/docs |
-| develop | https://tuttitrip-develop.gburek.app | https://tuttitrip-api-develop.gburek.app/docs |
+| produkcja (`main`) | https://tuttitrip.gburek.app | https://tuttitrip-api.gburek.app/api/v1/docs |
+| develop | https://tuttitrip-develop.gburek.app | https://tuttitrip-api-develop.gburek.app/api/v1/docs |
+
+Wszystkie endpointy backendu są pod `/api/v1/`. Ten sam adres działa też przez domenę aplikacji, np. https://tuttitrip.gburek.app/api/v1/docs.
 
 Aplikacja to PWA, więc na telefonie można ją dodać do ekranu głównego.
 
@@ -58,7 +60,7 @@ flowchart LR
     wk --> llm
 ```
 
-- Frontend ([tuttitrip-frontend](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-frontend)): React 19, TypeScript, Vite, TanStack Router i Query, shadcn/ui na Tailwind v4. Działa jako PWA na Cloudflare Workers. Typy zapytań generuje z `/openapi.json` backendu, więc niezgodność z API wychodzi już przy kompilacji.
+- Frontend ([tuttitrip-frontend](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-frontend)): React 19, TypeScript, Vite, TanStack Router i Query, shadcn/ui na Tailwind v4. Działa jako PWA na Cloudflare Workers. Typy zapytań generuje z `/api/v1/openapi.json` backendu, więc niezgodność z API wychodzi już przy kompilacji. API woła pod własną domeną (`/api/v1/...`), a Worker przekazuje te zapytania do backendu swojego środowiska.
 - Backend ([tuttitrip-backend](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-backend)): Python 3.14, FastAPI, Pydantic, SQLAlchemy i Alembic, PostgreSQL 18 z pgvector, logowanie przez Auth0. Domeny (wyjazdy, profile, wywiad, planowanie, noclegi, wydatki) są osobnymi modułami. Solver sprawiedliwości, linter i rozliczenie to czysta logika bez zależności od frameworka. Długich operacji backend nie wykonuje sam, tylko zleca je workerowi przez kolejkę DBOS i odczytuje ich stan.
 - Worker ([tuttitrip-worker](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-worker)): trwałe workflowy [DBOS](https://docs.dbos.dev/) z agentami [Pydantic AI](https://ai.pydantic.dev/). Postęp zapisuje w Postgresie, więc po restarcie kończy zadanie od ostatniego kroku i nie powtarza udanych wywołań modelu. Korzysta z modeli przez OpenRouter albo z lokalnego endpointu zgodnego z API OpenAI, a embeddingi liczy lokalnie (Ollama, `nomic-embed-text`). Backend i worker łączy wersjonowany kontrakt, który CI sprawdza w obu repozytoriach.
 
@@ -125,8 +127,8 @@ uv run tuttitrip-worker
 Czy backend i worker się widzą, sprawdzisz tak:
 
 ```bash
-curl -X POST localhost:8000/jobs/ping          # zwraca workflow_id
-curl localhost:8000/jobs/ping/<workflow_id>    # status SUCCESS
+curl -X POST localhost:8000/api/v1/jobs/ping          # zwraca workflow_id
+curl localhost:8000/api/v1/jobs/ping/<workflow_id>    # status SUCCESS
 ```
 
 ### 3. Frontend

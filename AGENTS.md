@@ -57,5 +57,6 @@ Pull requesty:
   gdy tytuł albo sekcje są złe. Czerwony check nie blokuje merge'a (darmowy
   plan), więc nie mergujemy z czerwonym.
 - PR mergujemy przez "Squash and merge", tytuł PR staje się commitem na
-  `main`. Gotowy szablon opisu ma skill `open-pr`.
+  `main`. Gałąź po merge'u usuwa workflow `Delete merged branch` (nigdy
+  `main` ani `develop`). Gotowy szablon opisu ma skill `open-pr`.
 - Bez dopisków o AI w commitach, PR i zgłoszeniach.

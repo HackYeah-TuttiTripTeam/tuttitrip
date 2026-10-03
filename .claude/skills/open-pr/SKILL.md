@@ -46,7 +46,8 @@ AGENTS.md or bump the submodules.
 5. Wait for `PR format / check` (`gh pr checks --watch`). It goes red with a
    bot comment when the title or a section is wrong; a red check does not
    block the merge button (free plan), so fix it before merging.
-6. Merge with "Squash and merge" (`gh pr merge --squash --delete-branch`); the
-   PR title becomes the commit on `main`. This repo has no release notes.
+6. Merge with "Squash and merge" (`gh pr merge --squash`); the PR title
+   becomes the commit on `main`. The `Delete merged branch` workflow then
+   deletes the branch. This repo has no release notes.
 
 Rules: https://github.com/HackYeah-TuttiTripTeam/.github/blob/main/CONTRIBUTING.md

@@ -1,0 +1,160 @@
+---
+config:
+  layout: elk
+  theme: base
+  themeVariables:
+    fontFamily: arial
+    fontSize: 22px
+    lineColor: "#59636E"
+    edgeLabelBackground: "#FFFFFF"
+    primaryTextColor: "#1F2933"
+  flowchart:
+    useMaxWidth: false
+---
+%% Mapa pojęć TuttiTrip: hasła ze słownika pojęć w 7 grupach, relacje wyprowadzone z definicji.
+flowchart TB
+  subgraph KONTA["Konta i role"]
+    uzytkownik("Użytkownik")
+    admin("Administrator aplikacji")
+    demo("Konto testowe (demo)")
+    uprawnienie("Uprawnienie")
+  end
+  subgraph PODROZE["Podróże i członkostwo"]
+    podroz("Podróż")
+    wyjscie("Wyjście")
+    grupa("Grupa")
+    host("Host")
+    cohost("Co-host")
+    czlonek("Członek podróży")
+    profil("Profil osoby")
+    zaproszenie("Zaproszenie")
+    link("Link głosowy")
+  end
+  subgraph PREF["Preferencje i wywiad"]
+    preferencje("Preferencje")
+    ograniczenie("Ograniczenie")
+    dziedzina("Dziedzina")
+    pula("Pula ważności")
+    ocena("Ocena miejsca")
+    wywiad("Wywiad")
+    wstepny("Plan wstępny")
+  end
+  subgraph PLAN["Planowanie"]
+    algorytm("Algorytm (solver)")
+    uzytecznosc("Użyteczność (zadowolenie)")
+    miara("Miara sprawiedliwości")
+    ksiega("Księga sprawiedliwości")
+    waga("Waga członka")
+    podloga("Podłoga")
+    werdykt("Werdykt")
+    weto("Weto")
+    override("Override")
+    planpodrozy("Plan podróży")
+    propozycja("Propozycja planu")
+    linter("Linter planu")
+    przeplan("Przeplanowanie")
+    budzet("Budżet")
+  end
+  subgraph MIEJSCA["Miejsca, noclegi i transport"]
+    miejsce("Miejsce (atrakcja)")
+    unikalne("Unikalne doświadczenie")
+    nocleg("Nocleg (zakwaterowanie)")
+    wymagania("Wymagania noclegowe")
+    nocatr("Noc-atrakcja")
+    transport("Transport")
+    koszt("Koszt na osobę")
+  end
+  subgraph WYDATKI["Wydatki"]
+    wydatek("Wydatek")
+    rozliczenie("Rozliczenie")
+  end
+  subgraph ARCH["Architektura"]
+    s123("S1 / S2 / S3")
+    karta("Karta zatwierdzenia")
+    wrapper("Test wrappera")
+  end
+
+  admin -->|jest rodzajem| uzytkownik
+  demo -->|loguje jako| uzytkownik
+  uzytkownik -->|ma| uprawnienie
+  admin -->|ustawia parametry i wagi| algorytm
+
+  host -->|jest rolą w| podroz
+  host -->|wyznacza| cohost
+  host -->|wysyła| zaproszenie
+  zaproszenie -->|dodaje| czlonek
+  cohost -->|jest| czlonek
+  wyjscie -->|jest rodzajem| podroz
+  podroz -->|ma uczestników| grupa
+  grupa -->|obejmuje| czlonek
+  czlonek -->|jest| uzytkownik
+  grupa -->|obejmuje| profil
+
+  czlonek -->|podaje| preferencje
+  profil -->|dostaje domyślne| ograniczenie
+  host -->|ustawia| waga
+  host -->|podejmuje| override
+  link -->|pozwala zgłosić| weto
+
+  wstepny -->|powstaje w trakcie| wywiad
+  wywiad -->|tworzy| preferencje
+  preferencje -->|obejmują| ograniczenie
+  preferencje -->|obejmują| pula
+  preferencje -->|obejmują| ocena
+  pula -->|dzieli się na| dziedzina
+  preferencje -->|są wejściem dla| algorytm
+  ocena -->|dotyczy| miejsce
+
+  podloga -->|chroni przed przewagą| waga
+  waga -->|mnoży głos w| algorytm
+  podloga -->|ogranicza| algorytm
+  algorytm -->|liczy| uzytecznosc
+  uzytecznosc -->|z niej liczona| miara
+  uzytecznosc -->|zestawiona w| ksiega
+  dziedzina -->|w niej liczona| uzytecznosc
+  algorytm -->|wydaje| werdykt
+  override -->|nadpisuje| werdykt
+  algorytm -->|układa| planpodrozy
+  algorytm -->|mieści plan w| budzet
+  planpodrozy -->|trafia do członków jako| propozycja
+  linter -->|sprawdza| planpodrozy
+  przeplan -->|zmienia resztę dnia| planpodrozy
+  weto -->|blokuje| miejsce
+
+  planpodrozy -->|zawiera| miejsce
+  planpodrozy -->|zawiera| nocleg
+  planpodrozy -->|zawiera| transport
+  unikalne -->|jest rodzajem| miejsce
+  nocatr -->|jest rodzajem| nocleg
+  wymagania -->|sprawdzane dla| nocleg
+  transport -->|ceny biletów jako| koszt
+
+  rozliczenie -->|dzieli| wydatek
+  wydatek -->|zasila| budzet
+
+  wrapper -->|sprawdza| s123
+  s123 -->|S3 czeka na| karta
+  s123 -->|S1 obejmuje| algorytm
+  karta -->|zatwierdza przekroczenie| budzet
+
+  classDef konta fill:#FFFFFF,stroke:#7A8CA5,color:#1F2933
+  classDef podroze fill:#FFFFFF,stroke:#6E9C78,color:#1F2933
+  classDef pref fill:#FFFFFF,stroke:#B8975A,color:#1F2933
+  classDef plan fill:#FFFFFF,stroke:#7B83B8,color:#1F2933
+  classDef miejsca fill:#FFFFFF,stroke:#5E9A9A,color:#1F2933
+  classDef wydatki fill:#FFFFFF,stroke:#B07A80,color:#1F2933
+  classDef arch fill:#FFFFFF,stroke:#8C8C84,color:#1F2933
+  class uzytkownik,admin,demo,uprawnienie konta
+  class podroz,wyjscie,grupa,host,cohost,czlonek,profil,zaproszenie,link podroze
+  class preferencje,ograniczenie,dziedzina,pula,ocena,wywiad,wstepny pref
+  class algorytm,uzytecznosc,miara,ksiega,waga,podloga,werdykt,weto,override,planpodrozy,propozycja,linter,przeplan,budzet plan
+  class miejsce,unikalne,nocleg,wymagania,nocatr,transport,koszt miejsca
+  class wydatek,rozliczenie wydatki
+  class s123,karta,wrapper arch
+  style KONTA fill:#EEF2F7,stroke:#7A8CA5
+  style PODROZE fill:#EAF4EC,stroke:#6E9C78
+  style PREF fill:#FBF3E4,stroke:#B8975A
+  style PLAN fill:#EEF0FA,stroke:#7B83B8
+  style MIEJSCA fill:#E8F4F4,stroke:#5E9A9A
+  style WYDATKI fill:#F8EDEE,stroke:#B07A80
+  style ARCH fill:#F1F1EF,stroke:#8C8C84

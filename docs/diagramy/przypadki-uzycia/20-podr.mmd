@@ -1,0 +1,55 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: arial
+    lineColor: "#59636E"
+    usecaseActorBkg: "#FFFFFF"
+    usecaseActorBorder: "#3C4650"
+    usecaseBoundaryBkg: "#FAFAF7"
+    usecaseBoundaryBorder: "#8C8C84"
+  usecase:
+    useMaxWidth: false
+    usecaseFontSize: 20
+    usecaseFontFamily: arial
+    actorFontSize: 20
+    actorFontFamily: arial
+    wrappingWidth: 230
+---
+%% Domena: Podróże i członkowie. Jasne, przerywane elipsy (klasa nowa) to nowe user stories ze słownika.
+usecase-beta
+direction LR
+actor host("Host")
+actor co("Co-host")
+actor u("Użytkownik")
+actor cz("Członek podróży")
+systemBoundary sys_podr["Podróże i członkowie"]
+  wyj("Zaplanuj wyjście bez noclegu"):::nowa
+  zap("Zaproś członków (link, QR)"):::ist
+  usc("Usuń członka"):::ist
+  coh("Wyznacz co-hosta"):::ist
+  usp("Usuń podróż"):::ist
+  pol("Połącz dwie podróże"):::ist
+  prof("Dodaj profil osoby bez konta"):::nowa
+  edp("Edytuj podróż"):::nowa
+  dol("Dołącz do podróży z zaproszenia"):::ist
+  hist("Przeglądaj historię podróży"):::ist
+  potw("Potwierdź udział"):::ist
+  opu("Opuść podróż"):::ist
+end
+host -- wyj
+host -- zap
+host -- usc
+host -- coh
+host -- usp
+host -- pol
+host -- prof
+co -- edp
+co -- zap
+co -- usc
+u -- dol
+u -- hist
+cz -- potw
+cz -- opu
+classDef ist fill:#CFE0F5,stroke:#4F74A8,color:#1F2933
+classDef nowa fill:#F3F7FC,stroke:#A9BEDB,color:#3A4654,stroke-dasharray:5 4

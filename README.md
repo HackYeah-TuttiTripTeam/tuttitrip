@@ -169,10 +169,10 @@ Webhook Discorda jest sekretem `DISCORD_WEBHOOK_URL` w każdym repozytorium i w 
 
 ## Zespół
 
-| Osoba | Rola |
-| --- | --- |
-| _imię i nazwisko_ | _rola_ |
-| _imię i nazwisko_ | _rola_ |
-| _imię i nazwisko_ | _rola_ |
-| _imię i nazwisko_ | _rola_ |
-| _imię i nazwisko_ | _rola_ |
+| Imię i nazwisko | Rola | Obszary |
+| --- | --- | --- |
+| Łukasz Gęborys | Lider zespołu | AI i Data Science, cyberbezpieczeństwo, zarządzanie projektem i produktem |
+| Cyprian Gburek | Uczestnik | AI i Data Science, Backend Developer, bazy danych, inżynieria danych, DevOps i chmura, Frontend Developer, prezentacje i wystąpienia publiczne, zarządzanie projektem i produktem, architektura oprogramowania, wytwarzanie oprogramowania, aplikacje webowe i mobilne |
+| Angelika Korcz | Uczestniczka | cyberbezpieczeństwo |
+| Michał Sadrzak | Uczestnik | AI i Data Science, UI, aplikacje webowe i mobilne, wytwarzanie oprogramowania |
+| Tomasz Florczak | Uczestnik | inne technologie |

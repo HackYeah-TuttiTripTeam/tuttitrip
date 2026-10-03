@@ -1,34 +1,55 @@
 # Diagramy
 
-Dwa diagramy projektu TuttiTrip. Źródłem są pliki Mermaid (`.mmd`), a pliki PNG
-renderuje z nich skrypt `render.sh`.
+Dwa diagramy projektu TuttiTrip w formacie draw.io (diagrams.net). Każdy
+diagram ma plik `.drawio` i edytowalny PNG (`.drawio.png`) z osadzonym
+diagramem: diagrams.net otwiera taki PNG do edycji tak samo jak `.drawio`.
 
 | Plik | Co pokazuje |
 | --- | --- |
-| `mapa-pojec.mmd`, `mapa-pojec.png` | Mapa pojęć: 46 haseł ze słownika pojęć w 7 grupach (Konta i role, Podróże i członkostwo, Preferencje i wywiad, Planowanie, Miejsca noclegi i transport, Wydatki, Architektura). Strzałki to relacje wynikające z definicji w słowniku. |
-| `przypadki-uzycia/*.mmd`, `mapa-przypadkow-uzycia.png` | Mapa przypadków użycia (UML). Jeden plik to jedna domena systemu albo aktorzy lub legenda. Przypadki z istniejących user stories są pełne, a nowe stories ze słownika jaśniejsze i przerywane. |
-| `mapa-pojec.css`, `przypadki-uzycia.css` | Wygląd diagramów (pogrubione tytuły ramek, etykiety «include» i «extend», kolory aktorów). |
-| `render.sh`, `compose.py` | Renderowanie PNG (szerokość 2000 px, białe tło). |
+| `mapa-pojec.drawio`, `mapa-pojec.drawio.png` | Mapa pojęć: 46 haseł ze słownika pojęć w 7 grupach (Konta i role, Podróże i członkostwo, Preferencje i wywiad, Planowanie, Miejsca noclegi i transport, Wydatki, Architektura). Strzałki to relacje wynikające z definicji w słowniku. |
+| `mapa-przypadkow-uzycia.drawio`, `mapa-przypadkow-uzycia.drawio.png` | Mapa przypadków użycia (UML): aktorzy z generalizacją, legenda i 8 domen z dokumentu, w tej samej kolejności. Przypadki z istniejących user stories są pełne, nowe stories ze słownika jaśniejsze i przerywane. |
+| `przypadki-uzycia/<domena>.drawio`, `przypadki-uzycia/<domena>.drawio.png` | Ta sama mapa pocięta na domeny, do wstawiania do dokumentu po jednej. |
 
-## Jak edytować
+## Edycja w diagrams.net
 
-1. Zmień plik `.mmd` w dowolnym edytorze. Podgląd na żywo daje
-   [mermaid.live](https://mermaid.live) (wklej treść pliku) albo w VS Code
-   rozszerzenie z podglądem Mermaid. Przypadki użycia korzystają z diagramu
-   `usecase-beta` z Mermaid 12, a mapa pojęć z układu ELK. Podgląd na GitHubie
-   może ich jeszcze nie obsługiwać, dlatego aktualny obraz jest w plikach PNG.
-2. Wyrenderuj PNG ponownie:
+Otwórz plik prosto z GitHuba:
 
-   ```bash
-   ./docs/diagramy/render.sh
-   ```
+- [Mapa pojęć](https://app.diagrams.net/#HHackYeah-TuttiTripTeam%2Ftuttitrip%2Fmain%2Fdocs%2Fdiagramy%2Fmapa-pojec.drawio)
+- [Mapa przypadków użycia](https://app.diagrams.net/#HHackYeah-TuttiTripTeam%2Ftuttitrip%2Fmain%2Fdocs%2Fdiagramy%2Fmapa-przypadkow-uzycia.drawio)
 
-   Skrypt potrzebuje Node.js 20+ (pobiera przez `npx`
-   `@mermaid-js/mermaid-cli@12.0.0`) oraz Pythona 3 z biblioteką Pillow
-   (`pip install pillow`). Nadpisuje oba pliki PNG.
-3. Zacommituj razem zmienione `.mmd` i PNG. PNG bez ponownego renderowania nie
-   pokaże zmian.
+Format linku: `https://app.diagrams.net/#H` plus zakodowana ścieżka
+`HackYeah-TuttiTripTeam/tuttitrip/main/docs/diagramy/<plik>.drawio`. Można też
+w diagrams.net wybrać Plik → Otwórz z → GitHub. Zapis z diagrams.net do GitHuba
+tworzy commit, więc w tym repozytorium lepiej pobrać plik, zmienić go na
+gałęzi i otworzyć PR.
 
-Nową domenę przypadków użycia dodaje się jako kolejny plik
-`przypadki-uzycia/NN-nazwa.mmd` i wpisuje jej nazwę (część po myślniku) do
-listy `rest` w `compose.py`.
+Lokalnie pliki `.drawio` i `.drawio.png` otwiera draw.io desktop albo
+rozszerzenie Draw.io Integration (`hediet.vscode-drawio`) w VS Code.
+
+## Po zmianie: eksport PNG
+
+PNG nie aktualizuje się sam. Po każdej zmianie pliku `.drawio` wyeksportuj PNG
+ponownie z osadzonym diagramem:
+
+```bash
+./docs/diagramy/render.sh
+```
+
+Skrypt wymaga draw.io desktop (polecenie `drawio`, ścieżkę można podać w
+zmiennej `DRAWIO`). Ręcznie: Plik → Eksportuj jako → PNG, zaznaczona opcja
+„Dołącz kopię diagramu”, nazwa `<plik>.drawio.png`.
+
+## Skąd się wzięły
+
+- `przypadki_uzycia.py` generuje `mapa-przypadkow-uzycia.drawio` i pliki w
+  `przypadki-uzycia/`. Przy dużych zmianach (nowe przypadki, nowa domena)
+  łatwiej poprawić dane w skrypcie i uruchomić go ponownie
+  (`python3 przypadki_uzycia.py`, potem `render.sh`). Uwaga: to nadpisuje
+  ręczne zmiany w tych plikach.
+- Mapa pojęć powstała z `mapa-pojec.mmd` (Mermaid, układ ELK):
+  `mermaid2drawio.py` przenosi do draw.io układ z SVG wyrenderowanego przez
+  `@mermaid-js/mermaid-cli`
+  (`npx -p @mermaid-js/mermaid-cli@12.0.0 mmdc -i mapa-pojec.mmd -o /tmp/mapa.svg`,
+  potem `python3 mermaid2drawio.py mapa-pojec.mmd /tmp/mapa.svg mapa-pojec.drawio`).
+  Mapę pojęć edytuje się teraz w draw.io, a
+  `mapa-pojec.mmd` zostaje jako zapis relacji.

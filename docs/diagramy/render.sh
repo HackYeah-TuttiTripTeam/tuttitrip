@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
-# Renderuje mapa-pojec.png i mapa-przypadkow-uzycia.png z plików .mmd.
-# Wymaga Node.js 20+ (npx) oraz Pythona 3 z biblioteką Pillow.
+# Eksportuje PNG z osadzonym diagramem (.drawio.png) z plików .drawio.
+# Wymaga draw.io desktop (polecenie drawio; na Linuksie także AppImage).
+# Uruchom po każdej zmianie pliku .drawio, inaczej PNG pokaże starą wersję.
 set -euo pipefail
 cd "$(dirname "$0")"
-TMP=$(mktemp -d)
-trap 'rm -rf "$TMP"' EXIT
-echo '{"args":["--no-sandbox"]}' > "$TMP/puppeteer.json"
-mmdc() { npx -y -p @mermaid-js/mermaid-cli@12.0.0 mmdc -q -p "$TMP/puppeteer.json" -b white -s 2 "$@"; }
+DRAWIO=${DRAWIO:-drawio}
+export_png() { "$DRAWIO" -x -f png --embed-diagram -b 12 -s "$2" -o "$1.png" "$1"; }
 
-mmdc -C mapa-pojec.css -i mapa-pojec.mmd -o "$TMP/mapa-pojec.png"
-mkdir -p "$TMP/uc"
-for f in przypadki-uzycia/*.mmd; do
-  mmdc -C przypadki-uzycia.css -i "$f" -o "$TMP/uc/$(basename "${f%.mmd}").png"
-done
-python3 compose.py "$TMP"
+export_png mapa-pojec.drawio 0.96
+export_png mapa-przypadkow-uzycia.drawio 0.95
+for f in przypadki-uzycia/*.drawio; do export_png "$f" 1.9; done

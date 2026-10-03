@@ -282,6 +282,11 @@ button{font-family:inherit}
 .col-flow{display:flex;flex-direction:column;gap:24px;height:100%}
 .head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:40px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px;margin-top:44px}
+.team-card{display:flex;flex-direction:column;gap:6px;min-height:280px}
+.team-av{width:72px;height:72px;font-size:24px;margin-bottom:14px}
+.team-name{font:750 22px/28px var(--font-display);letter-spacing:-.02em;margin:0}
+.team-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .pop{animation:pop .22s cubic-bezier(.4,0,.2,1) both}
 @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .fade{animation:fade .22s cubic-bezier(.4,0,.2,1) both}
@@ -484,8 +489,22 @@ button{font-family:inherit}
   <button class="tt-btn tt-btn--primary" id="s9-run">Wyślij przykładowe zdanie</button></div>
 </section>
 
-<!-- 10. Zamknięcie -->
+<!-- 10. Zespół -->
 <section class="slide" data-i="9">
+ <h2 class="s-h2">Pięć osób, jeden plan.</h2>
+ <p class="s-lede" style="max-width:none">Zespół HackYeah-TuttiTripTeam. Każdy patrzy na wyjazd z innej strony, tak jak osoby w grupie.</p>
+ <div class="team">
+  <div class="tt-sheet pad team-card"><span class="tt-avatar team-av tt-m1">ŁG</span><p class="team-name">Łukasz Gęborys</p><p class="tt-meta">Lider zespołu</p><div class="team-tags"><span class="tt-badge tt-badge--neutral">AI i Data Science</span><span class="tt-badge tt-badge--neutral">Cyberbezpieczeństwo</span><span class="tt-badge tt-badge--neutral">Produkt</span></div></div>
+  <div class="tt-sheet pad team-card"><span class="tt-avatar team-av tt-m2">CG</span><p class="team-name">Cyprian Gburek</p><p class="tt-meta">Uczestnik</p><div class="team-tags"><span class="tt-badge tt-badge--neutral">Architektura</span><span class="tt-badge tt-badge--neutral">Backend i frontend</span><span class="tt-badge tt-badge--neutral">DevOps i chmura</span><span class="tt-badge tt-badge--neutral">AI i dane</span></div></div>
+  <div class="tt-sheet pad team-card"><span class="tt-avatar team-av tt-m3">AK</span><p class="team-name">Angelika Korcz</p><p class="tt-meta">Uczestniczka</p><div class="team-tags"><span class="tt-badge tt-badge--neutral">Cyberbezpieczeństwo</span></div></div>
+  <div class="tt-sheet pad team-card"><span class="tt-avatar team-av tt-m4">MS</span><p class="team-name">Michał Sadrzak</p><p class="tt-meta">Uczestnik</p><div class="team-tags"><span class="tt-badge tt-badge--neutral">AI i Data Science</span><span class="tt-badge tt-badge--neutral">UI</span><span class="tt-badge tt-badge--neutral">Web i mobile</span></div></div>
+  <div class="tt-sheet pad team-card"><span class="tt-avatar team-av tt-m5">TF</span><p class="team-name">Tomasz Florczak</p><p class="tt-meta">Uczestnik</p><div class="team-tags"><span class="tt-badge tt-badge--neutral">Inne technologie</span></div></div>
+ </div>
+ <p class="tt-caption hico" style="margin-top:28px"><i data-ic="pin" style="display:contents"></i>HackYeah 2026 · Kraków</p>
+</section>
+
+<!-- 11. Zamknięcie -->
+<section class="slide" data-i="10">
  <div class="cols" style="grid-template-columns:1.05fr .95fr">
   <div class="col-text">
    <div class="tt-logo"><svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#00774d"/><g fill="#f4fbf8"><circle cx="150" cy="372" r="44"/><circle cx="214" cy="312" r="13"/><circle cx="260" cy="270" r="13"/><circle cx="306" cy="228" r="13"/></g><circle cx="364" cy="152" r="46" fill="none" stroke="#f4fbf8" stroke-width="24"/></svg><span class="wordmark" style="font-size:30px">TuttiTrip</span></div>
@@ -502,7 +521,7 @@ button{font-family:inherit}
 <footer class="foot">
  <div class="foot__l"><svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#00774d"/><g fill="#f4fbf8"><circle cx="150" cy="372" r="44"/><circle cx="214" cy="312" r="13"/><circle cx="260" cy="270" r="13"/><circle cx="306" cy="228" r="13"/></g><circle cx="364" cy="152" r="46" fill="none" stroke="#f4fbf8" stroke-width="24"/></svg><span class="wordmark">TuttiTrip</span></div>
  <nav class="nav" id="nav" aria-label="Slajdy"></nav>
- <div class="foot__r"><span class="count" id="count">01 / 10</span>
+ <div class="foot__r"><span class="count" id="count">01 / 11</span>
   <div class="tt-seg" id="theme" aria-label="Motyw"><button data-t="light" aria-pressed="true">Jasny</button><button data-t="dark" aria-pressed="false">Ciemny</button></div>
   <button class="tt-btn tt-btn--outline tt-btn--icon" id="prev" aria-label="Poprzedni slajd"><i data-ic="chevL" style="display:contents"></i></button>
   <button class="tt-btn tt-btn--ink tt-btn--icon" id="next" aria-label="Następny slajd"><i data-ic="arrow" style="display:contents"></i></button></div>

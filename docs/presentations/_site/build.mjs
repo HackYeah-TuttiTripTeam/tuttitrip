@@ -11,6 +11,9 @@
 //                               index.html to $DECK_OUT, with asset paths under
 //                               $DECK_BASE (= /<name>/). Served at /<name>/
 //   <name>/index.html           a ready static folder, copied as is, at /<name>/
+// A deck that links to "<name>.pdf" (e.g. a download button) also gets that PDF, printed
+// from the page by headless Chrome (CHROME or google-chrome/chromium on PATH), so its text
+// stays selectable. CI fails without Chrome; locally the PDF is skipped with a warning.
 // Then it writes the explorer (index.html) and 404.html next to the decks.
 import { execFileSync } from 'node:child_process'
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
@@ -21,6 +24,32 @@ const site = dirname(fileURLToPath(import.meta.url))
 const root = dirname(site)
 const dist = join(site, 'dist')
 const RESERVED = new Set(['index', '404'])
+
+function findChrome() {
+  const candidates = [process.env.CHROME, 'google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser']
+  for (const bin of candidates.filter(Boolean)) {
+    try {
+      execFileSync(bin, ['--version'], { stdio: 'ignore' })
+      return bin
+    } catch {}
+  }
+  return null
+}
+
+function printPdf(html, pdf) {
+  const chrome = findChrome()
+  if (!chrome) {
+    if (process.env.CI) throw new Error(`no Chrome to print ${pdf} (set CHROME)`)
+    console.warn(`decks: no Chrome found, skipping ${pdf} (set CHROME to build it)`)
+    return false
+  }
+  execFileSync(chrome, [
+    '--headless', '--no-sandbox', '--disable-gpu', '--no-pdf-header-footer',
+    '--virtual-time-budget=10000', `--print-to-pdf=${pdf}`, `file://${html}`,
+  ], { stdio: 'ignore' })
+  if (!existsSync(pdf)) throw new Error(`Chrome did not write ${pdf}`)
+  return true
+}
 
 rmSync(dist, { recursive: true, force: true })
 mkdirSync(dist, { recursive: true })
@@ -59,10 +88,13 @@ for (const entry of readdirSync(root, { withFileTypes: true })) {
   const src = join(root, entry.name)
   let name
   let kind
+  let pdf = ''
   if (entry.isFile() && entry.name.endsWith('.html')) {
     name = entry.name.slice(0, -'.html'.length)
     kind = 'HTML'
     cpSync(src, join(dist, entry.name))
+    if (readFileSync(src, 'utf8').includes(`href="${name}.pdf"`))
+      pdf = printPdf(join(dist, entry.name), join(dist, `${name}.pdf`)) ? `/${name}.pdf` : ''
   } else if (entry.isDirectory() && existsSync(join(src, 'package.json'))) {
     name = entry.name
     kind = kindOf(JSON.parse(readFileSync(join(src, 'package.json'), 'utf8')))
@@ -82,6 +114,7 @@ for (const entry of readdirSync(root, { withFileTypes: true })) {
     href: entry.isFile() ? `/${name}` : `/${name}/`,
     title: titleOf(page) || name,
     description: descriptionOf(page) || '',
+    pdf,
   })
 }
 decks.sort((a, b) => a.title.localeCompare(b.title, 'pl'))
@@ -98,6 +131,7 @@ const cards = decks
           ${d.description ? `<span class="description">${esc(d.description)}</span>` : ''}
           <span class="path">${esc(d.href)}</span>
         </a>
+        ${d.pdf ? `<a class="pdf" href="${esc(d.pdf)}" download>Pobierz PDF</a>` : ''}
       </li>`,
   )
   .join('\n')
@@ -118,4 +152,4 @@ writeFileSync(
   page('Nie ma takiej prezentacji', '<p class="empty"><a href="/">Wróć do listy prezentacji</a></p>'),
 )
 console.log(`decks: ${decks.length} deck(s) -> ${dist}`)
-for (const d of decks) console.log(`  ${d.href}  (${d.kind}) ${d.title}`)
+for (const d of decks) console.log(`  ${d.href}  (${d.kind}) ${d.title}${d.pdf ? ` + ${d.pdf}` : ''}`)

@@ -84,11 +84,11 @@ jobs:
           $WRANGLER deploy --name "${{ steps.target.outputs.worker }}"
           --domain "${{ steps.target.outputs.host }}" --message "${{ github.sha }}"
 
-      - name: Smoke test (explorer + every deck)
+      - name: Smoke test (explorer + every deck + PDFs)
         if: steps.creds.outputs.ok == 'true'
         run: |
           url="${{ steps.target.outputs.url }}"
-          paths=$(grep -o 'class="deck" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//')
+          paths=$(grep -o 'class="\(deck\|pdf\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//')
           for _ in $(seq 20); do
             ok=true
             curl -fsS "$url/" | grep -q 'class="eyebrow"' || ok=false
@@ -104,7 +104,7 @@ jobs:
           {
             echo "### Prezentacje: ${{ steps.target.outputs.url }}"
             echo
-            grep -o 'class="deck" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//' |
+            grep -o 'class="\(deck\|pdf\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//' |
               while read -r p; do echo "- ${{ steps.target.outputs.url }}$p"; done
           } >> "$GITHUB_STEP_SUMMARY"
 

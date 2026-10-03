@@ -16,6 +16,7 @@ Wdrożenie gałęzi znika razem z gałęzią.
 Nazwy zaczynające się od `_` albo `.` są pomijane, a `index` i `404` są zajęte przez listę i stronę błędu. Tytuł na liście to `<title>` strony, a opis to `<meta name="description">`, jeśli strona go ma.
 
 - **Jeden plik HTML** (np. eksport z Claude, Google Slides czy Keynote): wrzuć `nazwa.html`. Adres: `/nazwa` (`/nazwa.html` przekierowuje na `/nazwa`). Obrazki i fonty muszą być wewnątrz pliku albo pod pełnymi adresami.
+  Jeśli strona linkuje do `nazwa.pdf` (np. przycisk „Pobierz PDF”), build drukuje ją do PDF w Chrome bez okna. Tekst w PDF da się zaznaczać, a układ stron ustawia `@media print` strony. W CI używa Chrome z runnera, a lokalnie Chrome z `PATH` albo ze zmiennej `CHROME`. Bez Chrome lokalny build pomija PDF z ostrzeżeniem. Lista prezentacji pokazuje wtedy link do pobrania.
 - **Gotowy statyczny katalog** (np. reveal.js bez builda): `nazwa/index.html` plus pliki obok. Adres: `/nazwa/`.
 - **Projekt ze skryptem build** (Slidev, Marp, reveal.js z Vite): katalog `nazwa/` z `package.json` i lockfile'em (`package-lock.json` albo `pnpm-lock.yaml`). CI uruchamia `npm ci` i `npm run build` (albo ich odpowiedniki w pnpm) z dwiema zmiennymi:
   - `DECK_OUT`: katalog, do którego build ma zapisać stronę z `index.html`,

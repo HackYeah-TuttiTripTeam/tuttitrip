@@ -91,7 +91,7 @@ jobs:
           paths=$(grep -o 'class="\(deck\|pdf\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//')
           for _ in $(seq 20); do
             ok=true
-            curl -fsS "$url/" | grep -q 'class="eyebrow"' || ok=false
+            curl -fsS "$url/" | grep -q 'class="decks"' || ok=false
             for p in $paths; do curl -fsSL -o /dev/null "$url$p" || ok=false; done
             if $ok; then echo "OK: $url"; exit 0; fi
             sleep 6

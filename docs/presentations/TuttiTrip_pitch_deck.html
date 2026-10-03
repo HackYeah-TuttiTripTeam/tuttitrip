@@ -360,6 +360,21 @@ button{font-family:inherit}
 .node[aria-pressed="true"] .chip-ic{background:var(--foreground);color:var(--background)}
 .node.lit .chip-ic{background:var(--primary);color:var(--primary-foreground)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* pobieranie */
+.dl{display:flex;gap:8px;margin-left:12px}
+.dl .tt-btn{min-height:36px;padding:0 14px 0 10px;font-size:13px;text-decoration:none}
+/* druk: slajd na stronę, każdy wyrenderowany (patrz PRINT w skrypcie) */
+@media print{
+@page{size:1440px 810px;margin:0}
+html,body{height:auto;overflow:visible;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+body{background:var(--background)}
+#wrap{position:static;overflow:visible}
+#stage{position:static;margin:0;transform:none;width:1440px;height:auto;border:0;border-radius:0;overflow:visible}
+.slide{position:relative;inset:auto;width:1440px;height:810px;padding:40px 72px;opacity:1;visibility:visible;break-after:page}
+.foot{display:none}
+.phone-fit .tt-phone{transform:none;zoom:.8}
+*{transition:none!important;animation:none!important}
+}
 </style>
 </head>
 <body>
@@ -518,7 +533,7 @@ button{font-family:inherit}
 </section>
 
 <footer class="foot">
- <div class="foot__l"><svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#00774d"/><g fill="#f4fbf8"><circle cx="150" cy="372" r="44"/><circle cx="214" cy="312" r="13"/><circle cx="260" cy="270" r="13"/><circle cx="306" cy="228" r="13"/></g><circle cx="364" cy="152" r="46" fill="none" stroke="#f4fbf8" stroke-width="24"/></svg><span class="wordmark">TuttiTrip</span></div>
+ <div class="foot__l"><svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#00774d"/><g fill="#f4fbf8"><circle cx="150" cy="372" r="44"/><circle cx="214" cy="312" r="13"/><circle cx="260" cy="270" r="13"/><circle cx="306" cy="228" r="13"/></g><circle cx="364" cy="152" r="46" fill="none" stroke="#f4fbf8" stroke-width="24"/></svg><span class="wordmark">TuttiTrip</span><span class="dl"><a class="tt-btn tt-btn--outline" href="TuttiTrip_pitch_deck.pdf" download><svg class="tt-icon tt-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>PDF</a><a class="tt-btn tt-btn--outline" href="TuttiTrip_pitch_deck.pptx" download><svg class="tt-icon tt-icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>PPTX</a></span></div>
  <nav class="nav" id="nav" aria-label="Slajdy"></nav>
  <div class="foot__r"><span class="count" id="count">01 / 11</span>
   <div class="tt-seg" id="theme" aria-label="Motyw"><button data-t="light" aria-pressed="true">Jasny</button><button data-t="dark" aria-pressed="false">Ciemny</button></div>
@@ -530,7 +545,9 @@ button{font-family:inherit}
 
 <script>
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+// ?print (build.mjs): wszystkie slajdy wyrenderowane, bez animacji, pod druk do PDF.
+const PRINT=new URLSearchParams(location.search).has('print');
+const RM=PRINT||matchMedia('(prefers-reduced-motion: reduce)').matches;
 const fmt=(v,d=0)=>Number(v).toLocaleString('pl-PL',{minimumFractionDigits:d,maximumFractionDigits:d});
 function countTo(el,to,d=0,dur=600){if(!el)return;const from=el._v??0;el._v=to;cancelAnimationFrame(el._r);if(RM||from===to){el.textContent=fmt(to,d);return}const t0=performance.now();const st=t=>{const p=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=fmt(from+(to-from)*e,d);if(p<1)el._r=requestAnimationFrame(st)};el._r=requestAnimationFrame(st)}
 const IC={
@@ -778,7 +795,8 @@ $('#s10-road').innerHTML=ROAD.map(r=>`<li><time>${r[0]}</time><span class="tt-ra
 $('#s10-again').onclick=()=>go(0);
 
 $$('[data-ic]').forEach(el=>{el.outerHTML=icon(el.dataset.ic)});
-const h=parseInt((location.hash||'').slice(1));go(h>=1&&h<=N?h-1:0);
+if(PRINT){for(let i=N-1;i>=0;i--)go(i);$('#s2-check').click();w7='rain';ph7='done';s7r()}
+else{const h=parseInt((location.hash||'').slice(1));go(h>=1&&h<=N?h-1:0)}
 </script>
 </body>
 </html>

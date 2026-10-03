@@ -41,7 +41,10 @@ jobs:
         with:
           node-version: 22
 
-      - name: Build decks and explorer
+      # uv runs pdf2pptx.py (PDF -> PPTX) with its own dependencies; Chrome for the
+      # PDFs comes with the runner.
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+      - name: Build decks, explorer, PDF and PPTX files
         run: node build.mjs
 
       - name: Pick Worker and domain for this branch
@@ -84,11 +87,11 @@ jobs:
           $WRANGLER deploy --name "${{ steps.target.outputs.worker }}"
           --domain "${{ steps.target.outputs.host }}" --message "${{ github.sha }}"
 
-      - name: Smoke test (explorer + every deck + PDFs)
+      - name: Smoke test (explorer + every deck + PDF/PPTX)
         if: steps.creds.outputs.ok == 'true'
         run: |
           url="${{ steps.target.outputs.url }}"
-          paths=$(grep -o 'class="\(deck\|pdf\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//')
+          paths=$(grep -o 'class="\(deck\|pdf\|pptx\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//')
           for _ in $(seq 20); do
             ok=true
             curl -fsS "$url/" | grep -q 'class="decks"' || ok=false
@@ -104,7 +107,7 @@ jobs:
           {
             echo "### Prezentacje: ${{ steps.target.outputs.url }}"
             echo
-            grep -o 'class="\(deck\|pdf\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//' |
+            grep -o 'class="\(deck\|pdf\|pptx\)" href="[^"]*"' dist/index.html | sed 's/.*href="//; s/"$//' |
               while read -r p; do echo "- ${{ steps.target.outputs.url }}$p"; done
           } >> "$GITHUB_STEP_SUMMARY"
 

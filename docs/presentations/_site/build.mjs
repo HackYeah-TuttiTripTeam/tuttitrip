@@ -11,11 +11,15 @@
 //                               index.html to $DECK_OUT, with asset paths under
 //                               $DECK_BASE (= /<name>/). Served at /<name>/
 //   <name>/index.html           a ready static folder, copied as is, at /<name>/
-// A deck that links to "<name>.pdf" (e.g. a download button) also gets that PDF, printed
-// from the page by headless Chrome (CHROME or google-chrome/chromium on PATH), so its text
-// stays selectable. CI fails without Chrome; locally the PDF is skipped with a warning.
+// A deck that links to "<name>.pdf" or "<name>.pptx" (download buttons) gets those files.
+// The PDF is printed by headless Chrome (print.mjs; CHROME or google-chrome/chromium on
+// PATH) with the page opened as "<name>.html?print", so the text stays selectable. The PPTX
+// is made from that PDF by pdf2pptx.py (uv, or python3 with pymupdf and python-pptx):
+// the page without text as the background and the text as editable text boxes on top.
+// CI fails when a tool is missing; a local build skips the file with a warning.
 // Then it writes the explorer (index.html) and 404.html next to the decks.
 import { execFileSync } from 'node:child_process'
+import { printDeck } from './print.mjs'
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -36,19 +40,42 @@ function findChrome() {
   return null
 }
 
-function printPdf(html, pdf) {
-  const chrome = findChrome()
-  if (!chrome) {
-    if (process.env.CI) throw new Error(`no Chrome to print ${pdf} (set CHROME)`)
-    console.warn(`decks: no Chrome found, skipping ${pdf} (set CHROME to build it)`)
+function missing(what, file) {
+  if (process.env.CI) throw new Error(`no ${what} to build ${file}`)
+  console.warn(`decks: no ${what} found, skipping ${file}`)
+  return false
+}
+
+function has(bin, args = ['--version']) {
+  try {
+    execFileSync(bin, args, { stdio: 'ignore' })
+    return true
+  } catch {
     return false
   }
-  execFileSync(chrome, [
-    '--headless', '--no-sandbox', '--disable-gpu', '--no-pdf-header-footer',
-    '--virtual-time-budget=10000', `--print-to-pdf=${pdf}`, `file://${html}`,
-  ], { stdio: 'ignore' })
-  if (!existsSync(pdf)) throw new Error(`Chrome did not write ${pdf}`)
-  return true
+}
+
+// PDF and/or PPTX next to dist/<name>.html; returns the published paths that exist.
+async function downloads(name, html) {
+  const want = (ext) => html.includes(`href="${name}.${ext}"`)
+  if (!want('pdf') && !want('pptx')) return {}
+  const chrome = findChrome()
+  if (!chrome) return missing('Chrome (set CHROME)', `${name}.pdf`) && {}
+  const pdf = join(dist, `${name}.pdf`)
+  const runs = await printDeck(chrome, join(dist, `${name}.html`), pdf)
+  const out = want('pdf') ? { pdf: `/${name}.pdf` } : {}
+  if (want('pptx')) {
+    const fonts = join(dist, `${name}.fonts.json`)
+    writeFileSync(fonts, JSON.stringify(runs))
+    const args = [join(site, 'pdf2pptx.py'), pdf, join(dist, `${name}.pptx`), fonts]
+    if (has('uv')) execFileSync('uv', ['run', '--quiet', ...args], { stdio: 'inherit' })
+    else if (has('python3', ['-c', 'import pymupdf, pptx'])) execFileSync('python3', args, { stdio: 'inherit' })
+    else missing('uv or python3 with pymupdf and python-pptx', `${name}.pptx`)
+    rmSync(fonts)
+    if (existsSync(join(dist, `${name}.pptx`))) out.pptx = `/${name}.pptx`
+  }
+  if (!want('pdf')) rmSync(pdf)
+  return out
 }
 
 rmSync(dist, { recursive: true, force: true })
@@ -88,13 +115,12 @@ for (const entry of readdirSync(root, { withFileTypes: true })) {
   const src = join(root, entry.name)
   let name
   let kind
-  let pdf = ''
+  let files = {}
   if (entry.isFile() && entry.name.endsWith('.html')) {
     name = entry.name.slice(0, -'.html'.length)
     kind = 'HTML'
     cpSync(src, join(dist, entry.name))
-    if (readFileSync(src, 'utf8').includes(`href="${name}.pdf"`))
-      pdf = printPdf(join(dist, entry.name), join(dist, `${name}.pdf`)) ? `/${name}.pdf` : ''
+    files = await downloads(name, readFileSync(src, 'utf8'))
   } else if (entry.isDirectory() && existsSync(join(src, 'package.json'))) {
     name = entry.name
     kind = kindOf(JSON.parse(readFileSync(join(src, 'package.json'), 'utf8')))
@@ -114,7 +140,7 @@ for (const entry of readdirSync(root, { withFileTypes: true })) {
     href: entry.isFile() ? `/${name}` : `/${name}/`,
     title: titleOf(page) || name,
     description: descriptionOf(page) || '',
-    pdf,
+    ...files,
   })
 }
 decks.sort((a, b) => a.title.localeCompare(b.title, 'pl'))
@@ -131,7 +157,7 @@ const cards = decks
           ${d.description ? `<span class="description">${esc(d.description)}</span>` : ''}
           <span class="path">${esc(d.href)}</span>
         </a>
-        ${d.pdf ? `<a class="pdf" href="${esc(d.pdf)}" download>Pobierz PDF</a>` : ''}
+        ${d.pdf || d.pptx ? `<span class="files">${d.pdf ? `<a class="pdf" href="${esc(d.pdf)}" download>Pobierz PDF</a>` : ''}${d.pptx ? `<a class="pptx" href="${esc(d.pptx)}" download>Pobierz PPTX</a>` : ''}</span>` : ''}
       </li>`,
   )
   .join('\n')
@@ -152,4 +178,4 @@ writeFileSync(
   page('Nie ma takiej prezentacji', '<p class="empty"><a href="/">Wróć do listy prezentacji</a></p>'),
 )
 console.log(`decks: ${decks.length} deck(s) -> ${dist}`)
-for (const d of decks) console.log(`  ${d.href}  (${d.kind}) ${d.title}${d.pdf ? ` + ${d.pdf}` : ''}`)
+for (const d of decks) console.log(`  ${d.href}  (${d.kind}) ${d.title}${d.pdf ? ` + ${d.pdf}` : ''}${d.pptx ? ` + ${d.pptx}` : ''}`)

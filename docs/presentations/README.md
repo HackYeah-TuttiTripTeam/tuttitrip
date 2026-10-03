@@ -16,7 +16,11 @@ Wdrożenie gałęzi znika razem z gałęzią.
 Nazwy zaczynające się od `_` albo `.` są pomijane, a `index` i `404` są zajęte przez listę i stronę błędu. Tytuł na liście to `<title>` strony, a opis to `<meta name="description">`, jeśli strona go ma.
 
 - **Jeden plik HTML** (np. eksport z Claude, Google Slides czy Keynote): wrzuć `nazwa.html`. Adres: `/nazwa` (`/nazwa.html` przekierowuje na `/nazwa`). Obrazki i fonty muszą być wewnątrz pliku albo pod pełnymi adresami.
-  Jeśli strona linkuje do `nazwa.pdf` (np. przycisk „Pobierz PDF”), build drukuje ją do PDF w Chrome bez okna. Tekst w PDF da się zaznaczać, a układ stron ustawia `@media print` strony. W CI używa Chrome z runnera, a lokalnie Chrome z `PATH` albo ze zmiennej `CHROME`. Bez Chrome lokalny build pomija PDF z ostrzeżeniem. Lista prezentacji pokazuje wtedy link do pobrania.
+  Jeśli strona linkuje do `nazwa.pdf` albo `nazwa.pptx` (przyciski „Pobierz PDF” i „Pobierz PPTX”), build robi te pliki:
+  - PDF drukuje Chrome bez okna (`_site/print.mjs`). Strona jest otwierana jako `nazwa.html?print`, więc może się przygotować do druku, np. wyrenderować wszystkie slajdy i wyłączyć animacje. Układ stron ustawia `@media print`, a tekst w PDF da się zaznaczać.
+  - PPTX powstaje z tego PDF (`_site/pdf2pptx.py`, uruchamiany przez `uv`). Każda strona to slajd: tło to strona bez tekstu, a tekst leży na nim w polach tekstowych z tą samą czcionką, rozmiarem i kolorem, więc da się go zaznaczać i edytować. Czcionki z prezentacji (Funnel Display, Atkinson Hyperlegible) są w Google Fonts. Bez nich PowerPoint podstawi inne i tekst może się lekko przesunąć.
+
+  W CI Chrome jest na runnerze, a `uv` instaluje workflow. Lokalnie build szuka Chrome w `PATH` albo w zmiennej `CHROME`, a bez Chrome albo `uv` pomija pliki z ostrzeżeniem. Lista prezentacji pokazuje linki do pobrania.
 - **Gotowy statyczny katalog** (np. reveal.js bez builda): `nazwa/index.html` plus pliki obok. Adres: `/nazwa/`.
 - **Projekt ze skryptem build** (Slidev, Marp, reveal.js z Vite): katalog `nazwa/` z `package.json` i lockfile'em (`package-lock.json` albo `pnpm-lock.yaml`). CI uruchamia `npm ci` i `npm run build` (albo ich odpowiedniki w pnpm) z dwiema zmiennymi:
   - `DECK_OUT`: katalog, do którego build ma zapisać stronę z `index.html`,

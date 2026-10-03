@@ -331,9 +331,8 @@ body.tt { margin: 0; background: var(--secondary); color: var(--foreground); fon
 .changes .new { font-weight: 650; color: var(--want-ink); }
 /* 8 */
 .team { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(10px, 1.4cqw, 20px); align-content: center; }
-.member { display: flex; flex-direction: column; gap: 10px; }
+.member { display: flex; flex-direction: column; gap: 10px; padding-block: clamp(24px, 3.2cqw, 44px); }
 .member-name { margin: 6px 0 0; font: 750 clamp(17px, 1.6cqw, 22px)/1.2 var(--font-display); letter-spacing: -.02em; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; }
 /* pasek z pobieraniem */
 .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
 .topbar-info { display: flex; align-items: center; gap: 10px; font: 600 15px/1.3 var(--font-sans); color: var(--muted-foreground); }
@@ -408,7 +407,7 @@ body.tt { margin: 0; background: var(--secondary); color: var(--foreground); fon
   <div class="split fill">
     <div class="stack-l">
       <h2 class="t">Plany z czatbota brzmią dobrze, ale nikt ich nie sprawdza.</h2>
-      <p class="lede">Tak wygląda poniedziałek w Gdańsku według czatbota. Trzy z pięciu punktów nie wytrzymują zderzenia z rzeczywistością.</p>
+      <p class="lede">Tak wygląda poniedziałek w Gdańsku według czatbota. W trzech z pięciu punktów coś się nie zgadza.</p>
     </div>
     <div class="tt-sheet pad">
       <p class="sheet-title">Plan z czatbota · poniedziałek</p>
@@ -459,7 +458,7 @@ body.tt { margin: 0; background: var(--secondary); color: var(--foreground); fon
 </section>
 <section class="slide " aria-label="Slajd 6 z 9">
  <div class="in">
-  <h2 class="t">Liczy program, a AI tylko rozmawia, więc planowi można zaufać.</h2>
+  <h2 class="t">Wszystkie liczby w planie liczy program, a AI tylko rozmawia.</h2>
   <div class="grid-2 fill">
     <div class="tt-sheet pad role role--ink">
       <p class="role-head"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.500"/><rect x="9.500" y="9.500" width="5" height="5" rx="1"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg>Program liczy</p>
@@ -470,7 +469,7 @@ body.tt { margin: 0; background: var(--secondary); color: var(--foreground); fon
       <p class="role-list">zadaje pytania · tłumaczy decyzje zwykłymi słowami</p>
     </div>
   </div>
-  <p class="lede">Ten sam wyjazd zawsze daje ten sam plan, a błędy wychodzą przed podróżą, nie w jej trakcie.</p>
+  <p class="lede">Te same dane zawsze dają ten sam plan, a błędy widać jeszcze przed wyjazdem.</p>
 
   <footer class="foot"><span class="foot-brand"><svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#00774d"/><g fill="#f4fbf8"><circle cx="150" cy="372" r="44"/><circle cx="214" cy="312" r="13"/><circle cx="260" cy="270" r="13"/><circle cx="306" cy="228" r="13"/></g><circle cx="364" cy="152" r="46" fill="none" stroke="#f4fbf8" stroke-width="24"/></svg>TuttiTrip</span><span class="foot-n">6 / 9</span></footer>
  </div>
@@ -494,8 +493,8 @@ body.tt { margin: 0; background: var(--secondary); color: var(--foreground); fon
 </section>
 <section class="slide " aria-label="Slajd 8 z 9">
  <div class="in">
-  <h2 class="t">Zbudowało to pięć osób z różnych dziedzin.</h2>
-  <div class="team fill"><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m1">ŁG</span><p class="member-name">Łukasz Gęborys</p><div class="tags"><span class="tt-badge tt-badge--neutral">AI i Data Science</span><span class="tt-badge tt-badge--neutral">Cyberbezpieczeństwo</span><span class="tt-badge tt-badge--neutral">Produkt</span></div></div><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m2">CG</span><p class="member-name">Cyprian Gburek</p><div class="tags"><span class="tt-badge tt-badge--neutral">Architektura</span><span class="tt-badge tt-badge--neutral">Backend i frontend</span><span class="tt-badge tt-badge--neutral">DevOps i chmura</span><span class="tt-badge tt-badge--neutral">AI i dane</span></div></div><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m3">AK</span><p class="member-name">Angelika Korcz</p><div class="tags"><span class="tt-badge tt-badge--neutral">Cyberbezpieczeństwo</span></div></div><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m4">MS</span><p class="member-name">Michał Sadrzak</p><div class="tags"><span class="tt-badge tt-badge--neutral">AI i Data Science</span><span class="tt-badge tt-badge--neutral">UI</span><span class="tt-badge tt-badge--neutral">Web i mobile</span></div></div><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m5">TF</span><p class="member-name">Tomasz Florczak</p><div class="tags"><span class="tt-badge tt-badge--neutral">Inne technologie</span></div></div></div>
+  <h2 class="t">Zbudowało to pięć osób.</h2>
+  <div class="team fill"><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m1">ŁG</span><p class="member-name">Łukasz Gęborys</p></div><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m2">CG</span><p class="member-name">Cyprian Gburek</p></div><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m3">AK</span><p class="member-name">Angelika Korcz</p></div><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m4">MS</span><p class="member-name">Michał Sadrzak</p></div><div class="tt-sheet pad member"><span class="tt-avatar av-lg tt-m5">TF</span><p class="member-name">Tomasz Florczak</p></div></div>
 
   <footer class="foot"><span class="foot-brand"><svg class="logo-mark" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#00774d"/><g fill="#f4fbf8"><circle cx="150" cy="372" r="44"/><circle cx="214" cy="312" r="13"/><circle cx="260" cy="270" r="13"/><circle cx="306" cy="228" r="13"/></g><circle cx="364" cy="152" r="46" fill="none" stroke="#f4fbf8" stroke-width="24"/></svg>TuttiTrip</span><span class="foot-n">8 / 9</span></footer>
  </div>

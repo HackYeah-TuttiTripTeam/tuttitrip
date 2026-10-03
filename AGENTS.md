@@ -4,6 +4,59 @@ Repozytorium zbiorcze TuttiTrip: README i submoduły `frontend`, `backend` i
 `worker`. Kod, reguły architektury i polecenia każdej części są w jej
 własnym repozytorium i jej pliku AGENTS.md.
 
+## Design system
+
+Skill `tuttitrip-design-system` (`.claude/skills/tuttitrip-design-system`) jest wspólny dla wszystkich
+repozytoriów. Diagramy, slajdy i materiały do pitchu korzystają z jego kolorów, krojów, znaku i słownika
+(nazwa produktu: tylko TuttiTrip).
+
+## Praca agentów nad issues
+
+Nad backlogiem pracuje równolegle kilku agentów AI i ludzi. Te zasady pilnują, żeby nikt nie wchodził
+innym w drogę i żeby każda funkcja przeszła ten sam proces. Dotyczą też ludzi.
+
+1. Wybór issue. Bierzesz tylko issue z tablicy
+   [TuttiTrip](https://github.com/orgs/HackYeah-TuttiTripTeam/projects/1) ze statusem Todo, bez etykiety
+   `in-progress` i bez przypisanej osoby. Linia „Zależy od:” w opisie wymienia issues, które muszą być
+   zmergowane do `main`. Jeśli któreś nie jest, pracuj tylko na jego kontrakcie (np. stała odpowiedź z
+   OpenAPI) i napisz to w komentarzu. Kolejność: najpierw P0, potem P1, w obrębie milestone'u.
+2. Zajęcie issue, zanim napiszesz kod:
+   - `gh issue edit <nr> --add-label in-progress`,
+   - Status na tablicy: In Progress,
+   - komentarz „Start” z nazwą gałęzi, ścieżką worktree i krótkim planem (pliki, które zmienisz).
+   Etykieta `in-progress` znaczy „zajęte”. Nie bierz takiego issue i nie zmieniaj go bez zgody zespołu.
+3. Worktree i gałąź. Nigdy nie pracuj w głównym klonie repozytorium. Jedno issue to jeden worktree, jedna
+   gałąź i jeden PR do `main`:
+
+   ```bash
+   git -C ~/Documents/GitHub/tuttitrip fetch origin
+   git -C ~/Documents/GitHub/tuttitrip worktree add -b docs/<nr>-<krotka-nazwa> \
+     ~/Documents/GitHub/worktrees/tuttitrip/tuttitrip-<nr>-<krotka-nazwa> origin/main
+   ```
+
+   Kod backendu, workera i frontendu zmieniasz w ich repozytoriach według ich AGENTS.md.
+4. Komentarze ze statusem w issue po każdym etapie: plan, implementacja z testami, wynik smoke testu,
+   wynik review subagenta, link do PR. Krótko: co zrobione, co dalej, co blokuje. Gdy utkniesz: etykieta
+   `blocked` i komentarz z powodem i tym, czego potrzebujesz.
+5. Pliki wspólne, w których łatwo o konflikt, zmieniaj małymi krokami i przed PR rób
+   `git fetch origin && git rebase origin/main`:
+   - `README.md`, `AGENTS.md` i `docs/` (diagramy generuj skryptami z `docs/diagramy`).
+6. Smoke test jest obowiązkowy dla KAŻDEGO zrealizowanego feature'a. Po pushu gałęzi poczekaj na
+   wdrożenie podglądu i przejdź na żywo scenariusz z kryteriów akceptacji issue:
+   - sprawdź, jak dokument wygląda na GitHubie (renderowanie, linki, diagramy).
+   Wynik (kroki, odpowiedzi albo zrzuty ekranu) wpisz w komentarzu w issue. Bez zielonego smoke testu
+   nie ma PR.
+7. Review subagenta. Po zielonym smoke teście uruchom subagenta-recenzenta z diffem gałęzi, treścią
+   issue i story źródłową. Sprawdza:
+   - uproszczenie kodu i zbędną złożoność (skille `simplify` i `ponytail-review`),
+   - złożoność logiki,
+   - poprawność biznesową względem story, słownika z dokumentu architektonicznego i, przy logice
+     planowania, specyfikacji algorytmu (`docs/algorytm.md` w tuttitrip-backend).
+   Popraw to, co znalazł, i **powtórz smoke test**. Wynik review i drugiego smoke testu wpisz w komentarzu.
+8. PR. Dopiero po tym otwórz PR do `main` skillem `open-pr` (`Closes #<nr>`) i ustaw Status: In
+   Review. Po merge'u zdejmij `in-progress`, usuń worktree
+   (`git -C ~/Documents/GitHub/<repo> worktree remove <ścieżka>`); issue zamyka `Closes`, Status: Done.
+
 ## Zgłoszenia i PR
 
 Zasady są wspólne dla całej organizacji, pełny opis jest w

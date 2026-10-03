@@ -152,7 +152,9 @@ Szczegóły (zmienne środowiskowe, port bazy inny niż 5432, uruchamianie w kon
 
 ## Jak pracujemy
 
-Zadania prowadzimy w projekcie GitHub organizacji. Pracę nad zadaniem zaczynamy na gałęzi `feature/...` od `develop` i otwieramy PR do `develop`. Wydanie to PR z `develop` do `main`. Każda gałąź dostaje własny podgląd frontendu i API.
+Zadania prowadzimy w projekcie GitHub organizacji. Pracę nad zadaniem zaczynamy na gałęzi `feature/...` od `develop` i otwieramy PR do `develop`. PR do `develop` mergujemy przez "Squash and merge", a wydanie to PR z `develop` do `main` mergowany przez "Create a merge commit". Każda gałąź dostaje własny podgląd frontendu i API.
+
+Zgłoszenia i PR mają stały format. Tytuł zgłoszenia zaczyna się od `feat:`, `docs:`, `chore:` albo `bug:` (np. `feat(frontend): Filtrowanie wyjazdów po dacie`), a treść ma sekcje Opis, Dlaczego, Kryteria akceptacji, Definition of Done i Obszar. Zgłoszenie błędu opisuje dodatkowo kroki do odtworzenia, oczekiwane i faktyczne zachowanie oraz środowisko. Formularz New issue prowadzi przez te pola, a zgłoszenia w innym formacie bot zamyka z komentarzem, co poprawić. Tytuł PR ma te same prefiksy, tylko poprawka to `bugfix:`, a wydanie `release:`. Opis PR piszemy po polsku według szablonu. Notatki wydań powstają same w GitHub Releases. Szczegóły są w [CONTRIBUTING.md](https://github.com/HackYeah-TuttiTripTeam/.github/blob/main/CONTRIBUTING.md).
 
 ## Zespół
 

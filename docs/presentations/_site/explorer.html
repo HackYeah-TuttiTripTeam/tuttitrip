@@ -43,6 +43,8 @@ body {
 main { max-width: 52rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
 .brand { margin: 0; display: flex; align-items: center; gap: 0.6rem; font: 600 1.25rem/1 var(--font-display); letter-spacing: -0.02em; }
 .logo { width: 2rem; height: 2rem; }
+.lg-sky { fill: #0a2f23; }
+@media (prefers-color-scheme: dark) { .lg-sky { fill: #0f4434; } }
 h1 { margin: 0.25rem 0 2rem; font: 600 clamp(2rem, 6vw, 3rem)/1.1 var(--font-display); }
 .decks { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
 .deck {
@@ -79,7 +81,7 @@ h1 { margin: 0.25rem 0 2rem; font: 600 clamp(2rem, 6vw, 3rem)/1.1 var(--font-dis
 </head>
 <body>
 <main>
-  <p class="brand"><svg class="logo" viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#00774d"/><g fill="#f4fbf8"><circle cx="150" cy="372" r="44"/><circle cx="214" cy="312" r="13"/><circle cx="260" cy="270" r="13"/><circle cx="306" cy="228" r="13"/></g><circle cx="364" cy="152" r="46" fill="none" stroke="#f4fbf8" stroke-width="24"/></svg>TuttiTrip</p>
+  <p class="brand"><svg class="logo" viewBox="0 0 512 512" aria-hidden="true"><defs><clipPath id="ttk"><circle cx="256" cy="256" r="256"/></clipPath></defs><circle cx="256" cy="256" r="256" class="lg-sky"/><g clip-path="url(#ttk)"><rect y="256" width="512" height="274" fill="#00774d"/><path d="M256 256L126 520H386Z" fill="#f5efe6"/><path d="M254.35 282.40L257.64 282.40L258.01 293.66L253.99 293.66Z" class="lg-sky"/><path d="M253.63 304.93L258.37 304.93L259.03 325.81L252.97 325.81Z" class="lg-sky"/><path d="M252.30 346.69L259.70 346.69L260.94 385.38L251.06 385.38Z" class="lg-sky"/><path d="M249.82 424.08L262.18 424.08L264.48 495.80L247.52 495.80Z" class="lg-sky"/></g><circle cx="256" cy="146" r="48" class="lg-sky" stroke="#f2b53a" stroke-width="28"/></svg>TuttiTrip</p>
   <h1>{{heading}}</h1>
   {{body}}
 </main>

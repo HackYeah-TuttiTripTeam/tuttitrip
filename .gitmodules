@@ -1,0 +1,12 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/HackYeah-TuttiTripTeam/tuttitrip-frontend.git
+	branch = main
+[submodule "backend"]
+	path = backend
+	url = https://github.com/HackYeah-TuttiTripTeam/tuttitrip-backend.git
+	branch = main
+[submodule "worker"]
+	path = worker
+	url = https://github.com/HackYeah-TuttiTripTeam/tuttitrip-worker.git
+	branch = main

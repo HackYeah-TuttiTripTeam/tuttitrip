@@ -12,11 +12,13 @@ Diagram jest w draw.io: [architektura.drawio](diagramy/architektura.drawio), gen
 
 | Warstwa | Co robi | Czego nie robi |
 | --- | --- | --- |
-| **S1** | Liczy i sprawdza: algorytm sprawiedliwości, sprawdzenie planu (linter), reguły cen, wymagania noclegowe, rozliczenie. Czysta logika w `logic/`. | Nie woła modelu językowego, frameworka webowego ani bazy. |
-| **S2** | Model językowy pisze treść tylko na żądanie S1: pytania wywiadu, uzasadnienia werdyktów, odczyt wklejonego planu, oferty i paragonu. | Nie decyduje o żadnej liczbie ani o werdykcie. |
+| **S1** (System 1, szybko) | Algorytm zadowolenia i sprawiedliwości (solver), sprawdzenie planu (linter), reguły cen, wymagania noclegowe i rozliczenie jako czysta logika w `logic/`, oraz małe modele decyzyjne (basal i Laya na GB10, JEV przez OpenRouter), które w ułamku sekundy wybierają jedną z najwyżej 10 podanych opcji. | Nie pisze tekstu. Algorytm nie woła żadnego modelu, frameworka webowego ani bazy, a model decyzyjny niczego nie liczy, tylko klasyfikuje. |
+| **S2** (System 2, LLM) | Model językowy (Qwen3.8-27B) pisze treść tylko na żądanie S1: pytania wywiadu, uzasadnienia werdyktów, odczyt wklejonego planu, oferty i paragonu. Przejmuje wybór, którego model decyzyjny nie umie zrobić (eskalacja do `tuttitrip:chat`). | Nie decyduje o żadnej liczbie ani o werdykcie. |
 | **S3** | Działania, które kosztują albo wychodzą poza plan, czekają na zgodę człowieka na karcie zatwierdzenia: zgoda na przekroczenie budżetu ([be#53][be#53]), otwarcie wyszukiwania noclegów ([be#69][be#69]). | Nie wykonuje się samo. |
 
-Dowód S1: po wyłączeniu modelu algorytm, linter i reguły cen nadal działają, a ich wynik da się powtórzyć (ten sam plan ma ten sam skrót, [be#47][be#47]) i zmierzyć ([be#76][be#76]). Granice pilnują testy architektury w backendzie ([AGENTS.md backendu](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-backend/blob/develop/AGENTS.md), „Dependency rules”): moduły `logic/` i `schemas.py` nie sięgają do `fastapi`, `pydantic_ai`, `sqlalchemy` ani `httpx`, nawet pośrednio.
+Nazwy nawiązują do Systemu 1 i Systemu 2 Kahnemana: S1 to szybka, prosta decyzja, S2 wolniejsze myślenie. Liczby w planie zawsze liczy algorytm z S1.
+
+Dowód S1: po wyłączeniu modeli algorytm, linter i reguły cen nadal działają, a ich wynik da się powtórzyć (ten sam plan ma ten sam skrót, [be#47][be#47]) i zmierzyć ([be#76][be#76]). Granice pilnują testy architektury w backendzie ([AGENTS.md backendu](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-backend/blob/develop/AGENTS.md), „Dependency rules”): moduły `logic/` i `schemas.py` nie sięgają do `fastapi`, `pydantic_ai`, `sqlalchemy` ani `httpx`, nawet pośrednio.
 
 ## Decyzje D1 do D7
 
@@ -163,7 +165,7 @@ Obie prezentacje ([TuttiTrip_pitch_deck](presentations/TuttiTrip_pitch_deck.html
 
 - **AI dziś:** wywiad (AG-UI z generative UI, głos przez Pydantic AI Realtime), uzupełnianie profilu modelami decyzyjnymi (JEV, Laya, basal), wyjaśnienie wyniku algorytmu dla każdej osoby i ocena nagłych zdarzeń (deszcz, demonstracja) przed przeliczeniem przez solver. Podpis: całość na Pydantic AI.
 - **Następny krok** (linia przerywana): ChatGPT i Claude przez serwer MCP (podłączenie działa, narzędzia do danych w [be#105][be#105] i [be#106][be#106]), podsumowanie opinii przy karcie miejsca z Google Maps i wpisy w Google Calendar ([be#97][be#97]).
-- **Stos i architektura:** aplikacja i klienci MCP, nasz serwer na GB10 (API i worker w ramce Pydantic AI, silnik planu bez AI, modele lokalne, PostgreSQL z pgvector) i to, co idzie do chmury: OpenAI (mowa), Google Maps, OpenRouter (JEV i zapas), Auth0.
+- **Stos i architektura:** aplikacja i klienci MCP, nasz serwer na GB10 (API i worker w ramce Pydantic AI, System 1: algorytm zadowolenia i modele decyzyjne, System 2: LLM, PostgreSQL z pgvector, pod diagramem jedno zdanie o Systemie 1 i 2) i to, co idzie do chmury: OpenAI (mowa), Google Maps, OpenRouter (JEV i zapas), Auth0.
 
 Przeplanowanie po deszczu jako funkcja jest wciąż w backlogu ([be#74][be#74]).
 

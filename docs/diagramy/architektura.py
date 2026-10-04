@@ -1,7 +1,7 @@
 """Generuje diagram architektury TuttiTrip w formacie draw.io.
 
 Wynik: architektura.drawio. PNG z osadzonym diagramem robi render.sh.
-Diagram pokazuje podział S1 (kod liczy i sprawdza), S2 (model pisze na żądanie S1)
+Diagram pokazuje podział S1 (System 1: algorytm i modele decyzyjne), S2 (System 2: LLM pisze na żądanie S1)
 i S3 (działanie czeka na zgodę człowieka), worker DBOS, modele na GB10, mowę w chmurze,
 mapę Google i serwer MCP. Opis decyzji: docs/architektura.md.
 
@@ -67,7 +67,7 @@ def build():
     d = Doc()
     d.vertex("title", "Architektura TuttiTrip", 20, 20, 900, 56,
              f"text;html=1;fontSize=44;fontStyle=1;fontFamily=Arial;fontColor={INK};align=left;verticalAlign=top;")
-    d.vertex("sub", "Kod liczy i sprawdza (S1), model pisze tylko na żądanie S1 (S2), a działania z kosztem czekają na zgodę (S3).",
+    d.vertex("sub", "System 1 (S1) decyduje szybko: algorytm liczy, modele decyzyjne wybierają z opcji. System 2 (S2) to LLM, który pisze. S3 czeka na zgodę.",
              20, 78, 1700, 36, f"text;html=1;fontSize=24;fontFamily=Arial;fontColor={MUTED};align=left;verticalAlign=top;")
 
     # strefy
@@ -90,9 +90,9 @@ def build():
     # host
     d.vertex("h_gw", "Gateway nginx<br>/api/v1; ścieżki<br>wewnętrzne = 404", 680, 210, 210, 110, ST_PLAIN)
     d.vertex("h_be", "Backend FastAPI, plastry pionowe", 920, 210, 450, 700, ST_ZONE(PAPER, BRAND))
-    d.vertex("s1", "<b>S1: liczy i sprawdza</b><br>solver (heurystyka, potem CP-SAT)<br>sprawdzenie planu, reguły cen,<br>wymagania noclegowe<br>czysta logika, bez modelu",
+    d.vertex("s1", "<b>S1 (System 1): szybko</b><br>algorytm zadowolenia (solver), sprawdzenie<br>planu, reguły cen: czysta logika<br>+ modele decyzyjne basal, Laya, JEV<br>(wybór jednej z maks. 10 opcji)",
              940, 260, 410, 140, ST_S1)
-    d.vertex("s2", "<b>S2: model pisze na żądanie S1</b><br>wywiad tekstowy przez AG-UI<br>agent Pydantic AI, katalog modeli",
+    d.vertex("s2", "<b>S2 (System 2): LLM pisze na żądanie S1</b><br>Qwen3.8-27B, wywiad przez AG-UI<br>przejmuje, gdy model decyzyjny nie umie",
              940, 420, 410, 110, ST_PLAIN)
     d.vertex("s3", "<b>S3: czeka na zgodę człowieka</b><br>karta zatwierdzenia: przekroczenie<br>budżetu, wyszukiwanie noclegów",
              940, 550, 410, 110, box("#FFFFFF", BRAND, dashed=True))

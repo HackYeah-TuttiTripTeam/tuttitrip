@@ -328,12 +328,12 @@ button{font-family:inherit}
 .calc .slot b{display:grid;place-items:center;width:24px;height:24px;border-radius:9999px;background:var(--want-soft);color:var(--want-ink)}
 .calc .slot b .tt-icon{width:16px;height:16px}
 /* architektura */
-.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:44px}
-.node{position:relative;text-align:left;border:1.5px solid var(--border);background:var(--card);border-radius:var(--radius-lg);padding:24px;margin-right:48px;min-height:220px;color:var(--foreground);font:inherit;transition:border-color .2s}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;margin-top:36px}
+.node{position:relative;text-align:left;border:1.5px solid var(--border);background:var(--card);border-radius:var(--radius-lg);padding:18px;margin-right:28px;min-height:220px;color:var(--foreground);font:inherit;transition:border-color .2s}
 .flow .node:last-child{margin-right:0}
 .node[aria-pressed="true"]{border-color:var(--foreground)}
 .node.lit{border-color:var(--primary);background:var(--want-soft)}
-.node + .node::before{content:"";position:absolute;left:-48px;top:50%;width:48px;height:4px;margin-top:-2px;background:radial-gradient(circle,var(--route) 1.6px,transparent 2.2px) 0 50%/8px 4px repeat-x}
+.node + .node::before{content:"";position:absolute;left:-28px;top:50%;width:28px;height:4px;margin-top:-2px;background:radial-gradient(circle,var(--route) 1.6px,transparent 2.2px) 0 50%/8px 4px repeat-x}
 .packet{position:absolute;width:16px;height:16px;border-radius:9999px;background:var(--primary);z-index:3;top:0;left:0;transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .2s;opacity:0}
 .tag{display:inline-flex}
 .stop{text-align:left;border:1.5px solid var(--border);background:var(--card);border-radius:var(--radius-lg);padding:16px 18px;color:var(--foreground);font:inherit;position:relative;min-height:150px}
@@ -496,8 +496,8 @@ body{background:var(--background)}
 
 <!-- 9. Architektura -->
 <section class="slide" data-i="8">
- <h2 class="s-h2">Cały system działa lokalnie.</h2>
- <p class="s-lede" style="max-width:62ch">Uruchamiamy go na jednej maszynie, więc dane o wyjeździe zostają u nas.</p>
+ <h2 class="s-h2">Kod liczy, model tylko pisze.</h2>
+ <p class="s-lede" style="max-width:80ch">Kod i modele działają na jednym sprzęcie, więc dane o wyjeździe zostają u nas. Do chmury idą tylko mowa (OpenAI) i mapa (Google).</p>
  <div class="flow" id="s9-flow"><span class="packet" id="s9-packet"></span></div>
  <div class="tt-sheet pad" style="margin-top:32px;padding:32px;display:flex;align-items:center;justify-content:space-between;gap:32px;min-height:170px">
   <div id="s9-detail" style="flex:1"></div>
@@ -663,7 +663,7 @@ function s4r(){const done=IV.i>=PL.length;let body;const c=k=>IV.ans.filter(a=>a
   body=`${appbar('Wywiad',av(2,true))}${steps}
   <p class="tt-asks">${icon('spark','tt-icon--sm')}Pyta asystent</p><p class="tt-h" style="margin:4px 0 14px;font-size:22px;line-height:28px">Co myślisz o miejscu: ${p[0]}?</p>
   ${IV.voice?`<div class="tt-agui fade" style="text-align:center;padding:20px"><div class="bars">${'<i></i>'.repeat(11)}</div><p class="tt-label">Słucham…</p></div>`:
-  `<div class="tt-agui fade" key="${IV.i}"><div class="tt-between"><h3 class="tt-h3">${p[0]}</h3><span class="tt-badge tt-badge--neutral">${icon('shield')}Zweryfikowane</span></div><p class="tt-meta" style="margin-top:2px">${p[1]}</p><p class="tt-caption" style="margin-bottom:12px">Źródło: Google Places · 2 paź</p>
+  `<div class="tt-agui fade" key="${IV.i}"><div class="tt-between"><h3 class="tt-h3">${p[0]}</h3><span class="tt-badge tt-badge--neutral">${icon('shield')}Zweryfikowane</span></div><p class="tt-meta" style="margin-top:2px">${p[1]}</p><p class="tt-caption" style="margin-bottom:12px">Źródło: arkusz zespołu i OSM · 2 paź</p>
   <div class="tt-rating">${Object.entries(VN).map(([k,[l,ic]])=>`<button data-v="${k}" class="is-${k==='want'?'want':k==='neutral'?'neutral':'decline'}" aria-pressed="${IV.cur===k}">${icon(ic)}${l}</button>`).join('')}</div>
   ${IV.cur==='decline'?`<div class="tt-row pop" style="margin-top:12px">${REASONS.map(r=>`<button class="tt-chip" data-r="${r}" aria-pressed="${IV.reason===r}" style="min-height:40px;padding:0 14px">${r}</button>`).join('')}</div>`:''}</div>`}
   ${said}
@@ -775,12 +775,14 @@ $('#s8-phone').addEventListener('click',e=>{if(e.target.closest('#s8-ok')){ok8=t
 enter[7]=()=>{ok8=false;s8r()};
 
 /* ===== 9 ===== */
-const ND=[{ic:'phone',n:'Telefon',t:'PWA w pionie',f:[['phone','React i React Native'],['route','Działa offline w podróży'],['lock','Kroje i ikony hostowane lokalnie']],tag:'',cap:'Zdanie: „Jedziemy do Gdańska z babcią”'},
- {ic:'server',n:'Serwer',t:'API w Pythonie',f:[['server','FastAPI i Pydantic'],['spark','Pydantic AI łączy model z narzędziami'],['shield','Wszystkie dane typowane']],tag:'',cap:'Zdanie trafia do serwera'},
- {ic:'scale',n:'Silnik',t:'Solver i sprawdzenie planu',f:[['cpu','Liczy godziny, dojazdy, budżet i sprawiedliwość'],['list','Testy architektury pilnują granic modułów'],['shield','Nie zgaduje: ma wynik albo problem']],tag:'Kod liczy',cap:'Kod układa plan i szuka problemów'},
- {ic:'spark',n:'Model',t:'Lokalny model językowy',f:[['cpu','Działa na Dell Pro Max z GB10, 128 GB'],['chat','Pisze pytania i uzasadnienia'],['lock','Nie decyduje o żadnej liczbie']],tag:'Model pisze',cap:'Model pisze: „Babcia odpoczywa po obiedzie”'}];
+const ND=[{ic:'phone',n:'Telefon',t:'PWA, tekst albo głos',f:[['phone','React, PWA na Cloudflare Workers'],['route','Działa offline w podróży'],['lock','Kroje i ikony hostowane lokalnie']],tag:'',cap:'Zdanie wpisane albo powiedziane: „Jedziemy do Gdańska z babcią”'},
+ {ic:'mic',n:'Mowa',t:'Rozmowa głosem w chmurze',f:[['mic','OpenAI Realtime, dźwięk idzie wprost z telefonu'],['server','Narzędzia i historia zostają na naszym serwerze'],['lock','Klucz tylko do mowy, z limitem wydatków']],tag:'Chmura',cap:'Głos idzie do OpenAI, a narzędzia wołają nasz serwer'},
+ {ic:'scale',n:'S1',t:'Kod liczy i sprawdza',f:[['cpu','Solver, sprawdzenie planu, ceny i noclegi'],['list','Testy architektury pilnują granic modułów'],['shield','Nie zgaduje: ma wynik albo problem']],tag:'Kod liczy',cap:'Kod układa plan i szuka problemów'},
+ {ic:'spark',n:'S2',t:'Model pisze na GB10',f:[['cpu','Qwen i modele decyzyjne na Dell Pro Max z GB10'],['chat','Pisze pytania i uzasadnienia na żądanie S1'],['lock','Paragony czyta lokalnie, obraz nie wychodzi']],tag:'Model pisze',cap:'Model pisze: „Babcia odpoczywa po obiedzie”'},
+ {ic:'check',n:'S3',t:'Czeka na Twoją zgodę',f:[['wallet','Przekroczenie budżetu z ceną punktu'],['shield','Nic kosztownego nie dzieje się samo']],tag:'Zgoda',cap:'Host widzi cenę decyzji i zatwierdza'},
+ {ic:'globe',n:'MCP',t:'Dodatkowy kanał dla Claude i ChatGPT',f:[['globe','Ten sam backend dla klientów MCP'],['lock','Te same uprawnienia co w aplikacji'],['q','Planowany, jeszcze niezbudowany']],tag:'Później',cap:'Ten sam serwer odpowiada klientom MCP'}];
 let s9=2,t9=[];
-function s9r(lit){const f=$('#s9-flow');$$('.node',f).forEach(n=>n.remove());ND.forEach((n,i)=>{const b=document.createElement('button');b.className='node'+(lit===i?' lit':'');b.dataset.i=i;b.setAttribute('aria-pressed',i===s9);b.innerHTML=`<span class="chip-ic">${icon(n.ic)}</span>${n.tag?`<span class="tt-badge ${n.tag==='Kod liczy'?'tt-badge--solid':'tt-badge--dashed'}" style="position:absolute;top:24px;right:24px">${n.tag}</span>`:''}<p class="tt-h" style="font-size:28px;line-height:32px;margin-top:36px">${n.n}</p><p class="tt-meta" style="font-size:17px">${n.t}</p>`;f.appendChild(b)});
+function s9r(lit){const f=$('#s9-flow');$$('.node',f).forEach(n=>n.remove());ND.forEach((n,i)=>{const b=document.createElement('button');b.className='node'+(lit===i?' lit':'');b.dataset.i=i;b.setAttribute('aria-pressed',i===s9);b.innerHTML=`<span class="chip-ic">${icon(n.ic)}</span>${n.tag?`<span class="tt-badge ${n.tag==='Kod liczy'?'tt-badge--solid':'tt-badge--dashed'}" style="position:absolute;top:18px;right:18px">${n.tag}</span>`:''}<p class="tt-h" style="font-size:28px;line-height:32px;margin-top:36px">${n.n}</p><p class="tt-meta" style="font-size:17px">${n.t}</p>`;f.appendChild(b)});
  const n=ND[s9];$('#s9-detail').innerHTML=`<div class="fade"><p class="tt-h hico">${icon(lit!=null?'spark':n.ic)}${lit!=null?ND[lit].cap:n.t}</p>${lit!=null?'':`<ul class="tt-row" style="gap:8px 24px;list-style:none;padding:0;margin:12px 0 0">${n.f.map(x=>`<li class="tt-row" style="gap:8px;flex-wrap:nowrap;font:400 17px/24px var(--font-sans)">${icon(x[0],'tt-icon--sm')}${x[1]}</li>`).join('')}</ul>`}</div>`}
 $('#s9-flow').addEventListener('click',e=>{const b=e.target.closest('.node');if(b){t9.forEach(clearTimeout);s9=+b.dataset.i;$('#s9-packet').style.opacity=0;s9r()}});
 $('#s9-run').onclick=()=>{t9.forEach(clearTimeout);t9=[];const f=$('#s9-flow'),pk=$('#s9-packet');$('#s9-run').disabled=true;

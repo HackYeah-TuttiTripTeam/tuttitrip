@@ -3,7 +3,7 @@ name: Discord notify
 # Wysyła wynik każdego innego workflow tego repozytorium na Discord zespołu.
 # Logika, zasady szumu i opis są wspólne dla organizacji, w repozytorium
 # HackYeah-TuttiTripTeam/.github (workflow discord-notify.yml, CONTRIBUTING.md,
-# sekcja "Powiadomienia (Discord)"). Działa na runnerze GitHuba (ubuntu-latest),
+# sekcja "Powiadomienia (Discord)"). Działa na runnerach self-hosted [self-hosted, hackathon],
 # nie pobiera kodu, a URL webhooka dostaje tylko z sekretu DISCORD_WEBHOOK_URL.
 #
 # workflow_run uruchamia się tylko z kopii tego pliku na gałęzi domyślnej (main).

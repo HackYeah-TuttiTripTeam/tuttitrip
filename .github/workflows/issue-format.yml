@@ -3,7 +3,7 @@ name: Issue format
 # Sprawdza tytuł i sekcje każdego nowego lub edytowanego zgłoszenia.
 # Logika i zasady są wspólne dla całej organizacji, w repozytorium
 # HackYeah-TuttiTripTeam/.github (workflow issue-format.yml, CONTRIBUTING.md).
-# Działa na runnerze GitHuba (ubuntu-latest), nigdy na self-hosted.
+# Logika w repozytorium .github działa na runnerach self-hosted [self-hosted, hackathon].
 on:
   issues:
     types: [opened, edited, reopened]

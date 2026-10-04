@@ -2,7 +2,7 @@ name: Delete merged branch
 
 # Po merge'u PR usuwa jego gałąź (nigdy main). Logika jest wspólna, w
 # repozytorium HackYeah-TuttiTripTeam/.github (workflow delete-merged-branch.yml).
-# Działa na runnerze GitHuba (ubuntu-latest) i nie pobiera kodu.
+# Działa na runnerach self-hosted [self-hosted, hackathon] i nie pobiera kodu.
 on:
   pull_request:
     types: [closed]

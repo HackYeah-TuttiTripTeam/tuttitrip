@@ -5,8 +5,9 @@ name: Decks
 #   main          -> worker tuttitrip-decks        -> https://tuttitrip-decks.gburek.app
 #   inna gałąź    -> worker tuttitrip-decks-<slug> -> https://tuttitrip-decks-<slug>.gburek.app
 # Każde wdrożenie usuwa też Workery gałęzi, których już nie ma (cleanup.mjs).
-# Działa na runnerze GitHuba (ubuntu-latest, repozytorium jest publiczne) i tylko
-# na push, więc sekrety nie trafiają do PR z forków.
+# Działa na runnerach self-hosted organizacji ([self-hosted, hackathon]) i tylko
+# na push, więc PR z forków nie uruchamia joba ani nie widzi sekretów. PDF wymaga
+# Chrome'a, który instaluje krok setup-chrome (runner go nie ma).
 on:
   push:
     branches: ["**"]
@@ -30,7 +31,7 @@ env:
 jobs:
   deploy:
     name: deploy
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, hackathon]
     timeout-minutes: 20
     defaults:
       run:
@@ -41,10 +42,14 @@ jobs:
         with:
           node-version: 22
 
-      # uv runs pdf2pptx.py (PDF -> PPTX) with its own dependencies; Chrome for the
-      # PDFs comes with the runner.
+      # Chrome prints the PDFs; the self-hosted runner does not ship one.
+      - uses: browser-actions/setup-chrome@48ad923757ca74d66703209fe939badbdf80f2f4 # v2.2.0
+        id: chrome
+      # uv runs pdf2pptx.py (PDF -> PPTX) with its own dependencies.
       - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
       - name: Build decks, explorer, PDF and PPTX files
+        env:
+          CHROME: ${{ steps.chrome.outputs.chrome-path }}
         run: node build.mjs
 
       - name: Pick Worker and domain for this branch

@@ -1,0 +1,4 @@
+<!doctype html><meta charset="utf-8"><title>TuttiTrip mockups index</title>
+<body style="font-family:sans-serif;padding:24px"><h1>TuttiTrip mockups</h1><div id="l"></div>
+<script src="icons.js"></script><script src="qr.js"></script><script src="components.js"></script><script src="screens.js"></script>
+<script>document.getElementById('l').innerHTML = Object.keys(S).map(k => `<p>${k}: <a href="mock.html?s=${k}">PL</a> · <a href="mock.html?s=${k}&lang=en">EN</a> · <a href="mock.html?s=${k}&theme=dark">PL dark</a> · <a href="mock.html?s=${k}&lang=en&theme=dark">EN dark</a></p>`).join('')</script>

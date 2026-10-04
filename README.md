@@ -32,19 +32,19 @@ Nowe jest to, że model językowy prowadzi rozmowę i pisze uzasadnienia, ale o 
 
 ## TuttiTrip w obrazkach
 
-Plansze to makiety zbudowane na tokenach, krojach, ikonach i logo z naszego design systemu, na danych przykładowych (rodzina w Gdańsku). Odwzorowują frontend z gałęzi `develop`. Dwie rzeczy nie mają jeszcze ekranu w aplikacji: miara sprawiedliwości i przeplanowanie po nagłym zdarzeniu. Zrzuty z działającej aplikacji są [niżej](#zrzuty-z-działającej-aplikacji).
+Plansze to makiety zbudowane na tokenach, krojach, ikonach i logo z naszego design systemu, na danych przykładowych (rodzina w Gdańsku). Odwzorowują frontend z gałęzi `develop`. Dwie rzeczy nie mają jeszcze ekranu w aplikacji: miara sprawiedliwości (plansze z wykresem zadowolenia i z kosztem decyzji) i przeplanowanie po nagłym zdarzeniu (plansza z deszczem). Miarę sprawiedliwości liczy już solver w backendzie, a przeplanowanie jest w budowie. Zrzuty z działającej aplikacji są [niżej](#zrzuty-z-działającej-aplikacji).
 
 <table>
   <tr>
     <td width="50%"><img width="100%" src="docs/readme/02-problem.webp" alt="Plan poniedziałku z czatbota z trzema problemami: muzeum zamknięte w poniedziałek, 9 km pieszo z babcią, budżet przekroczony o 240 zł. Obok wynik sprawdzenia: 3 problemy kontra 0 w planie TuttiTrip."><br><sub>Plan z czatbota: 3 problemy na 5 punktów. Plan TuttiTrip dla tej samej rodziny: 0.</sub></td>
-    <td width="50%"><img width="100%" src="docs/readme/13-ai.webp" alt="Sześć kart pokazujących, gdzie w TuttiTrip pracuje AI, ze statusem „Działa”, „W budowie” albo „W planach” i nazwami modeli, pod spodem pasek o frameworku Pydantic AI."><br><sub>Gdzie pracuje AI: wywiad głosem i kartami AG-UI, modele decyzyjne, nagłe zdarzenia, uzasadnienia, MCP. Wszystko na Pydantic AI.</sub></td>
+    <td width="50%"><img width="100%" src="docs/readme/13-ai.webp" alt="Sześć kart pokazujących, gdzie w TuttiTrip pracuje AI, ze statusem „Działa”, „W budowie” albo „W planach” i nazwami modeli, pod spodem pasek o frameworku Pydantic AI."><br><sub>Gdzie pracuje AI. Działają wywiad głosem i kartami AG-UI, modele decyzyjne i uzasadnienia; nagłe zdarzenia są w budowie, a planowanie przez MCP oraz mapy i kalendarz w planach. Wszystko na Pydantic AI.</sub></td>
   </tr>
   <tr>
     <td><img width="100%" src="docs/readme/03-interview.webp" alt="Wywiad z asystentem: zdanie organizatora, karta z pytaniem i panel „Co już wiem” z faktami o wyjeździe."><br><sub>Wywiad jednym zdaniem albo głosem. Asystent pyta kartami, a fakty trafiają do panelu „Co już wiem”.</sub></td>
-    <td><img width="100%" src="docs/readme/04-fairness.webp" alt="Wykres zadowolenia pięciu osób w skali 0–100 z podłogą 40 punktów. W planie TuttiTrip najniższy wynik ma Kuba, 58; w planie z czatbota babcia miała 22."><br><sub>Najmniej zadowolona osoba: 58 punktów zamiast 22.</sub></td>
+    <td><img width="100%" src="docs/readme/04-fairness.webp" alt="Wykres zadowolenia pięciu osób w skali 0–100 z podłogą 40 punktów. W planie TuttiTrip najniższy wynik ma Kuba, 58; w planie z czatbota babcia miała 22."><br><sub>Najmniej zadowolona osoba: 58 punktów zamiast 22 (ekran w aplikacji w planach).</sub></td>
   </tr>
   <tr>
-    <td><img width="100%" src="docs/readme/05-decision.webp" alt="Telefon z propozycją przeniesienia Westerplatte na sobotę i kartą „Czeka na Twoją decyzję”: sprawiedliwość 0,87 na 0,71, Kuba 58 na 34, budżet plus 80 zł."><br><sub>Organizator widzi koszt decyzji, zanim ją wymusi.</sub></td>
+    <td><img width="100%" src="docs/readme/05-decision.webp" alt="Telefon z propozycją przeniesienia Westerplatte na sobotę i kartą „Czeka na Twoją decyzję”: sprawiedliwość 0,87 na 0,71, Kuba 58 na 34, budżet plus 80 zł."><br><sub>Organizator widzi koszt decyzji, zanim ją wymusi (ekran w aplikacji w planach).</sub></td>
     <td><img width="100%" src="docs/readme/08-vote.webp" alt="Strona głosowania dla babci Heli otwarta z linku: oceny „Chcę”, „Obojętnie”, „Nie chcę” i weto, obok kod QR."><br><sub>Babcia głosuje z linku albo kodu QR, bez konta.</sub></td>
   </tr>
   <tr>
@@ -52,7 +52,7 @@ Plansze to makiety zbudowane na tokenach, krojach, ikonach i logo z naszego desi
     <td><img width="100%" src="docs/readme/06-replan.webp" alt="Telefon z planem dnia po komunikacie „Silny deszcz od 11:00”: muzea zamiast parku i molo, obok panel „Co sprawdził kod” z zerem problemów."><br><sub>Deszcz od 11:00: model rozpoznaje zdarzenie, solver przelicza resztę dnia (w budowie).</sub></td>
   </tr>
   <tr>
-    <td colspan="2"><img width="100%" src="docs/readme/10-devices.webp" alt="TuttiTrip na laptopie i telefonie, w jasnym i ciemnym motywie."><br><sub>PWA na telefon i laptop, po polsku i angielsku, w jasnym i ciemnym motywie, z serwerem MCP.</sub></td>
+    <td colspan="2"><img width="100%" src="docs/readme/10-devices.webp" alt="TuttiTrip na laptopie i telefonie, w jasnym i ciemnym motywie."><br><sub>PWA na telefon i laptop, po polsku i angielsku, w jasnym i ciemnym motywie, z serwerem MCP udostępniającym dane wyjazdu.</sub></td>
   </tr>
 </table>
 

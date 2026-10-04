@@ -30,6 +30,8 @@ Wszystkie endpointy backendu są pod `/api/v1/`. Ten sam adres działa też prze
 
 Aplikacja to PWA, więc na telefonie można ją dodać do ekranu głównego.
 
+Dane z TuttiTrip można podłączyć do Claude, ChatGPT i Claude Code przez serwer MCP (`https://tuttitrip-api.gburek.app/api/v1/mcp`). Instrukcja krok po kroku, wymagane plany i co widać po zalogowaniu: [Serwer MCP w README backendu](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-backend/blob/main/README.md#serwer-mcp).
+
 Prezentacje z [`docs/presentations`](docs/presentations) są na https://tuttitrip-decks.gburek.app (lista pod `/`, np. https://tuttitrip-decks.gburek.app/TuttiTrip_pitch_deck). Każda inna gałąź tego repozytorium dostaje własny adres `https://tuttitrip-decks-<gałąź>.gburek.app`.
 
 ## Repozytoria

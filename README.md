@@ -1,5 +1,16 @@
 # TuttiTrip
 
+> [!NOTE]
+> **To monorepo złożone z submodułów gita.** Katalogi [`frontend/`](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-frontend), [`backend/`](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-backend) i [`worker/`](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-worker) to odnośniki do osobnych repozytoriów w organizacji [HackYeah-TuttiTripTeam](https://github.com/HackYeah-TuttiTripTeam). Kliknięcie takiego katalogu na GitHubie przenosi do innego repozytorium, na commit zapisany w tym repozytorium. Wszystkie te repozytoria są publiczne.
+
+> [!NOTE]
+> **Jak powstał kod.** TuttiTrip powstał z pomocą asystentów kodowania (Claude Code, Codex). Ludzie z zespołu odpowiadali za architekturę rozwiązania, rozplanowanie funkcji, działanie aplikacji i to, jak się z niej korzysta.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/readme/01-hero-ciemny.webp">
+  <img src="docs/readme/01-hero.webp" alt="Strona TuttiTrip z hasłem „Plan, po którym nikt nie czuje, że przegrał”, polem do wpisania pierwszego zdania oraz planem wyjazdu do Gdańska na laptopie i telefonie.">
+</picture>
+
 TuttiTrip to planer wyjazdów rodzinnych i grupowych, który układa plan, po którym nikt w grupie nie czuje, że przegrał. Projekt powstaje na hackathonie HackYeah 2026.
 
 To repozytorium zbiera trzy części aplikacji jako submoduły gita: frontend, backend i workera. Kod każdej części żyje w osobnym repozytorium, a tutaj jest opis całości i instrukcja uruchomienia.
@@ -18,6 +29,74 @@ W grupie zwykle jedna osoba planuje cały wyjazd. Każdy chce czegoś innego: dz
 - Wydatki zasilają budżet planu i rozliczenie. W trakcie wyjazdu plan można przeliczyć, gdy pada deszcz albo dziecko jest zmęczone.
 
 Nowe jest to, że model językowy prowadzi rozmowę i pisze uzasadnienia, ale o planie decyduje zwykły kod (solver, linter, reguły cenowe, rozliczenie). Te same dane wejściowe dają ten sam plan, a liczbę naruszeń reguł da się policzyć i porównać z planem z czatbota. Testy architektury w backendzie pilnują, żeby ta logika nie zależała od frameworka webowego, agentów AI ani bazy.
+
+## TuttiTrip w obrazkach
+
+Plansze to makiety zbudowane na tokenach, krojach, ikonach i logo z naszego design systemu, na danych przykładowych (rodzina w Gdańsku). Odwzorowują frontend z gałęzi `develop`. Dwie rzeczy nie mają jeszcze ekranu w aplikacji: miara sprawiedliwości i przeplanowanie po nagłym zdarzeniu. Zrzuty z działającej aplikacji są [niżej](#zrzuty-z-działającej-aplikacji).
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/readme/02-problem.webp" alt="Plan poniedziałku z czatbota z trzema problemami: muzeum zamknięte w poniedziałek, 9 km pieszo z babcią, budżet przekroczony o 240 zł. Obok wynik sprawdzenia: 3 problemy kontra 0 w planie TuttiTrip."><br><sub>Plan z czatbota: 3 problemy na 5 punktów. Plan TuttiTrip dla tej samej rodziny: 0.</sub></td>
+    <td width="50%"><img src="docs/readme/13-ai.webp" alt="Sześć kart pokazujących, gdzie w TuttiTrip pracuje AI, ze statusem „Działa”, „W budowie” albo „W planach” i nazwami modeli, pod spodem pasek o frameworku Pydantic AI."><br><sub>Gdzie pracuje AI: wywiad głosem i kartami AG-UI, modele decyzyjne, nagłe zdarzenia, uzasadnienia, MCP. Wszystko na Pydantic AI.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/readme/03-interview.webp" alt="Wywiad z asystentem: zdanie organizatora, karta z pytaniem i panel „Co już wiem” z faktami o wyjeździe."><br><sub>Wywiad jednym zdaniem albo głosem. Asystent pyta kartami, a fakty trafiają do panelu „Co już wiem”.</sub></td>
+    <td><img src="docs/readme/04-fairness.webp" alt="Wykres zadowolenia pięciu osób w skali 0–100 z podłogą 40 punktów. W planie TuttiTrip najniższy wynik ma Kuba, 58; w planie z czatbota babcia miała 22."><br><sub>Najmniej zadowolona osoba: 58 punktów zamiast 22.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/readme/05-decision.webp" alt="Telefon z propozycją przeniesienia Westerplatte na sobotę i kartą „Czeka na Twoją decyzję”: sprawiedliwość 0,87 na 0,71, Kuba 58 na 34, budżet plus 80 zł."><br><sub>Organizator widzi koszt decyzji, zanim ją wymusi.</sub></td>
+    <td><img src="docs/readme/08-vote.webp" alt="Strona głosowania dla babci Heli otwarta z linku: oceny „Chcę”, „Obojętnie”, „Nie chcę” i weto, obok kod QR."><br><sub>Babcia głosuje z linku albo kodu QR, bez konta.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/readme/07-settle.webp" alt="Telefon z listą wydatków wyjazdu, obok suma 586 zł, „3 przelewy zamiast 6” i niepewny odczyt paragonu z przerywanym obrysem."><br><sub>Wydatek zdaniem albo zdjęciem paragonu, saldo każdej osoby i najmniej przelewów.</sub></td>
+    <td><img src="docs/readme/06-replan.webp" alt="Telefon z planem dnia po komunikacie „Silny deszcz od 11:00”: muzea zamiast parku i molo, obok panel „Co sprawdził kod” z zerem problemów."><br><sub>Deszcz od 11:00: model rozpoznaje zdarzenie, solver przelicza resztę dnia (w budowie).</sub></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="docs/readme/10-devices.webp" alt="TuttiTrip na laptopie i telefonie, w jasnym i ciemnym motywie."><br><sub>PWA na telefon i laptop, po polsku i angielsku, w jasnym i ciemnym motywie, z serwerem MCP.</sub></td>
+  </tr>
+</table>
+
+### Zrzuty z działającej aplikacji
+
+Prawdziwy frontend z gałęzi `develop` na danych testowych (MSW). Zmieniliśmy tylko nazwę konta testowego i adres źródła cen. Zrzuty z laptopa przełączają się na ciemny motyw razem z GitHubem. Więcej ekranów jest w [README frontendu](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-frontend#zrzuty-ekranu).
+
+<table>
+  <tr>
+    <td width="50%">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/readme/desktop-pl-dark-05-wywiad-karty.webp">
+        <img src="docs/readme/desktop-pl-light-05-wywiad-karty.webp" alt="Wywiad po pierwszym zdaniu: karta budżetu i panel „Co już wiem” z oznaczeniem „ustalił asystent”.">
+      </picture>
+      <br><sub>Wywiad po pierwszym zdaniu: karta budżetu i panel „Co już wiem”.</sub>
+    </td>
+    <td width="50%">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/readme/desktop-pl-dark-08-plan.webp">
+        <img src="docs/readme/desktop-pl-light-08-plan.webp" alt="Plan dnia w Warszawie z godzinami, kosztem planu, noclegiem i znacznikami „Cena zweryfikowana” ze źródłem.">
+      </picture>
+      <br><sub>Plan ze skrótem wersji, kosztem dla grupy i znacznikami weryfikacji cen i godzin.</sub>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/readme/desktop-pl-dark-11-rozliczenie.webp">
+        <img src="docs/readme/desktop-pl-light-11-rozliczenie.webp" alt="Rozliczenie wyjazdu: saldo każdej osoby i lista przelewów.">
+      </picture>
+      <br><sub>Rozliczenie: saldo każdej osoby i najmniejsza liczba przelewów.</sub>
+    </td>
+    <td>
+      <table>
+        <tr>
+          <td><img src="docs/readme/telefon-pl-light-03-utworz-glosowo.webp" alt="Zakładanie wyjazdu głosem na telefonie."></td>
+          <td><img src="docs/readme/telefon-pl-light-09-plan-zgoda-budzet.webp" alt="Plan na telefonie z prośbą o zgodę na przekroczenie budżetu."></td>
+          <td><img src="docs/readme/telefon-pl-light-12-glosowanie-z-linku.webp" alt="Głosowanie z linku bez konta, z wetem, na telefonie."></td>
+        </tr>
+      </table>
+      <sub>Na telefonie: wyjazd zakładany głosem, zgoda na przekroczenie budżetu, głosowanie z linku bez konta.</sub>
+    </td>
+  </tr>
+</table>
 
 ## Środowiska
 
@@ -42,9 +121,13 @@ Prezentacje z [`docs/presentations`](docs/presentations) są na https://tuttitri
 | [`backend/`](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-backend) | `tuttitrip-backend` | API, baza danych, solver i linter |
 | [`worker/`](https://github.com/HackYeah-TuttiTripTeam/tuttitrip-worker) | `tuttitrip-worker` | zadania w tle: agenci AI, embeddingi, przeliczenia |
 
-> Uwaga: repozytoria z kodem są na razie prywatne. Zostaną upublicznione po hackathonie, a wcześniej udostępniamy je jury na prośbę. Do tego czasu linki do submodułów mogą zwracać 404, a `git clone --recurse-submodules` nie pobierze ich zawartości bez dostępu do organizacji.
+Wszystkie trzy repozytoria są publiczne, więc `git clone --recurse-submodules` pobierze je bez dostępu do organizacji.
 
 ## Architektura
+
+![Diagram architektury w czterech kolumnach: ludzie, aplikacja, backend oraz worker i modele, połączone kropkowanymi liniami, pod nim lista technologii.](docs/readme/14-stack.webp)
+
+To samo w wersji, którą GitHub rysuje z kodu:
 
 ```mermaid
 flowchart LR

@@ -32,7 +32,7 @@ Nowe jest to, że model językowy prowadzi rozmowę i pisze uzasadnienia, ale o 
 
 ## TuttiTrip w obrazkach
 
-Plansze to makiety zbudowane na tokenach, krojach, ikonach i logo z naszego design systemu, na danych przykładowych (rodzina w Gdańsku). Odwzorowują frontend z gałęzi `develop`. Dwie rzeczy nie mają jeszcze ekranu w aplikacji: miara sprawiedliwości (plansze z wykresem zadowolenia i z kosztem decyzji) i przeplanowanie po nagłym zdarzeniu (plansza z deszczem). Miarę sprawiedliwości liczy już solver w backendzie, a przeplanowanie jest w budowie. Zrzuty z działającej aplikacji są [niżej](#zrzuty-z-działającej-aplikacji).
+Plansze to makiety zbudowane na tokenach, krojach, ikonach i logo z naszego design systemu, na danych przykładowych (rodzina w Gdańsku). Odwzorowują frontend z gałęzi `develop`. Miara sprawiedliwości (wagi osób, suwak α, ocena i weto) jest już w aplikacji, ale jej ekran wygląda inaczej niż na planszach. Przeplanowanie po nagłym zdarzeniu (plansza z deszczem) jest w budowie i nie ma jeszcze ekranu. Zrzuty z działającej aplikacji są [niżej](#zrzuty-z-działającej-aplikacji).
 
 <table>
   <tr>
@@ -41,10 +41,10 @@ Plansze to makiety zbudowane na tokenach, krojach, ikonach i logo z naszego desi
   </tr>
   <tr>
     <td><img width="100%" src="docs/readme/03-interview.webp" alt="Wywiad z asystentem: zdanie organizatora, karta z pytaniem i panel „Co już wiem” z faktami o wyjeździe."><br><sub>Wywiad jednym zdaniem albo głosem. Asystent pyta kartami, a fakty trafiają do panelu „Co już wiem”.</sub></td>
-    <td><img width="100%" src="docs/readme/04-fairness.webp" alt="Wykres zadowolenia pięciu osób w skali 0–100 z podłogą 40 punktów. W planie TuttiTrip najniższy wynik ma Kuba, 58; w planie z czatbota babcia miała 22."><br><sub>Najmniej zadowolona osoba: 58 punktów zamiast 22 (ekran w aplikacji w planach).</sub></td>
+    <td><img width="100%" src="docs/readme/04-fairness.webp" alt="Wykres zadowolenia pięciu osób w skali 0–100 z podłogą 40 punktów. W planie TuttiTrip najniższy wynik ma Kuba, 58; w planie z czatbota babcia miała 22."><br><sub>Najmniej zadowolona osoba: 58 punktów zamiast 22.</sub></td>
   </tr>
   <tr>
-    <td><img width="100%" src="docs/readme/05-decision.webp" alt="Telefon z propozycją przeniesienia Westerplatte na sobotę i kartą „Czeka na Twoją decyzję”: sprawiedliwość 0,87 na 0,71, Kuba 58 na 34, budżet plus 80 zł."><br><sub>Organizator widzi koszt decyzji, zanim ją wymusi (ekran w aplikacji w planach).</sub></td>
+    <td><img width="100%" src="docs/readme/05-decision.webp" alt="Telefon z propozycją przeniesienia Westerplatte na sobotę i kartą „Czeka na Twoją decyzję”: sprawiedliwość 0,87 na 0,71, Kuba 58 na 34, budżet plus 80 zł."><br><sub>Organizator widzi koszt decyzji, zanim ją wymusi (makieta, w aplikacji ten widok wygląda inaczej).</sub></td>
     <td><img width="100%" src="docs/readme/08-vote.webp" alt="Strona głosowania dla babci Heli otwarta z linku: oceny „Chcę”, „Obojętnie”, „Nie chcę” i weto, obok kod QR."><br><sub>Babcia głosuje z linku albo kodu QR, bez konta.</sub></td>
   </tr>
   <tr>

@@ -8,5 +8,6 @@ DRAWIO=${DRAWIO:-drawio}
 export_png() { "$DRAWIO" -x -f png --embed-diagram -b 12 -s "$2" -o "$1.png" "$1"; }
 
 export_png mapa-pojec.drawio 0.96
+export_png architektura.drawio 0.9
 export_png mapa-przypadkow-uzycia.drawio 0.95
 for f in przypadki-uzycia/*.drawio; do export_png "$f" 1.9; done

@@ -1,12 +1,13 @@
 # Diagramy
 
-Dwa diagramy projektu TuttiTrip w formacie draw.io (diagrams.net). Każdy
+Trzy diagramy projektu TuttiTrip w formacie draw.io (diagrams.net). Każdy
 diagram ma plik `.drawio` i edytowalny PNG (`.drawio.png`) z osadzonym
 diagramem: diagrams.net otwiera taki PNG do edycji tak samo jak `.drawio`.
 
 | Plik | Co pokazuje |
 | --- | --- |
 | `mapa-pojec.drawio`, `mapa-pojec.drawio.png` | Mapa pojęć: 46 haseł ze słownika pojęć w 7 grupach (Konta i role, Podróże i członkostwo, Preferencje i wywiad, Planowanie, Miejsca noclegi i transport, Wydatki, Architektura). Strzałki to relacje wynikające z definicji w słowniku. |
+| `architektura.drawio`, `architektura.drawio.png` | Architektura: urządzenia, Cloudflare, własny host (backend z podziałem S1, S2 i S3, PostgreSQL, worker DBOS, modele na GB10) i usługi zewnętrzne (Auth0, OpenAI Realtime, Google Maps, OpenRouter). Opis decyzji: [docs/architektura.md](../architektura.md). |
 | `mapa-przypadkow-uzycia.drawio`, `mapa-przypadkow-uzycia.drawio.png` | Mapa przypadków użycia (UML): aktorzy z generalizacją, legenda i 8 domen z dokumentu, w tej samej kolejności. Przypadki z istniejących user stories są pełne, nowe stories ze słownika jaśniejsze i przerywane. |
 | `przypadki-uzycia/<domena>.drawio`, `przypadki-uzycia/<domena>.drawio.png` | Ta sama mapa pocięta na domeny, do wstawiania do dokumentu po jednej. |
 
@@ -15,6 +16,7 @@ diagramem: diagrams.net otwiera taki PNG do edycji tak samo jak `.drawio`.
 Otwórz plik prosto z GitHuba:
 
 - [Mapa pojęć](https://app.diagrams.net/#HHackYeah-TuttiTripTeam%2Ftuttitrip%2Fmain%2Fdocs%2Fdiagramy%2Fmapa-pojec.drawio)
+- [Architektura](https://app.diagrams.net/#HHackYeah-TuttiTripTeam%2Ftuttitrip%2Fmain%2Fdocs%2Fdiagramy%2Farchitektura.drawio)
 - [Mapa przypadków użycia](https://app.diagrams.net/#HHackYeah-TuttiTripTeam%2Ftuttitrip%2Fmain%2Fdocs%2Fdiagramy%2Fmapa-przypadkow-uzycia.drawio)
 
 Format linku: `https://app.diagrams.net/#H` plus zakodowana ścieżka
@@ -41,6 +43,7 @@ zmiennej `DRAWIO`). Ręcznie: Plik → Eksportuj jako → PNG, zaznaczona opcja
 
 ## Skąd się wzięły
 
+- `architektura.py` generuje `architektura.drawio` (`python3 architektura.py`, potem `render.sh`). Układ i kolory (zieleń marki dla S1 i modeli lokalnych, przerywany obrys dla tego, co jest poza naszą infrastrukturą) są w skrypcie; to nadpisuje ręczne zmiany w pliku.
 - `przypadki_uzycia.py` generuje `mapa-przypadkow-uzycia.drawio` i pliki w
   `przypadki-uzycia/`. Przy dużych zmianach (nowe przypadki, nowa domena)
   łatwiej poprawić dane w skrypcie i uruchomić go ponownie

@@ -50,7 +50,7 @@ Prezentacje z [`docs/presentations`](docs/presentations) są na https://tuttitri
 flowchart LR
     user["Organizator<br/>(telefon lub przeglądarka)"]
     fe["frontend<br/>React + Vite, PWA<br/>Cloudflare Workers"]
-    be["backend<br/>FastAPI<br/>S1 liczy, S2 pisze, S3 czeka na zgodę"]
+    be["backend<br/>FastAPI<br/>S1 szybko decyduje, S2 (LLM) pisze, S3 czeka na zgodę"]
     db[("PostgreSQL 18<br/>+ pgvector<br/>+ kolejki DBOS")]
     wk["worker<br/>DBOS + Pydantic AI"]
     gb["Modele na GB10<br/>Qwen, basal, Laya"]

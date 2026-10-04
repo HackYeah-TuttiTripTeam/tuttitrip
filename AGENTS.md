@@ -124,7 +124,8 @@ Pull requesty:
   projekt `nazwa/package.json`, którego `build` zapisuje stronę do `$DECK_OUT`
   z zasobami pod `$DECK_BASE`. Szczegóły:
   [docs/presentations/README.md](docs/presentations/README.md).
-- Workflow działa na `ubuntu-latest` i tylko na push. Domeny nie przejmuje
+- Workflow działa na `[self-hosted, hackathon]` (Chrome do PDF instaluje
+  `setup-chrome`) i tylko na push. Domeny nie przejmuje
   siłą (`check-custom-domain.mjs`), a Workery usuniętych gałęzi sprząta
   `cleanup.mjs`.
 
@@ -136,8 +137,8 @@ Pull requesty:
   pomijane, `skipped` też). Logika jest wspólna, w repozytorium `.github`
   (`discord-notify.yml`). `workflow_run` działa tylko z kopii na `main`.
 - Nowy workflow trzeba dopisać po nazwie (`name:`) do listy `workflows:`.
-- Workflow działa na `ubuntu-latest` (repozytorium jest publiczne), nie
-  pobiera kodu, a tytuły i nazwy gałęzi czyta tylko w github-script.
+- Workflow działa na `[self-hosted, hackathon]`, jak wszystkie workflowy
+  organizacji, nie pobiera kodu, a tytuły i nazwy gałęzi czyta tylko w github-script.
 - Webhook to sekret repozytorium `DISCORD_WEBHOOK_URL`. Rotacja i pozostałe
   zasady: [CONTRIBUTING.md](https://github.com/HackYeah-TuttiTripTeam/.github/blob/main/CONTRIBUTING.md#powiadomienia-discord).
   URL-a webhooka nie wklejamy nigdzie.

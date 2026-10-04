@@ -161,7 +161,7 @@ Poza wersją 1.0 zostają też dzielenie grupy (babcia odpoczywa, reszta idzie d
 
 ## Slajd architektury w pitchu
 
-Obie prezentacje ([TuttiTrip_pitch_deck](presentations/TuttiTrip_pitch_deck.html), slajdy 9 do 11, i [TuttiTrip_pitch_jury](presentations/TuttiTrip_pitch_jury.html), slajdy 8 do 10) mają trzy slajdy o AI i architekturze:
+Obie prezentacje ([TuttiTrip_pitch_deck](presentations/TuttiTrip_pitch_deck.html), slajdy 9 do 11, i [TuttiTrip_pitch_jury](presentations/TuttiTrip_pitch_jury.html), slajdy 7 do 9) mają trzy slajdy o AI i architekturze:
 
 - **AI dziś:** wywiad (AG-UI z generative UI, głos przez Pydantic AI Realtime), uzupełnianie profilu modelami decyzyjnymi (JEV, Laya, basal), wyjaśnienie wyniku algorytmu dla każdej osoby i ocena nagłych zdarzeń (deszcz, demonstracja) przed przeliczeniem przez solver. Podpis: całość na Pydantic AI.
 - **Następny krok** (linia przerywana): ChatGPT i Claude przez serwer MCP (podłączenie działa, narzędzia do danych w [be#105][be#105] i [be#106][be#106]), podsumowanie opinii przy karcie miejsca z Google Maps i wpisy w Google Calendar ([be#97][be#97]).

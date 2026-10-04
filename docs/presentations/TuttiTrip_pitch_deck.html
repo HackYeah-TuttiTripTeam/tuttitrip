@@ -333,13 +333,6 @@ button{font-family:inherit}
 .calc .slot b{display:grid;place-items:center;width:24px;height:24px;border-radius:9999px;background:var(--want-soft);color:var(--want-ink)}
 .calc .slot b .tt-icon{width:16px;height:16px}
 /* architektura */
-.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;margin-top:36px}
-.node{position:relative;text-align:left;border:1.5px solid var(--border);background:var(--card);border-radius:var(--radius-lg);padding:18px;margin-right:28px;min-height:220px;color:var(--foreground);font:inherit;transition:border-color .2s}
-.flow .node:last-child{margin-right:0}
-.node[aria-pressed="true"]{border-color:var(--foreground)}
-.node.lit{border-color:var(--primary);background:var(--want-soft)}
-.node + .node::before{content:"";position:absolute;left:-28px;top:50%;width:28px;height:4px;margin-top:-2px;background:radial-gradient(circle,var(--route) 1.6px,transparent 2.2px) 0 50%/8px 4px repeat-x}
-.packet{position:absolute;width:16px;height:16px;border-radius:9999px;background:var(--primary);z-index:3;top:0;left:0;transition:transform .55s cubic-bezier(.4,0,.2,1),opacity .2s;opacity:0}
 .tag{display:inline-flex}
 .stop{text-align:left;border:1.5px solid var(--border);background:var(--card);border-radius:var(--radius-lg);padding:16px 18px;color:var(--foreground);font:inherit;position:relative;min-height:150px}
 .stop[aria-pressed="true"]{border-color:var(--foreground)}
@@ -380,6 +373,78 @@ body{background:var(--background)}
 .phone-fit .tt-phone{transform:none;zoom:.8}
 *{transition:none!important;animation:none!important}
 }
+
+/* ===== AI i architektura (te same style w obu wersjach) ===== */
+.ai, .arch, .pyd-note { font-size: var(--ai-fs, 16px); }
+.ai { --n: 4; position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: .4em 2.5em; align-content: center; }
+.ai--next { --n: 3; }
+.ai-phase { grid-row: 1; margin: 0; font: 650 1em/1.2 var(--font-sans); color: var(--muted-foreground); }
+.ai-phase--pre { grid-column: 1 / 4; }
+.ai-phase--trip { grid-column: 4; padding-left: 1em; border-left: 2px solid var(--border); margin-left: -1.25em; }
+.ai-stop { grid-row: 2; position: relative; display: flex; flex-direction: column; gap: .55em; }
+.ai-stop::before { content: ""; position: absolute; left: 3em; right: -2.5em; top: 1.375em; height: .25em; background: radial-gradient(circle, var(--route) .1em, transparent .14em) 0 50% / .5em .25em repeat-x; }
+.ai-stop:last-child::before { display: none; }
+.ai--next .ai-stop::before { height: 2px; top: calc(1.5em - 1px); background: linear-gradient(90deg, var(--route) 55%, transparent 0) 0 0 / .8em 2px repeat-x; }
+.ai--next .ai-stop:last-child::before { display: block; right: 0; }
+.ai-ic { position: relative; width: 3em; height: 3em; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--primary-foreground); }
+.ai-ic .tt-icon { width: 1.5em; height: 1.5em; }
+.ai--next .ai-ic { background: var(--background); color: var(--foreground); border: 2px dashed var(--route); box-sizing: border-box; }
+.ai-h { margin: .35em 0 0; font: 750 1.55em/1.15 var(--font-display); letter-spacing: -.02em; }
+.ai-p { margin: 0; font: 400 1.12em/1.45 var(--font-sans); }
+.ai-tech { margin: 0; padding-top: .2em; font: 600 .95em/1.35 var(--font-sans); color: var(--muted-foreground); }
+.pyd-note { display: flex; align-items: center; gap: 1em; padding-top: 1.1em; border-top: 1px solid var(--border); }
+.pyd-note .tt-badge { flex: none; }
+.pyd-note p { margin: 0; font: 400 1.12em/1.45 var(--font-sans); color: var(--muted-foreground); }
+.legend { margin: 0; font: 600 .95em/1.35 var(--font-sans); color: var(--muted-foreground); font-size: var(--ai-fs, 16px); }
+/* diagram */
+.arch { display: grid; grid-template-columns: minmax(0, 1.05fr) 3em minmax(0, 2.9fr) 3em minmax(0, 1fr); align-items: center; }
+.arch-col { display: flex; flex-direction: column; gap: .75em; }
+.arch-col--l { grid-column: 1; } .arch-col--r { grid-column: 5; }
+.arch-head { margin: 0 0 .1em; font: 650 1em/1.2 var(--font-sans); color: var(--muted-foreground); }
+.arch-node { position: relative; border: 1.5px solid var(--border); background: var(--card); border-radius: var(--radius-md); padding: .75em .95em; }
+.arch-node h3 { margin: 0; display: flex; align-items: center; gap: .45em; font: 750 1.15em/1.2 var(--font-display); letter-spacing: -.015em; }
+.arch-node h3 .tt-icon { width: 1.05em; height: 1.05em; flex: none; }
+.arch-node p { margin: .3em 0 0; font: 400 .92em/1.35 var(--font-sans); color: var(--muted-foreground); }
+.arch-node--dash { border-style: dashed; border-color: var(--route); background: transparent; }
+.arch-node--ink { background: var(--foreground); border-color: var(--foreground); color: var(--background); }
+.arch-node--ink p { color: color-mix(in oklch, var(--background) 72%, transparent); }
+.arch-col--l .arch-node::after, .arch-col--r .arch-node::before { content: ""; position: absolute; top: 50%; width: 3em; height: .25em; margin-top: -.125em; background: radial-gradient(circle, var(--route) .1em, transparent .14em) 0 50% / .5em .25em repeat-x; }
+.arch-col--l .arch-node::after { left: 100%; }
+.arch-col--r .arch-node::before { right: 100%; }
+.arch-col--l .arch-node--dash::after { height: 2px; margin-top: -1px; background: linear-gradient(90deg, var(--route) 55%, transparent 0) 0 0 / .8em 2px repeat-x; }
+.arch-srv { grid-column: 3; display: grid; grid-template-columns: minmax(0, 1fr) 2.5em minmax(0, 1fr); grid-template-rows: auto 1fr 1fr auto; gap: .75em 0; padding: 1.1em 1.2em 1.2em; border: 1.5px solid var(--border); border-radius: var(--radius-xl); background: color-mix(in oklch, var(--secondary) 75%, var(--background)); }
+.arch-srv-head { grid-column: 1 / -1; display: flex; align-items: baseline; gap: .6em; margin: 0 0 .35em; font: 800 1.3em/1.2 var(--font-display); letter-spacing: -.02em; }
+.arch-srv-head .tt-icon { align-self: center; width: 1em; height: 1em; }
+.arch-srv-head span { font: 600 .72em/1.2 var(--font-sans); letter-spacing: 0; color: var(--muted-foreground); }
+.pyd { grid-column: 1; grid-row: 2 / 4; position: relative; display: grid; grid-template-rows: 1fr 1fr; gap: .75em; margin-top: .5em; padding: 1.15em .75em .75em; border: 2px solid var(--primary); border-radius: var(--radius-lg); }
+.pyd-tab { position: absolute; top: -.75em; left: .9em; padding: 0 .45em; background: color-mix(in oklch, var(--secondary) 75%, var(--background)); font: 750 1em/1.5 var(--font-display); color: var(--primary); }
+.link { align-self: center; height: .25em; background: radial-gradient(circle, var(--route) .1em, transparent .14em) 0 50% / .5em .25em repeat-x; }
+.link--1 { grid-column: 2; grid-row: 2; margin-top: 1em; } .link--2 { grid-column: 2; grid-row: 3; margin-top: -.3em; }
+.engine { grid-column: 3; grid-row: 2; align-self: center; margin-top: 1em; }
+.models { grid-column: 3; grid-row: 3; align-self: center; margin-top: -.3em; }
+.db { grid-column: 1 / -1; grid-row: 4; display: flex; align-items: baseline; gap: .6em; }
+.db p { margin: 0; }
+/* wąski ekran (wersja dla jury w telefonie) */
+@container (max-width: 720px) {
+  .ai, .ai--next { grid-template-columns: 1fr; gap: 1.4em; }
+  .ai-phase, .ai-stop { grid-row: auto; }
+  .ai-phase--pre, .ai-phase--trip { grid-column: auto; }
+  .ai-phase--trip { order: 2; border-left: 0; margin-left: 0; padding-left: 0; }
+  .ai-stop:last-child { order: 3; }
+  .ai-stop { display: grid; grid-template-columns: 3em 1fr; gap: .3em 1em; }
+  .ai-stop > :not(.ai-ic) { grid-column: 2; }
+  .ai-ic { grid-row: 1 / 4; }
+  .ai-h { margin-top: 0; }
+  .ai-stop::before, .ai--next .ai-stop:last-child::before { display: none; }
+  .arch { grid-template-columns: 1fr; gap: 1.2em; }
+  .arch-col--l, .arch-col--r, .arch-srv { grid-column: 1; }
+  .arch-col--l .arch-node::after, .arch-col--r .arch-node::before, .link { display: none; }
+  .arch-srv { grid-template-columns: 1fr; grid-template-rows: none; }
+  .pyd, .engine, .models, .db { grid-column: 1; grid-row: auto; margin-top: 0; }
+  .pyd { margin-top: .6em; }
+  .pyd-note { flex-direction: column; align-items: flex-start; }
+}
+.slide .ai,.slide .pyd-note,.slide .legend{--ai-fs:19px}.slide .arch{--ai-fs:18px}.slide .s-h2{text-wrap:balance}
 </style>
 </head>
 <body>
@@ -502,16 +567,26 @@ body{background:var(--background)}
 
 <!-- 9. Architektura -->
 <section class="slide" data-i="8">
- <h2 class="s-h2">Kod liczy, model tylko pisze.</h2>
- <p class="s-lede" style="max-width:80ch">Kod i modele działają na jednym sprzęcie, więc dane o wyjeździe zostają u nas. Do chmury idą tylko mowa (OpenAI) i mapa (Google).</p>
- <div class="flow" id="s9-flow"><span class="packet" id="s9-packet"></span></div>
- <div class="tt-sheet pad" style="margin-top:32px;padding:32px;display:flex;align-items:center;justify-content:space-between;gap:32px;min-height:170px">
-  <div id="s9-detail" style="flex:1"></div>
-  <button class="tt-btn tt-btn--primary" id="s9-run">Wyślij przykładowe zdanie</button></div>
+ <h2 class="s-h2">AI pracuje w czterech miejscach, ale planu nie układa.</h2>
+ <p class="s-lede" style="max-width:62ch">Każdą liczbę w planie liczy kod. AI rozumie mowę i zwykłe zdania, a potem tłumaczy wynik.</p>
+ <div style="margin-top:64px"><div class="ai" role="list"><p class="ai-phase ai-phase--pre">Przed wyjazdem</p><p class="ai-phase ai-phase--trip">W podróży</p><div class="ai-stop" role="listitem"><span class="ai-ic"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.500 11a6.500 6.500 0 0 0 13 0M12 17.500V21"/></svg></span><h3 class="ai-h">Wywiad</h3><p class="ai-p">Asystent głosowy pyta każdą osobę, a AI w trakcie rozmowy podsuwa karty do kliknięcia.</p><p class="ai-tech">AG-UI z generative UI, Pydantic AI Realtime</p></div><div class="ai-stop" role="listitem"><span class="ai-ic"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.500" cy="8" r="3.500"/><path d="M3.500 20v-1.500A3.500 3.500 0 0 1 7 15h5a3.500 3.500 0 0 1 3.500 3.500V20M16 4.700a3.500 3.500 0 0 1 0 6.600M20.500 20v-1.500a3.500 3.500 0 0 0-2.500-3.300"/></svg></span><h3 class="ai-h">Profil osoby</h3><p class="ai-p">Małe modele decyzyjne zamieniają odpowiedzi w profil: dietę, tempo, zainteresowania. Wybierają tylko z gotowych opcji.</p><p class="ai-tech">JEV, Laya, basal</p></div><div class="ai-stop" role="listitem"><span class="ai-ic"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6.500A2.500 2.500 0 0 1 7.500 4h9A2.500 2.500 0 0 1 19 6.500v7a2.500 2.500 0 0 1-2.500 2.500H11l-4 3.500V16h-.5A2.500 2.500 0 0 1 5 13.500v-7z"/><path d="M9 9h6M9 12h3.500"/></svg></span><h3 class="ai-h">Wyjaśnienie planu</h3><p class="ai-p">Mówi, co Kubę w tym dniu ucieszy, a co może go zniechęcić bardziej niż resztę grupy.</p><p class="ai-tech">Qwen 3.8 na naszym serwerze</p></div><div class="ai-stop" role="listitem"><span class="ai-ic"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 14.500a4.500 4.500 0 0 1-.4-9A6 6 0 0 1 18 7a3.800 3.800 0 0 1-.5 7.500H7z"/><path d="M9 18l-1 2.500M13 18l-1 2.500M17 18l-1 2.500"/></svg></span><h3 class="ai-h">Nagłe zdarzenia</h3><p class="ai-p">Ocenia, które punkty dnia psuje „silny deszcz” albo „demonstracja w centrum”. Nowy plan liczy kod.</p><p class="ai-tech">model decyzyjny, potem solver</p></div></div></div>
+ <div style="margin-top:56px"><div class="pyd-note"><span class="tt-badge tt-badge--solid">Pydantic AI</span><p>Już teraz korzystamy z Pydantic AI, jednego z najdojrzalszych i najstabilniejszych frameworków AI na rynku. Z niego pochodzą wywiad, rozmowa głosowa i agenci w workerze.</p></div></div>
+</section>
+
+<section class="slide" data-i="9">
+ <h2 class="s-h2">Następny krok: TuttiTrip w czacie, na mapie i w kalendarzu.</h2>
+ <p class="s-lede" style="max-width:62ch">Plan trafi tam, gdzie grupa i tak już zagląda.</p>
+ <div style="margin-top:72px"><div class="ai ai--next" role="list"><div class="ai-stop" role="listitem"><span class="ai-ic"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6.500A2.500 2.500 0 0 1 7.500 4h9A2.500 2.500 0 0 1 19 6.500v7a2.500 2.500 0 0 1-2.500 2.500H11l-4 3.500V16h-.5A2.500 2.500 0 0 1 5 13.500v-7z"/><path d="M9 9h6M9 12h3.500"/></svg></span><h3 class="ai-h">ChatGPT i Claude</h3><p class="ai-p">Zapytasz w czacie o plan, budżet albo o to, kto jeszcze nie zagłosował. Podłączenie przez MCP już działa, narzędzia do danych są w drodze.</p><p class="ai-tech">serwer MCP, te same uprawnienia co w aplikacji</p></div><div class="ai-stop" role="listitem"><span class="ai-ic"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6 7-11.200a7 7 0 1 0-14 0C5 15 12 21 12 21z"/><circle cx="12" cy="9.800" r="2.500"/></svg></span><h3 class="ai-h">Google Maps</h3><p class="ai-p">Przy każdym miejscu krótkie podsumowanie opinii zamiast przewijania setek recenzji.</p><p class="ai-tech">karta miejsca z Google Maps</p></div><div class="ai-stop" role="listitem"><span class="ai-ic"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M8 3v4M16 3v4"/></svg></span><h3 class="ai-h">Google Calendar</h3><p class="ai-p">Zatwierdzony plan sam trafi do kalendarzy uczestników, z wpisami ułożonymi dzień po dniu.</p><p class="ai-tech">osobny kalendarz wyjazdu</p></div></div></div>
+ <div style="margin-top:48px"><p class="legend">Linia przerywana: w drodze.</p></div>
+</section>
+
+<section class="slide" data-i="10">
+ <h2 class="s-h2" style="max-width:34ch">Plan liczy nasz serwer. Do chmury idzie tylko to, co po prawej.</h2>
+ <div style="margin-top:48px"><div class="arch" role="img" aria-label="Architektura TuttiTrip: aplikacja i klienci MCP łączą się z naszym serwerem, na którym działają API, worker, silnik planu, modele AI i baza; do chmury idą tylko mowa, mapa, zapas modeli i logowanie."><div class="arch-col arch-col--l"><div class="arch-node "><h3><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.500" y="2.500" width="11" height="19" rx="3"/><path d="M10.500 18.500h3"/></svg>Aplikacja</h3><p>PWA w telefonie na Cloudflare Workers. React 19, TanStack, Tailwind 4.</p></div><div class="arch-node arch-node--dash"><h3><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6.500A2.500 2.500 0 0 1 7.500 4h9A2.500 2.500 0 0 1 19 6.500v7a2.500 2.500 0 0 1-2.500 2.500H11l-4 3.500V16h-.5A2.500 2.500 0 0 1 5 13.500v-7z"/><path d="M9 9h6M9 12h3.500"/></svg>ChatGPT i Claude</h3><p>Przez serwer MCP. Narzędzia do danych w drodze.</p></div></div><div class="arch-srv"><p class="arch-srv-head"><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="2.500"/><rect x="3" y="13" width="18" height="7" rx="2.500"/><path d="M7 7.500h.01M7 16.500h.01"/></svg>Nasz serwer<span>Dell Pro Max z GB10</span></p><div class="pyd"><span class="pyd-tab">Pydantic AI</span><div class="arch-node "><h3>API</h3><p>FastAPI z wywiadem AG-UI, głosem i MCP.</p></div><div class="arch-node "><h3>Worker</h3><p>Długie zadania w DBOS, wznawiane po restarcie.</p></div></div><span class="link link--1"></span><span class="link link--2"></span><div class="arch-node arch-node--ink engine"><h3><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M7.500 20h9M5 7h14"/><path d="M5 7l-2.500 6a3 3 0 0 0 5 0L5 7zM19 7l-2.500 6a3 3 0 0 0 5 0L19 7z"/></svg>Silnik planu</h3><p>Solver i sprawdzenie planu. Czysty Python, bez AI.</p></div><div class="arch-node models"><h3><svg class="tt-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.500"/><rect x="9.500" y="9.500" width="5" height="5" rx="1"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg>Modele AI</h3><p>Qwen 3.8, basal, Laya i embeddingi, wszystko lokalnie.</p></div><div class="arch-node db"><h3>Baza danych</h3><p>PostgreSQL 18 z pgvector</p></div></div><div class="arch-col arch-col--r"><p class="arch-head">W chmurze</p><div class="arch-node "><h3>OpenAI</h3><p>dźwięk rozmowy głosowej</p></div><div class="arch-node "><h3>Google Maps</h3><p>mapa i karta miejsca</p></div><div class="arch-node "><h3>OpenRouter</h3><p>JEV i zapas, gdy serwer nie odpowiada</p></div><div class="arch-node "><h3>Auth0</h3><p>logowanie</p></div></div></div></div>
 </section>
 
 <!-- 10. Zespół -->
-<section class="slide" data-i="9">
+<section class="slide" data-i="11">
  <h2 class="s-h2">Zbudowało to pięć osób.</h2>
  <p class="s-lede" style="max-width:none">Zespół HackYeah-TuttiTripTeam.</p>
  <div class="team">
@@ -525,7 +600,7 @@ body{background:var(--background)}
 </section>
 
 <!-- 11. Zamknięcie -->
-<section class="slide" data-i="10">
+<section class="slide" data-i="12">
  <div class="cols" style="grid-template-columns:1.05fr .95fr">
   <div class="col-text">
    <svg class="logo logo--lg" viewBox="0 0 716 232" role="img" aria-label="TuttiTrip"><use href="#tt-logo"/></svg>
@@ -778,23 +853,6 @@ function s8r(){const list=EXP.concat(ok8?[UNS]:[]);const S=settle(list);
  $('#s8-tr').innerHTML=S.tr.map(t=>`<li class="tt-between"><span class="tt-label" style="font-size:17px">${PEOPLE[t[0]][0]} oddaje ${PEOPLE[t[1]][3]}</span><span class="tt-fig ${ok8?'':'tt-muted'}">${fmt(t[2],2)} zł${ok8?'':'?'}</span></li>`).join('')}
 $('#s8-phone').addEventListener('click',e=>{if(e.target.closest('#s8-ok')){ok8=true;s8r()}});
 enter[7]=()=>{ok8=false;s8r()};
-
-/* ===== 9 ===== */
-const ND=[{ic:'phone',n:'Telefon',t:'PWA, tekst albo głos',f:[['phone','React, PWA na Cloudflare Workers'],['route','Działa offline w podróży'],['lock','Kroje i ikony hostowane lokalnie']],tag:'',cap:'Zdanie wpisane albo powiedziane: „Jedziemy do Gdańska z babcią”'},
- {ic:'mic',n:'Mowa',t:'Rozmowa głosem w chmurze',f:[['mic','OpenAI Realtime, dźwięk idzie wprost z telefonu'],['server','Narzędzia i historia zostają na naszym serwerze'],['lock','Klucz tylko do mowy, z limitem wydatków']],tag:'Chmura',cap:'Głos idzie do OpenAI, a narzędzia wołają nasz serwer'},
- {ic:'scale',n:'S1',t:'Kod liczy i sprawdza',f:[['cpu','Solver, sprawdzenie planu, ceny i noclegi'],['list','Testy architektury pilnują granic modułów'],['shield','Nie zgaduje: ma wynik albo problem']],tag:'Kod liczy',cap:'Kod układa plan i szuka problemów'},
- {ic:'spark',n:'S2',t:'Model pisze na GB10',f:[['cpu','Qwen i modele decyzyjne na Dell Pro Max z GB10'],['chat','Pisze pytania i uzasadnienia na żądanie S1'],['lock','Paragony czyta lokalnie, obraz nie wychodzi']],tag:'Model pisze',cap:'Model pisze: „Babcia odpoczywa po obiedzie”'},
- {ic:'check',n:'S3',t:'Czeka na Twoją zgodę',f:[['wallet','Przekroczenie budżetu z ceną punktu'],['shield','Nic kosztownego nie dzieje się samo']],tag:'Zgoda',cap:'Host widzi cenę decyzji i zatwierdza'},
- {ic:'globe',n:'MCP',t:'Dodatkowy kanał dla Claude i ChatGPT',f:[['globe','Ten sam backend dla klientów MCP'],['lock','Te same uprawnienia co w aplikacji'],['q','Planowany, jeszcze niezbudowany']],tag:'Później',cap:'Ten sam serwer odpowiada klientom MCP'}];
-let s9=2,t9=[];
-function s9r(lit){const f=$('#s9-flow');$$('.node',f).forEach(n=>n.remove());ND.forEach((n,i)=>{const b=document.createElement('button');b.className='node'+(lit===i?' lit':'');b.dataset.i=i;b.setAttribute('aria-pressed',i===s9);b.innerHTML=`<span class="chip-ic">${icon(n.ic)}</span>${n.tag?`<span class="tt-badge ${n.tag==='Kod liczy'?'tt-badge--solid':'tt-badge--dashed'}" style="position:absolute;top:18px;right:18px">${n.tag}</span>`:''}<p class="tt-h" style="font-size:28px;line-height:32px;margin-top:36px">${n.n}</p><p class="tt-meta" style="font-size:17px">${n.t}</p>`;f.appendChild(b)});
- const n=ND[s9];$('#s9-detail').innerHTML=`<div class="fade"><p class="tt-h hico">${icon(lit!=null?'spark':n.ic)}${lit!=null?ND[lit].cap:n.t}</p>${lit!=null?'':`<ul class="tt-row" style="gap:8px 24px;list-style:none;padding:0;margin:12px 0 0">${n.f.map(x=>`<li class="tt-row" style="gap:8px;flex-wrap:nowrap;font:400 17px/24px var(--font-sans)">${icon(x[0],'tt-icon--sm')}${x[1]}</li>`).join('')}</ul>`}</div>`}
-$('#s9-flow').addEventListener('click',e=>{const b=e.target.closest('.node');if(b){t9.forEach(clearTimeout);s9=+b.dataset.i;$('#s9-packet').style.opacity=0;s9r()}});
-$('#s9-run').onclick=()=>{t9.forEach(clearTimeout);t9=[];const f=$('#s9-flow'),pk=$('#s9-packet');$('#s9-run').disabled=true;
- const step=i=>{const nd=$$('.node',f)[i];if(!nd){pk.style.opacity=0;$('#s9-run').disabled=false;s9=2;s9r();return}pk.style.opacity=1;pk.style.transform=`translate(${nd.offsetLeft+nd.offsetWidth/2-8}px,${nd.offsetTop-8}px)`;t9.push(setTimeout(()=>{s9r(i);$$('.node',f)[i];t9.push(setTimeout(()=>step(i+1),RM?100:900))},RM?0:i?560:250))};
- pk.style.transition='none';pk.style.transform=`translate(${$$('.node',f)[0].offsetLeft+10}px,${$$('.node',f)[0].offsetTop-8}px)`;requestAnimationFrame(()=>{pk.style.transition='';step(0)})};
-enter[8]=()=>{s9=2;$('#s9-packet').style.opacity=0;$('#s9-run').disabled=false;s9r()};
-leave[8]=()=>{t9.forEach(clearTimeout)};
 
 /* ===== 10 ===== */
 const ROAD=[['Dziś','Wywiad głosem i tekstem','Oceny miejsc i wagi dla każdej osoby','done','chat'],['Dziś','Plan i sprawdzenie','Solver, sprawiedliwość, problemy przed pokazaniem','done','shield'],['Dziś','Decyzje, przeplanowanie, rozliczenie','Z ceną widoczną przed kliknięciem','done','scale'],['Dalej','Tryb offline w podróży','Plan i rozliczenie bez zasięgu','next','phone'],['Dalej','Dowolne miasto na żądanie','Bez pobierania całego miasta','next','globe'],['Cel','Wyjazdy, po których nikt nie czuje, że przegrał','','goal','flag']];

@@ -86,15 +86,22 @@ Prawdziwy frontend z gałęzi `develop` na danych testowych (MSW). Zmieniliśmy 
       <br><sub>Rozliczenie: saldo każdej osoby i najmniejsza liczba przelewów.</sub>
     </td>
     <td>
-      <table>
-        <tr>
-          <td><img width="100%" src="docs/readme/telefon-pl-light-03-utworz-glosowo.webp" alt="Zakładanie wyjazdu głosem na telefonie."></td>
-          <td><img width="100%" src="docs/readme/telefon-pl-light-09-plan-zgoda-budzet.webp" alt="Plan na telefonie z prośbą o zgodę na przekroczenie budżetu."></td>
-          <td><img width="100%" src="docs/readme/telefon-pl-light-12-glosowanie-z-linku.webp" alt="Głosowanie z linku bez konta, z wetem, na telefonie."></td>
-        </tr>
-      </table>
-      <sub>Na telefonie: wyjazd zakładany głosem, zgoda na przekroczenie budżetu, głosowanie z linku bez konta.</sub>
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/readme/desktop-pl-dark-12-glosowanie-z-linku.webp">
+        <img width="100%" src="docs/readme/desktop-pl-light-12-glosowanie-z-linku.webp" alt="Strona głosowania dla osoby bez konta, otwarta z linku, z ocenami miejsc i wetem.">
+      </picture>
+      <br><sub>Głosowanie z linku dla osoby bez konta, z wetem.</sub>
     </td>
+  </tr>
+</table>
+
+Na telefonie: wyjazd zakładany głosem, zgoda na przekroczenie budżetu i głosowanie z linku bez konta.
+
+<table>
+  <tr>
+    <td width="33%"><img width="100%" src="docs/readme/telefon-pl-light-03-utworz-glosowo.webp" alt="Zakładanie wyjazdu głosem na telefonie."></td>
+    <td width="33%"><img width="100%" src="docs/readme/telefon-pl-light-09-plan-zgoda-budzet.webp" alt="Plan na telefonie z prośbą o zgodę na przekroczenie budżetu."></td>
+    <td width="33%"><img width="100%" src="docs/readme/telefon-pl-light-12-glosowanie-z-linku.webp" alt="Głosowanie z linku bez konta, z wetem, na telefonie."></td>
   </tr>
 </table>
 
